@@ -6,6 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Index</title>
+  <style>
+    img {
+      width: 150px;
+      height: auto;
+    }
+  </style>
 </head>
 
 <body>
@@ -32,19 +38,17 @@ if (isset($_POST["productSelected"])) {
   }
 }
 
-$cartIds = $_SESSION["cartIds"];
-
-if (!empty($cartIds)) {
+if (!empty($_SESSION["cartIds"])) {
   //when there are products in the cart, select all the products that are not in it
-  $cartProducts = implode(',', array_fill(0, count($cartIds), '?'));
+  $cartProducts = implode(',', array_fill(0, count($_SESSION["cartIds"]), '?'));
   $query = "SELECT * FROM products WHERE id NOT IN ($cartProducts)";
   $stmt = $pdo->prepare($query);
-  $stmt->execute($cartIds);
+  $stmt->execute($_SESSION["cartIds"]);
 } else {
   // when the cart is empty, select all products
   $query = "SELECT * FROM products";
   $stmt = $pdo->prepare($query);
-  $stmt->execute($cartIds);;
+  $stmt->execute($_SESSION["cartIds"]);;
 }
 
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
