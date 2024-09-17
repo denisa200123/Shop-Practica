@@ -1,45 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Index</title>
+</head>
+
+<body>
+  <p>What you can buy:</p>
+  <br>
+</body>
+
+</html>
+
 <?php
+require 'common.php';
+session_start();
 
-//if ($_SERVER['REQUEST_METHOD'] == "POST") { 
-  require 'common.php';
-  session_start();
+//initialize cardIds
+if (!isset($_SESSION["cartIds"])) {
+  $_SESSION["cartIds"] = [];
+}
 
-  //initialize cardIds
-  if(!isset($_SESSION["cartIds"])) {
-    $_SESSION["cartIds"] = [];
+// if a product is selected, add it to the cart if it's not already there
+if (isset($_POST["productSelected"])) {
+  $productSelected = $_POST["productSelected"];
+  if (!in_array($productSelected, $_SESSION["cartIds"])) {
+    array_push($_SESSION["cartIds"], $productSelected);
   }
+}
 
-  //if a product is selected, it'll be added to the cartIds to remember it
-  if(isset($_POST["productSelected"])){
-    if (!in_array($_POST["productSelected"], $_SESSION["cartIds"])) {
-      array_push($_SESSION["cartIds"], ($_POST["productSelected"]));
+$cartIds = $_SESSION["cartIds"];
+
+if (!empty($cartIds)) {
+  //when there are products in the cart, select all the products that are not in it
+  $cartProducts = implode(',', array_fill(0, count($cartIds), '?'));
+  $query = "SELECT * FROM products WHERE id NOT IN ($cartProducts)";
+  $stmt = $pdo->prepare($query);
+  $stmt->execute($cartIds);
+} else {
+  // when the cart is empty, select all products
+  $query = "SELECT * FROM products";
+  $stmt = $pdo->prepare($query);
+  $stmt->execute($cartIds);;
+}
+
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//display the products
+foreach ($products as $row) {
+  foreach ($row as $key => $value) {
+    if($key === "image") {
+      echo "<img src='$value' style='width:150px; height:auto'>";
+    } else {
+      echo htmlspecialchars($key) . ": " . htmlspecialchars($value), "<br>\n";
     }
   }
-
-  $cartIds = implode(",", $_SESSION["cartIds"]);
-  echo "in cart: " . $cartIds . "<br><br>";
-
-  //displaying products
-  $query = "SELECT * FROM products WHERE id NOT IN ('$cartIds')";
-  $stmt = $pdo->prepare(query: $query);
-  $stmt->execute();
-
-  $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-  foreach ($products as $row) {
-    foreach ($row as $key => $value) {
-      echo $key . ": " . $value, "<br>\n";
-    }
-    //button to update the cart variable(sends the id of the current product)
-    echo "<form method='post'>
-          <input type='hidden' name='productSelected' id='productSelected' value=" . htmlspecialchars($row["id"]) . ">
+  echo "<form method='post'>
+          <input type='hidden' name='productSelected' value='" . htmlspecialchars($row["id"]) . "'>
           <input type='submit' value='Add'>
     </form>";
-    
-  }
+  echo "<hr>";
+}
 
-  echo "<a href='cart.php'>Go to cart</a>";
+//if all the products are in the cart, display message
+  if(count($products) == 0) {
+    echo "You bought everything!<br>";
+  } 
 
-  $pdo = null;
-  $stmt = null;
-//}
+echo "<a href='cart.php'>Go to cart</a>";
+
+$pdo = null;
+$stmt = null;
+?>
