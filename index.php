@@ -24,7 +24,6 @@
 <?php
 require 'common.php';
 session_start();
-
 //initialize cardIds
 if (!isset($_SESSION["cartIds"])) {
   $_SESSION["cartIds"] = [];
@@ -77,4 +76,17 @@ echo "<a href='cart.php'>Go to cart</a>";
 
 $pdo = null;
 $stmt = null;
+/*
+$products = [
+  [
+    'name' => '123',
+    'price' => 100,
+],
+];
 ?>
+
+<?php foreach ($products as $product): ?>
+    <b><?= __('Name') ?>:</b> <?= $product['name'] ?><br>
+    <b><?= __('Price') ?>:</b> <?= $product['price'] ?><br>
+<?php endforeach; ?>
+*/

@@ -8,3 +8,10 @@ try {
 } catch (PDOException $e) {
   echo "We encountered a problem " . $e->getMessage();
 }
+
+function __(string $label) {
+  $labels = [
+    'Name' => 'Nume',
+  ];
+  return $labels[$label] ?? $label;
+}
