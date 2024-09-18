@@ -1,3 +1,38 @@
+<?php
+require 'common.php';
+session_start();
+
+//initialize cardIds(stores the ids of the products)
+if (!isset($_SESSION["cartIds"])) {
+  $_SESSION["cartIds"] = [];
+}
+
+// if a product is selected, add it to the cart if it's not already there
+if (isset($_POST["productSelected"]) && !in_array($_POST["productSelected"], $_SESSION["cartIds"])){
+    array_push($_SESSION["cartIds"], $_POST["productSelected"]);
+}
+
+if (!empty($_SESSION["cartIds"])) {
+  //when there are products in the cart, select all the products that are not in it
+  $cartProducts = implode(',', array_fill(0, count($_SESSION["cartIds"]), '?'));
+  $query = "SELECT * FROM products WHERE id NOT IN ($cartProducts)";
+  $stmt = $pdo->prepare($query);
+  $stmt->execute($_SESSION["cartIds"]);
+} else {
+  // when the cart is empty, select all products
+  $query = "SELECT * FROM products";
+  $stmt = $pdo->prepare($query);
+  $stmt->execute($_SESSION["cartIds"]);;
+}
+
+//fetch all products
+$productsNotInCart = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$pdo = null;
+$stmt = null;
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,78 +50,35 @@
 </head>
 
 <body>
-  <p>What you can buy:</p>
-  <br>
+  <?php //display message (are there products in the cart or not)
+  if (count($productsNotInCart) === 0):
+    echo translateLabels('You bought everything!');
+  elseif(count($productsNotInCart) > 0):
+    echo translateLabels('What you can buy:');
+  else:
+    echo translateLabels('Something is not right!');
+  endif;
+  ?>
+  <br><br>
+
+  <?php  //display the products
+  foreach ($productsNotInCart as $product): ?>
+    <img src="<?= htmlspecialchars($product['image']) ?>">
+
+    <div>
+      <b><?= translateLabels('Name') ?>:</b> <?= htmlspecialchars($product['title']) ?><br>
+      <b><?= translateLabels('Price') ?>:</b> <?= htmlspecialchars($product['price']) ?><br>
+      <b><?= translateLabels('Description') ?>:</b> <?= htmlspecialchars($product['description']) ?><br>
+    </div>
+
+    <form method='post'>
+          <input type='hidden' name='productSelected' value= <?= htmlspecialchars($product["id"]) ?> >
+          <input type='submit' value= <?= translateLabels('Add'); ?> >
+    </form>
+    <br><hr>
+  <?php endforeach; ?>
+
+  <a href="cart.php"><?= translateLabels('Go to cart'); ?></a>
 </body>
 
 </html>
-
-<?php
-require 'common.php';
-session_start();
-//initialize cardIds
-if (!isset($_SESSION["cartIds"])) {
-  $_SESSION["cartIds"] = [];
-}
-
-// if a product is selected, add it to the cart if it's not already there
-if (isset($_POST["productSelected"])) {
-  $productSelected = $_POST["productSelected"];
-  if (!in_array($productSelected, $_SESSION["cartIds"])) {
-    array_push($_SESSION["cartIds"], $productSelected);
-  }
-}
-
-if (!empty($_SESSION["cartIds"])) {
-  //when there are products in the cart, select all the products that are not in it
-  $cartProducts = implode(',', array_fill(0, count($_SESSION["cartIds"]), '?'));
-  $query = "SELECT * FROM products WHERE id NOT IN ($cartProducts)";
-  $stmt = $pdo->prepare($query);
-  $stmt->execute($_SESSION["cartIds"]);
-} else {
-  // when the cart is empty, select all products
-  $query = "SELECT * FROM products";
-  $stmt = $pdo->prepare($query);
-  $stmt->execute($_SESSION["cartIds"]);;
-}
-
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//display the products
-foreach ($products as $row) {
-  foreach ($row as $key => $value) {
-    if($key === "image") {
-      echo "<img src='$value' style='width:150px; height:auto'>";
-    } else {
-      echo htmlspecialchars($key) . ": " . htmlspecialchars($value), "<br>\n";
-    }
-  }
-  echo "<form method='post'>
-          <input type='hidden' name='productSelected' value='" . htmlspecialchars($row["id"]) . "'>
-          <input type='submit' value='Add'>
-    </form>";
-  echo "<hr>";
-}
-
-//if all the products are in the cart, display message
-  if(count($products) == 0) {
-    echo "You bought everything!<br>";
-  } 
-
-echo "<a href='cart.php'>Go to cart</a>";
-
-$pdo = null;
-$stmt = null;
-/*
-$products = [
-  [
-    'name' => '123',
-    'price' => 100,
-],
-];
-?>
-
-<?php foreach ($products as $product): ?>
-    <b><?= __('Name') ?>:</b> <?= $product['name'] ?><br>
-    <b><?= __('Price') ?>:</b> <?= $product['price'] ?><br>
-<?php endforeach; ?>
-*/

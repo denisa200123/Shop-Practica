@@ -1,4 +1,5 @@
 <?php
-$username = "";
-$password = "";
-$host = "";
+define("USERNAME", "");
+define("PASSWORD", "");
+define("HOST", "");
+define("DBNAME", "");
