@@ -64,7 +64,6 @@ if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])) {
     <?php endif; ?>
     <br>
 
-    <!-- test form for sending user info to shop email-->
     <form method="POST" action="send-mail.php">
         <label for="name"><?= translateLabels('Name'); ?></label>
         <input type="text" name="name" id="name" required>
@@ -78,7 +77,7 @@ if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])) {
 
         <input type="submit" value="Checkout">
     </form>
-    <!-- -->
+    
     <br>
     <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
 

@@ -30,3 +30,14 @@ function translateLabels(string $label) {
     ];
     return $labels[$label] ?? $label;
 }
+
+//used to check if any user input is empty
+function isInputEmpty(array $inputs)
+{
+    foreach ($inputs as $input) {
+        if (!$input) {
+            return true;
+        } 
+    }
+    return false;
+}
