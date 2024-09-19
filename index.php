@@ -75,7 +75,7 @@ $stmt = null;
             <input type='hidden' name='productSelected' value= <?= htmlspecialchars($product["id"]) ?> >
             <input type='submit' value= <?= translateLabels('Add'); ?> >
         </form>
-        
+
         <br><hr>
     <?php endforeach; ?>
 

@@ -25,6 +25,8 @@ function translateLabels(string $label) {
         'You bought everything!'=> 'Ai cumparat tot!',
         'Something is not right!'=> 'Ceva nu a mers bine!',
         'The cart is empty'=> 'Cosul e gol',
+        'Contact details' => 'Detalii de contact',
+        'Comments'=> 'Comentarii',
     ];
     return $labels[$label] ?? $label;
 }

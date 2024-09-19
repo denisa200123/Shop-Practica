@@ -63,6 +63,24 @@ if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])) {
         <?= translateLabels('Cosul e gol'); ?>
     <?php endif; ?>
     <br>
+
+    <!-- test form for sending user info to shop email-->
+    <form method="POST" action="send-mail.php">
+        <label for="name"><?= translateLabels('Name'); ?></label>
+        <input type="text" name="name" id="name" required>
+        <br>
+        <label for="name"><?= translateLabels(label: 'Contact details'); ?></label>
+        <input type="text" name="contactDetails" id="contactDetails" required>
+        <br>
+        <label for="name"><?= translateLabels(label: 'Comments'); ?></label>
+        <input type="text" name="comments" id="comments">
+        <br>
+
+        <input type="submit" value="Checkout">
+    </form>
+    <!-- -->
+    <br>
     <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
+
 </body>
 </html>
