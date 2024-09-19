@@ -64,6 +64,7 @@ if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])) {
     <?php endif; ?>
     <br>
 
+    <!-- form for sending checkout info-->
     <form method="POST" action="send-mail.php">
         <label for="name"><?= translateLabels('Name'); ?></label>
         <input type="text" name="name" id="name" required>
@@ -78,7 +79,22 @@ if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])) {
         <input type="submit" value="Checkout">
     </form>
     
-    <br>
+    <!-- display the checkout errors, if there are any -->
+    <?php if(isset($_SESSION["checkout_errors"]) &&  !empty($_SESSION["checkout_errors"])): ?>
+        <?php foreach ($_SESSION["checkout_errors"] as $error): ?>
+            <?= $error ?>
+            <br>
+        <?php endforeach; ?>
+        <?php unset($_SESSION["checkout_errors"]); ?>
+    <?php endif; ?>
+
+    <!-- display a success message if all went good -->
+    <?php if (isset($_SESSION["checkout_success"]) && !empty($_SESSION["checkout_success"])): ?>
+        <?= $_SESSION["checkout_success"] ?>
+        <?php unset($_SESSION["checkout_success"]); ?>
+    <?php endif; ?>
+
+    <br><br>
     <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
 
 </body>

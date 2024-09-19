@@ -2,6 +2,7 @@
 
 require_once 'config.php';
 require_once 'common.php';
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     //using strip_tags to sanitize user input(all the html and php tags are removed)
@@ -17,20 +18,24 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     //comments can be empty
     $userInput = [$name, $contactDetails];
 
-    //i have to add errors array, not just text
+    $errors = [];
     if(isInputEmpty($userInput)){
-        echo "empty";
-    } else{
-        echo "not empty - ok";
-    }
+        $errors["emptyInput"] = translateLabels( "Not all fields were filled!");
+    } 
 
     //name should contain only letters
-    //i have to add errors array, not just text
-    if(!ctype_alpha($name)) {
-        echo "invalid name";
+    if(!ctype_alpha($name) && strlen($name) > 0) {
+        $errors["invalidName"] = translateLabels("The *name* field contains invalid characters!");
+    } 
+
+    if($errors) {
+        $_SESSION["checkout_errors"] = $errors;
     } else {
-        echo "name - ok";
+        $_SESSION["checkout_success"] = translateLabels("Information sent successfully");
     }
+
+    header("Location: cart.php");
+    die();
 }
 /*
 //send mail if all fields are valid

@@ -27,6 +27,9 @@ function translateLabels(string $label) {
         'The cart is empty'=> 'Cosul e gol',
         'Contact details' => 'Detalii de contact',
         'Comments'=> 'Comentarii',
+        'Not all fields were filled!'=> 'Nu toate campurile au fost selectate!',
+        'The *name* field contains invalid characters!'=> 'Campul *nume* contine caractere interzise!',
+        'Information sent successfully' => 'Informatii trimise cu succes',
     ];
     return $labels[$label] ?? $label;
 }
