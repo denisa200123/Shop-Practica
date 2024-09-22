@@ -8,8 +8,8 @@ if (isset($_POST["productSelected"]) && ($key = array_search($_POST["productSele
     $_SESSION["cartIds"] = array_values($_SESSION["cartIds"]); // reindex array
 }
 
+//when there are products in the cart, select all the products that are in it
 if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])) {
-    //when there are products in the cart, select all the products that are in it
     $cartProducts = implode(',', array_fill(0, count($_SESSION["cartIds"]), '?'));
     $query = "SELECT * FROM products WHERE id IN ($cartProducts)";
     $stmt = $pdo->prepare($query);
@@ -19,6 +19,24 @@ if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])) {
 
     $pdo = null;
     $stmt = null;
+}
+
+//if validation fails, remember the form fields
+$name = isset($_SESSION["user_input"]["name"])? $_SESSION["user_input"]["name"] : "";
+$contactDetails = isset($_SESSION["user_input"]["contactDetails"])? $_SESSION["user_input"]["contactDetails"] : "";
+$comments = isset($_SESSION["user_input"]["comments"])? $_SESSION["user_input"]["comments"] : "";
+unset($_SESSION["user_input"]);
+
+//check if there are checkout errors
+if(isset($_SESSION["checkout_errors"]) &&  !empty($_SESSION["checkout_errors"])) {
+    $errors = $_SESSION["checkout_errors"];
+    unset($_SESSION["checkout_errors"]);
+}
+
+$checkoutSuccess = false;
+if (isset($_SESSION["checkout_success"]) && !empty($_SESSION["checkout_success"])) {
+    $checkoutSuccess = true;
+    unset($_SESSION["checkout_success"]);
 }
 
 ?>
@@ -41,8 +59,9 @@ if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])) {
 <body>
     <h1><?= translateLabels('Your cart'); ?></h1>
 
-    <!-- display the cart products if the cart is not empty; if the cart is empty display message -->
-    <?php if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])): ?>
+    <!-- display the cart products and the checkout form if the cart is not empty;
+    if the cart is empty display message -->
+    <?php if (!empty($productsInCart)): ?>
         <?php foreach ($productsInCart as $product): ?>
             <img src="<?= htmlspecialchars($product['image']) ?>">
 
@@ -59,43 +78,41 @@ if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])) {
 
             <br><hr>
         <?php endforeach; ?>
+
+        <!-- form for sending checkout info-->
+        <form method="POST" action="send-mail.php">
+            <label for="name"><?= translateLabels('Name'); ?></label>
+            <input type="text" name="name" id="name" value = "<?= $name ?>" required>
+            <br>
+            <label for="name"><?= translateLabels(label: 'Contact details'); ?></label>
+            <input type="text" name="contactDetails" id="contactDetails" value = "<?= $contactDetails ?>" required>
+            <br>
+            <label for="name"><?= translateLabels(label: 'Comments'); ?></label>
+            <input type="text" name="comments" id="comments" value = "<?= $comments ?>" >
+            <br>
+
+            <input type="submit" value="Checkout">
+        </form>
     <?php else: ?>
         <?= translateLabels('Cosul e gol'); ?>
     <?php endif; ?>
     <br>
-
-    <!-- form for sending checkout info-->
-    <form method="POST" action="send-mail.php">
-        <label for="name"><?= translateLabels('Name'); ?></label>
-        <input type="text" name="name" id="name" required>
-        <br>
-        <label for="name"><?= translateLabels(label: 'Contact details'); ?></label>
-        <input type="text" name="contactDetails" id="contactDetails" required>
-        <br>
-        <label for="name"><?= translateLabels(label: 'Comments'); ?></label>
-        <input type="text" name="comments" id="comments">
-        <br>
-
-        <input type="submit" value="Checkout">
-    </form>
     
     <!-- display the checkout errors, if there are any -->
-    <?php if(isset($_SESSION["checkout_errors"]) &&  !empty($_SESSION["checkout_errors"])): ?>
-        <?php foreach ($_SESSION["checkout_errors"] as $error): ?>
+    <?php if(!empty($errors)): ?>
+        <?php foreach ($errors as $error): ?>
             <?= $error ?>
             <br>
         <?php endforeach; ?>
-        <?php unset($_SESSION["checkout_errors"]); ?>
     <?php endif; ?>
 
     <!-- display a success message if all went good -->
-    <?php if (isset($_SESSION["checkout_success"]) && !empty($_SESSION["checkout_success"])): ?>
-        <?= $_SESSION["checkout_success"] ?>
-        <?php unset($_SESSION["checkout_success"]); ?>
+    <?php if ($checkoutSuccess): ?>
+        <?= translateLabels("Information sent successfully") ?>
     <?php endif; ?>
 
     <br><br>
     <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
-
+    
 </body>
 </html>

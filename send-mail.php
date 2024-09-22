@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $contactDetails = strip_tags($_POST["contactDetails"]);
     $comments = strip_tags($_POST["comments"]);
 
-
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $contactDetails = filter_var($contactDetails, FILTER_SANITIZE_STRING);
     $comments = filter_var($comments, FILTER_SANITIZE_STRING);
@@ -30,13 +29,20 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
     if($errors) {
         $_SESSION["checkout_errors"] = $errors;
+        //if there are validation errors, user input should be saved
+        $checkout_data = [
+            "name" => $name,
+            "contactDetails" => $contactDetails,
+            "comments" => $comments
+        ];
+        $_SESSION["user_input"] = $checkout_data;
     } else {
-        $_SESSION["checkout_success"] = translateLabels("Information sent successfully");
+        $_SESSION["checkout_success"] = true;
     }
-
-    header("Location: cart.php");
-    die();
 }
+
+header("Location: cart.php");
+die();
 /*
 //send mail if all fields are valid
 $mail = require __DIR__ . "/mailer.php";
