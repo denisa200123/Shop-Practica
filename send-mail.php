@@ -22,43 +22,56 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $errors["emptyInput"] = translateLabels( "Not all fields were filled!");
     } 
 
-    //name should contain only letters
-    if(!ctype_alpha($name) && strlen($name) > 0) {
+    //name should contain only letters, spaces, dashes
+    $fileredName=str_replace(array(" ", "-"), "", $name);
+    if(!ctype_alpha($fileredName) && strlen($fileredName) > 0) {
         $errors["invalidName"] = translateLabels("The *name* field contains invalid characters!");
     } 
 
+    //save user input; used when validation fails so user doesn't have to write again and also for sending the email to the manager
+    $checkout_data = [
+        "name" => $name,
+        "contactDetails" => $contactDetails,
+        "comments" => $comments
+    ];
+    $_SESSION["user_input"] = $checkout_data;
+
     if($errors) {
         $_SESSION["checkout_errors"] = $errors;
-        //if there are validation errors, user input should be saved
-        $checkout_data = [
-            "name" => $name,
-            "contactDetails" => $contactDetails,
-            "comments" => $comments
-        ];
-        $_SESSION["user_input"] = $checkout_data;
     } else {
-        $_SESSION["checkout_success"] = true;
+        ob_start();
+        include 'mail-template.php';
+        $cartContents = ob_get_clean();
+
+        //if the file that contains info from the cart page was found, try to send email
+        if($cartContents) {
+            $mail = require __DIR__ . "/mailer.php";
+
+            //add inline attachments for images
+            foreach ($_SESSION["productsInCart"] as $id => $product) {
+                if(isset($product["image"])) {
+                    $mail->addEmbeddedImage(htmlspecialchars($product['image']), "img_embedded_$id");
+                }
+            }
+
+            $mail->setFrom("user@gmail.com");
+            $mail->addAddress(SHOP_EMAIL);
+            $mail->Subject = "Checkout information";
+            $mail->Body = $cartContents;  
+    
+            try {
+                $mail->send();
+                $_SESSION["checkout_success"] = true;
+                unset($_SESSION["cartIds"]);
+                unset($_SESSION["productsInCart"]);
+            } catch (Exception $e) {
+                echo "The message couldn't be sent!: {$mail->ErrorInfo}";
+            }
+        } else {
+            $_SESSION["checkout_failed"] = true;
+        }
     }
 }
 
 header("Location: cart.php");
 die();
-/*
-//send mail if all fields are valid
-$mail = require __DIR__ . "/mailer.php";
-
-$mail->setFrom("user@gmail.com");
-$mail->addAddress(SHOP_EMAIL);
-$mail->Subject = "Checkout information";
-$mail->Body = <<<END
-
-    Checkout info.
-
-    END;
-
-try {
-    $mail->send();
-    echo "Message sent!";
-} catch (Exception $e) {
-    echo "The message couldn't be sent!: {$mail->ErrorInfo}";
-}*/

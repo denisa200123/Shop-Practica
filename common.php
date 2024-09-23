@@ -16,7 +16,9 @@ function translateLabels(string $label) {
         'Name' => 'Nume',
         'Price' => 'Pret',
         'Description' => 'Descriere',
+        'Image' => 'Imagine',
         'Add' => 'Adauga',
+        'Add to cart' => 'Adauga in cos',
         'Remove'=> 'Sterge',
         'Go to cart' => 'Spre cos',
         'Go to main page' => 'Mergi la pagina principala',
@@ -29,7 +31,9 @@ function translateLabels(string $label) {
         'Comments'=> 'Comentarii',
         'Not all fields were filled!'=> 'Nu toate campurile au fost completate!',
         'The *name* field contains invalid characters!'=> 'Campul *nume* contine caractere interzise!',
-        'Information sent successfully' => 'Informatii trimise cu succes',
+        'Information sent successfully!' => 'Informatii trimise cu succes!',
+        "Information couldn't be sent!" => 'Informatiile nu au putut fi trimise!',
+        'Please fill out this form in order to complete your order'=> 'Va rugam sa completati formularul pentru finalizarea comenzii',
     ];
     return $labels[$label] ?? $label;
 }

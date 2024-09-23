@@ -16,6 +16,7 @@ if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])) {
     $stmt->execute($_SESSION["cartIds"]);
 
     $productsInCart = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $_SESSION["productsInCart"] = $productsInCart; //used in mail-template to display the products
 
     $pdo = null;
     $stmt = null;
@@ -37,6 +38,12 @@ $checkoutSuccess = false;
 if (isset($_SESSION["checkout_success"]) && !empty($_SESSION["checkout_success"])) {
     $checkoutSuccess = true;
     unset($_SESSION["checkout_success"]);
+}
+
+$checkoutFailed = false;
+if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"])) {
+    $checkoutFailed = true;
+    unset($_SESSION["checkout_failed"]);
 }
 
 ?>
@@ -62,24 +69,34 @@ if (isset($_SESSION["checkout_success"]) && !empty($_SESSION["checkout_success"]
     <!-- display the cart products and the checkout form if the cart is not empty;
     if the cart is empty display message -->
     <?php if (!empty($productsInCart)): ?>
-        <?php foreach ($productsInCart as $product): ?>
-            <img src="<?= htmlspecialchars($product['image']) ?>">
+        <!-- display the products -->
+        <table border="1" cellpadding="10">
+            <tr>
+                <th><?= translateLabels('Name') ?></th>
+                <th><?= translateLabels('Price') ?></th>
+                <th><?= translateLabels('Description') ?></th>
+                <th><?= translateLabels('Image') ?></th>    
+                <th><?= translateLabels('Add to cart') ?></th>   
+            </tr>
+            <?php foreach ($productsInCart as $product): ?>
+                <tr>
+                    <td><?= htmlspecialchars($product['title']) ?></td>
+                    <td><?= htmlspecialchars($product['price']) ?></td>
+                    <td><?= htmlspecialchars($product['description']) ?></td>
+                    <td><img src="<?= htmlspecialchars($product['image']) ?>"></td>
+                    <td>
+                        <form method='post'>
+                            <input type='hidden' name='productSelected' value= <?= htmlspecialchars($product["id"]) ?> >
+                            <input type='submit' value= <?= translateLabels('Remove'); ?> >
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
 
-            <div>
-                <b><?= translateLabels('Name') ?>:</b> <?= htmlspecialchars($product['title']) ?><br>
-                <b><?= translateLabels('Price') ?>:</b> <?= htmlspecialchars($product['price']) ?><br>
-                <b><?= translateLabels('Description') ?>:</b> <?= htmlspecialchars($product['description']) ?><br>
-            </div>
-
-            <form method='post'>
-                <input type='hidden' name='productSelected' value=<?= htmlspecialchars($product["id"]) ?> >
-                <input type='submit' value=<?= translateLabels('Remove'); ?> >
-            </form>
-
-            <br><hr>
-        <?php endforeach; ?>
-
+        <br><br>
         <!-- form for sending checkout info-->
+        <p><?= translateLabels('Please fill out this form in order to complete your order'); ?></p>
         <form method="POST" action="send-mail.php">
             <label for="name"><?= translateLabels('Name'); ?></label>
             <input type="text" name="name" id="name" value = "<?= $name ?>" required>
@@ -108,7 +125,11 @@ if (isset($_SESSION["checkout_success"]) && !empty($_SESSION["checkout_success"]
 
     <!-- display a success message if all went good -->
     <?php if ($checkoutSuccess): ?>
-        <?= translateLabels("Information sent successfully") ?>
+        <?= translateLabels("Information sent successfully!") ?>
+    <?php endif; ?>
+    
+    <?php if ($checkoutFailed): ?>
+        <?= translateLabels("Information couldn't be sent!") ?>
     <?php endif; ?>
 
     <br><br>

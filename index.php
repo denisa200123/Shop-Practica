@@ -50,35 +50,44 @@ $stmt = null;
 </head>
 
 <body>
-     <!-- display message (are there products in the cart or not) -->
-    <?php if (count($productsNotInCart) === 0): ?>
-        <?= translateLabels('You bought everything!'); ?>
-    <?php elseif(count($productsNotInCart) > 0): ?>
-        <?= translateLabels('What you can buy:'); ?>
-    <?php else: ?>
-        <?= translateLabels('Something is not right!'); ?>
-    <?php endif; ?>
-
-    <br><br>
+    <!-- display message (are there products in the cart or not) -->
+    <h1>
+        <?php if (count($productsNotInCart) === 0): ?>
+            <?= translateLabels('You bought everything!'); ?>
+        <?php elseif(count($productsNotInCart) > 0): ?>
+            <?= translateLabels('What you can buy:'); ?>
+        <?php else: ?>
+            <?= translateLabels('Something is not right!'); ?>
+        <?php endif; ?>
+    </h1>
+    <br>
 
     <!-- display the products -->
-    <?php foreach ($productsNotInCart as $product): ?>
-        <img src="<?= htmlspecialchars($product['image']) ?>">
+    <table border="1" cellpadding="10">
+        <tr>
+            <th><?= translateLabels('Name') ?></th>
+            <th><?= translateLabels('Price') ?></th>
+            <th><?= translateLabels('Description') ?></th>
+            <th><?= translateLabels('Image') ?></th>    
+            <th><?= translateLabels('Add to cart') ?></th>   
+        </tr>
+        <?php foreach ($productsNotInCart as $product): ?>
+            <tr>
+                <td><?= htmlspecialchars($product['title']) ?></td>
+                <td><?= htmlspecialchars($product['price']) ?></td>
+                <td><?= htmlspecialchars($product['description']) ?></td>
+                <td><img src="<?= htmlspecialchars($product['image']) ?>"></td>
+                <td>
+                    <form method='post'>
+                        <input type='hidden' name='productSelected' value= <?= htmlspecialchars($product["id"]) ?> >
+                        <input type='submit' value= <?= translateLabels('Add'); ?> >
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
 
-        <div>
-            <b><?= translateLabels('Name') ?>:</b> <?= htmlspecialchars($product['title']) ?><br>
-            <b><?= translateLabels('Price') ?>:</b> <?= htmlspecialchars($product['price']) ?><br>
-            <b><?= translateLabels('Description') ?>:</b> <?= htmlspecialchars($product['description']) ?><br>
-        </div>
-
-        <form method='post'>
-            <input type='hidden' name='productSelected' value= <?= htmlspecialchars($product["id"]) ?> >
-            <input type='submit' value= <?= translateLabels('Add'); ?> >
-        </form>
-
-        <br><hr>
-    <?php endforeach; ?>
-
+    <br>
     <a href="cart.php"><?= translateLabels('Go to cart'); ?></a>
 </body>
 
