@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
             $mail->setFrom("user@gmail.com");
             $mail->addAddress(SHOP_EMAIL);
-            $mail->Subject = "Checkout information";
+            $mail->Subject = translateLabels("Checkout information");
             $mail->Body = $cartContents;  
     
             try {

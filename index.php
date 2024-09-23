@@ -50,6 +50,9 @@ $stmt = null;
 </head>
 
 <body>
+    <span><?= translateLabels("Do you have an admin account?") ?></span>
+    <a href="login.php"><?= translateLabels("Login") ?></a>
+
     <!-- display message (are there products in the cart or not) -->
     <h1>
         <?php if (count($productsNotInCart) === 0): ?>

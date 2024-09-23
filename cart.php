@@ -23,9 +23,9 @@ if (isset($_SESSION["cartIds"]) && !empty($_SESSION["cartIds"])) {
 }
 
 //if validation fails, remember the form fields
-$name = isset($_SESSION["user_input"]["name"])? $_SESSION["user_input"]["name"] : "";
-$contactDetails = isset($_SESSION["user_input"]["contactDetails"])? $_SESSION["user_input"]["contactDetails"] : "";
-$comments = isset($_SESSION["user_input"]["comments"])? $_SESSION["user_input"]["comments"] : "";
+$name = isset($_SESSION["user_input"]["name"]) ? $_SESSION["user_input"]["name"] : "";
+$contactDetails = isset($_SESSION["user_input"]["contactDetails"]) ? $_SESSION["user_input"]["contactDetails"] : "";
+$comments = isset($_SESSION["user_input"]["comments"]) ? $_SESSION["user_input"]["comments"] : "";
 unset($_SESSION["user_input"]);
 
 //check if there are checkout errors

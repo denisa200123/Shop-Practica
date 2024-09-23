@@ -34,8 +34,14 @@ function translateLabels(string $label) {
         "The 'name' field contains invalid characters!"=> "Campul 'nume' contine caractere interzise!",
         'Information sent successfully!' => 'Informatii trimise cu succes!',
         "Information couldn't be sent!" => 'Informatiile nu au putut fi trimise!',
-        'Please fill out this form in order to complete your order'=> 'Va rugam sa completati formularul pentru finalizarea comenzii',
-        'Information about your order'=> 'Informatii despre comanda ta',
+        'Please fill out this form in order to complete your order' => 'Va rugam sa completati formularul pentru finalizarea comenzii',
+        'Information about your order' => 'Informatii despre comanda ta',
+        'Checkout information' => 'Informatii comanda',
+        'Do you have an admin account?' => 'Ai cont de admin?',
+        'Login' => 'Logare',
+        'Username' => 'Nume utilizator',
+        'Password' => 'Parola',
+        'Login failed!'=> 'Logare nereusita!',
     ];
     return $labels[$label] ?? $label;
 }
