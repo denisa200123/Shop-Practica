@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     //name should contain only letters, spaces, dashes
     $fileredName=str_replace(array(" ", "-"), "", $name);
     if(!ctype_alpha($fileredName) && strlen($fileredName) > 0) {
-        $errors["invalidName"] = translateLabels("The *name* field contains invalid characters!");
+        $errors["invalidName"] = translateLabels("The 'name' field contains invalid characters!");
     } 
 
     //save user input; used when validation fails so user doesn't have to write again and also for sending the email to the manager

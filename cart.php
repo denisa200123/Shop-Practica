@@ -76,7 +76,7 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
                 <th><?= translateLabels('Price') ?></th>
                 <th><?= translateLabels('Description') ?></th>
                 <th><?= translateLabels('Image') ?></th>    
-                <th><?= translateLabels('Add to cart') ?></th>   
+                <th><?= translateLabels('Remove from cart') ?></th>   
             </tr>
             <?php foreach ($productsInCart as $product): ?>
                 <tr>
