@@ -48,6 +48,8 @@ function translateLabels(string $label) {
         'Logout'=> 'Delogare',
         'Edit'=> 'Editeaza',
         'Products page'=> 'Pagina produse',
+        'Are you sure you want to delete this item?'=> 'Esti sigur ca vrei sa stergi acest produs?',
+        'Yes'=> 'Da',
     ];
     return $labels[$label] ?? $label;
 }
