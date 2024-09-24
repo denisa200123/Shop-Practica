@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $name = strip_tags($_POST["name"]);
     $contactDetails = strip_tags($_POST["contactDetails"]);
     $comments = strip_tags($_POST["comments"]);
-
+    
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $contactDetails = filter_var($contactDetails, FILTER_SANITIZE_STRING);
     $comments = filter_var($comments, FILTER_SANITIZE_STRING);
@@ -23,16 +23,16 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     } 
 
     //name should contain only letters, spaces, dashes
-    $fileredName=str_replace(array(" ", "-"), "", $name);
-    if(!ctype_alpha($fileredName) && strlen($fileredName) > 0) {
+    $filteredName=str_replace(array(" ", "-"), "", $name);
+    if(!ctype_alpha($filteredName) && strlen($filteredName) > 0) {
         $errors["invalidName"] = translateLabels("The 'name' field contains invalid characters!");
     } 
 
     //save user input; used when validation fails so user doesn't have to write again and also for sending the email to the manager
     $checkout_data = [
-        "name" => $name,
-        "contactDetails" => $contactDetails,
-        "comments" => $comments
+        "name" => htmlspecialchars_decode($name),
+        "contactDetails" => htmlspecialchars_decode($contactDetails),
+        "comments" => htmlspecialchars_decode($comments),
     ];
     $_SESSION["user_input"] = $checkout_data;
 

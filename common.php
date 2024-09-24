@@ -42,6 +42,10 @@ function translateLabels(string $label) {
         'Username' => 'Nume utilizator',
         'Password' => 'Parola',
         'Login failed!'=> 'Logare nereusita!',
+        'Incorrect login information!'=> 'Informatiile de logare sunt gresite!',
+        'Admin logged'=> 'Admin logat',
+        'Want to logout?'=> 'Vrei sa iesi din cont?',
+        'Logout'=> 'Delogare',
     ];
     return $labels[$label] ?? $label;
 }
@@ -50,7 +54,7 @@ function translateLabels(string $label) {
 function isInputEmpty(array $inputs)
 {
     foreach ($inputs as $input) {
-        if (!$input) {
+        if (!$input && $input !== '0') {
             return true;
         } 
     }

@@ -50,8 +50,13 @@ $stmt = null;
 </head>
 
 <body>
-    <span><?= translateLabels("Do you have an admin account?") ?></span>
-    <a href="login.php"><?= translateLabels("Login") ?></a>
+
+    <?php if(isset($_SESSION["admin_logged"])): ?>
+        <span> <?= translateLabels("Admin logged") ?> </span>
+    <?php else: ?>
+        <span><?= translateLabels("Do you have an admin account?") ?></span>
+        <a href="login.php"><?= translateLabels("Login") ?></a>
+    <?php endif; ?>
 
     <!-- display message (are there products in the cart or not) -->
     <h1>
@@ -82,8 +87,8 @@ $stmt = null;
                 <td><img src="<?= htmlspecialchars($product['image']) ?>"></td>
                 <td>
                     <form method='post'>
-                        <input type='hidden' name='productSelected' value= <?= htmlspecialchars($product["id"]) ?> >
-                        <input type='submit' value= <?= translateLabels('Add'); ?> >
+                        <input type='hidden' name='productSelected' value= "<?= htmlspecialchars($product["id"]) ?>" >
+                        <input type='submit' value= "<?= translateLabels('Add'); ?>" >
                     </form>
                 </td>
             </tr>

@@ -86,8 +86,8 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
                     <td><img src="<?= htmlspecialchars($product['image']) ?>"></td>
                     <td>
                         <form method='post'>
-                            <input type='hidden' name='productSelected' value= <?= htmlspecialchars($product["id"]) ?> >
-                            <input type='submit' value= <?= translateLabels('Remove'); ?> >
+                            <input type='hidden' name='productSelected' value = "<?= htmlspecialchars($product["id"]) ?>" >
+                            <input type='submit' value= "<?= translateLabels('Remove'); ?>" >
                         </form>
                     </td>
                 </tr>
@@ -108,7 +108,7 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
             <input type="text" name="comments" id="comments" value = "<?= $comments ?>" >
             <br>
 
-            <input type="submit" value="Checkout">
+            <input type="submit" value = "Checkout">
         </form>
     <?php else: ?>
         <?= translateLabels('Cosul e gol'); ?>
