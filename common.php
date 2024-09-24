@@ -46,6 +46,8 @@ function translateLabels(string $label) {
         'Admin logged'=> 'Admin logat',
         'Want to logout?'=> 'Vrei sa iesi din cont?',
         'Logout'=> 'Delogare',
+        'Edit'=> 'Editeaza',
+        'Products page'=> 'Pagina produse',
     ];
     return $labels[$label] ?? $label;
 }

@@ -22,7 +22,7 @@ if (!empty($_SESSION["cartIds"])) {
     // when the cart is empty, select all products
     $query = "SELECT * FROM products";
     $stmt = $pdo->prepare($query);
-    $stmt->execute($_SESSION["cartIds"]);;
+    $stmt->execute($_SESSION["cartIds"]);
 }
 
 //fetch all products
@@ -53,6 +53,7 @@ $stmt = null;
 
     <?php if(isset($_SESSION["admin_logged"])): ?>
         <span> <?= translateLabels("Admin logged") ?> </span>
+        <a href="products.php"><?= translateLabels('Products page'); ?></a>
     <?php else: ?>
         <span><?= translateLabels("Do you have an admin account?") ?></span>
         <a href="login.php"><?= translateLabels("Login") ?></a>
