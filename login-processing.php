@@ -9,30 +9,29 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
     $password = strip_tags($_POST["password"]);
 
     $username = filter_var($username, FILTER_SANITIZE_STRING);
-    $password = filter_var($password, FILTER_SANITIZE_STRING); //no need to hash it, it's not stored anywhere
+    $password = filter_var($password, FILTER_SANITIZE_STRING);
 
     $userInput = [$username, $password];
 
     $errors = [];
     if(isInputEmpty($userInput)){
         $errors["emptyInput"] = translateLabels( "Not all fields were filled!");
-    } 
-    // don't have details about username and password yet, TO DO(MAYBE): user validation - shouldn't contain special chars?
-    // password - minimum length? can contain any char?
-    //or I simply just test if the username and password match with the ones in config?
+    }
 
-    $_SESSION["login_username"] = $username;
+    if($username === ADMIN_USERNAME && $password === ADMIN_PASSWORD) {
+        $_SESSION["admin_logged"] = true;
+        header("Location: products.php");
+        die();
+    } else {
+        $_SESSION["login_username"] = $username; //remember username
+        $errors["incorrectCredentials"] = translateLabels( "Incorrect login information!");
+        $_SESSION["login_failed"] = true;
+    }
 
     if($errors) {
         $_SESSION["login_errors"] = $errors;
         $_SESSION["login_failed"] = true;
     } 
-
-    if($username === USERNAME && $password === PASSWORD) {
-        header("Location: products.php");
-    } else {
-        $_SESSION["login_failed"] = true;
-    }
 }
 
 header("Location: login.php");

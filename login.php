@@ -28,28 +28,38 @@ if (isset($_SESSION["login_failed"]) && !empty($_SESSION["login_failed"])) {
     <title>Login</title>
 </head>
 <body>
-    <form action="login-processing.php" method="POST">
-        <label for="username"> <?= translateLabels("Username") ?></label>
-        <input type="text" name="username" id="username" required value="<?= $username ?>">
-        <br>
-        <label for="password"> <?= translateLabels("Password") ?></label>
-        <input type="password" name="password" id="password" required>
-        <br>
-        <input type="submit" value="<?= translateLabels("Login") ?>">
-    </form>
 
-    <?php if ($loginFailed): ?>
-        <?= translateLabels("Login failed!") ?>
-    <?php endif; ?>
+    <!-- if admin is logged in, he should be redirected to products -->
+    <?php if(!isset($_SESSION["admin_logged"])): ?>
 
-    <br>
-    
-    <!-- display the login errors, if there are any -->
-    <?php if(!empty($errors)): ?>
-        <?php foreach ($errors as $error): ?>
-            <?= $error ?>
+        <form action="login-processing.php" method="POST">
+            <label for="username"> <?= translateLabels("Username") ?></label>
+            <input type="text" name="username" id="username" required value = "<?= $username ?>">
             <br>
-        <?php endforeach; ?>
+            <label for="password"> <?= translateLabels("Password") ?></label>
+            <input type="password" name="password" id="password" required>
+            <br>
+            <input type="submit" value = "<?= translateLabels("Login") ?>">
+        </form>
+
+        <?php if ($loginFailed): ?>
+            <?= translateLabels("Login failed!") ?>
+        <?php endif; ?>
+
+        <br>
+        
+        <!-- display the login errors, if there are any -->
+        <?php if(!empty($errors)): ?>
+            <?php foreach ($errors as $error): ?>
+                <?= $error ?>
+                <br>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+    <?php else: ?>
+        <?php header("Location: products.php"); ?>
+        <?php die(); ?>
     <?php endif; ?>
+
 </body>
 </html>
