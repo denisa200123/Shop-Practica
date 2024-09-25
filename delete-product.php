@@ -3,8 +3,14 @@
 session_start();
 require_once 'common.php';
 
-$productId = $_POST["productId"];
-$selectedProduct = $_SESSION['products'][$productId-1];
+$productId = (int)(htmlspecialchars($_POST["productId"]));
+// check if the id is an int
+if (is_int($productId)) {
+    $selectedProduct = $_SESSION['products'][$productId-1];
+} else {
+    header("Location: products.php");
+    die();
+}
 
 ?>
 <!DOCTYPE html>
@@ -22,11 +28,11 @@ $selectedProduct = $_SESSION['products'][$productId-1];
     </style>
 </head>
 <body>
-    <?php if ($_SERVER['REQUEST_METHOD'] === "POST"): ?>
+    <?php if ($_SERVER['REQUEST_METHOD'] === "POST" && $selectedProduct): ?>
         <h1><?= translateLabels("Are you sure you want to delete this item?"); ?></h1>
 
         <form method='post' action = "delete-product-processing.php">
-            <input type='hidden' name='productToDelete' value = "<?= htmlspecialchars($productId) ?>">
+            <input type='hidden' name='productId' value = "<?= htmlspecialchars($productId) ?>">
             <input type='submit' value= "<?= translateLabels('Yes'); ?>" >
         </form>
         <br>
@@ -54,4 +60,3 @@ $selectedProduct = $_SESSION['products'][$productId-1];
     <?php endif; ?>
 </body>
 </html>
-

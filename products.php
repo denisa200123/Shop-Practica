@@ -8,7 +8,10 @@ $stmt = $pdo->prepare($query);
 $stmt->execute();
 
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$_SESSION['products'] = $products;
+
+$stmt = null;
+$pdo = null;
+$_SESSION['products'] = $products; // using it in deleting, adding and editing pages
 
 ?>
 

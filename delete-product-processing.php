@@ -3,10 +3,13 @@
 session_start();
 require_once 'common.php';
 
-if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST["productToDelete"])) {
+$id = (int)(htmlspecialchars($_POST["productId"]));
+
+if ($_SERVER['REQUEST_METHOD'] === "POST" && is_int($id)) {
+
     $query = "DELETE FROM products WHERE id = :id;";
     $stmt = $pdo->prepare(query: $query);
-    $stmt->bindParam(":id", $_POST["productToDelete"]);
+    $stmt->bindParam(":id", $id);
     $stmt->execute();
 
     $stmt = null;
