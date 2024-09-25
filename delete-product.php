@@ -3,9 +3,9 @@
 session_start();
 require_once 'common.php';
 
-$productId = (int)(htmlspecialchars($_POST["productId"]));
+$productId = $_POST["productId"];
 // check if the id is an int
-if (is_int($productId)) {
+if (filter_var($productId, FILTER_VALIDATE_INT)) {
     $selectedProduct = $_SESSION['products'][$productId-1];
 } else {
     header("Location: products.php");

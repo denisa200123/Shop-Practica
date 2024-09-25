@@ -3,9 +3,9 @@
 session_start();
 require_once 'common.php';
 
-$id = (int)(htmlspecialchars($_POST["productId"]));
+$id = $_POST["productId"];
 
-if ($_SERVER['REQUEST_METHOD'] === "POST" && is_int($id)) {
+if ($_SERVER['REQUEST_METHOD'] === "POST" && filter_var($id, FILTER_VALIDATE_INT)) {
 
     $query = "DELETE FROM products WHERE id = :id;";
     $stmt = $pdo->prepare(query: $query);
