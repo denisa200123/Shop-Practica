@@ -8,7 +8,8 @@ if (!isset($_SESSION["cartIds"])) {
 }
 
 // if a product is selected, add it to the cart if it's not already there
-if (isset($_POST["productSelected"]) && !in_array($_POST["productSelected"], $_SESSION["cartIds"])) {
+if (isset($_POST["productSelected"]) && !in_array($_POST["productSelected"], $_SESSION["cartIds"])
+    && filter_var($_POST["productSelected"], FILTER_VALIDATE_INT)) {
     array_push($_SESSION["cartIds"], $_POST["productSelected"]);
 }
 

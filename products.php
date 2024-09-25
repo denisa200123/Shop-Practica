@@ -67,6 +67,8 @@ $pdo = null;
             <?php endforeach; ?>
         </table>
 
+        <a href="product.php"><?= translateLabels("Add product") ?></a>
+        <br><br>
         <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
     <?php else: ?>
         <?php header("Location: index.php"); ?>

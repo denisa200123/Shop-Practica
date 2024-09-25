@@ -3,7 +3,8 @@ require 'common.php';
 session_start();
 
 // if a product is selected, then it'll be removed
-if (isset($_POST["productSelected"]) && ($key = array_search($_POST["productSelected"], $_SESSION["cartIds"])) !== false) {
+if (isset($_POST["productSelected"]) && ($key = array_search($_POST["productSelected"], $_SESSION["cartIds"])) !== false
+    && filter_var($_POST["productSelected"], FILTER_VALIDATE_INT)) {
     unset($_SESSION["cartIds"][$key]); //unset value
     $_SESSION["cartIds"] = array_values($_SESSION["cartIds"]); // reindex array
 }
@@ -99,13 +100,13 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
         <p><?= translateLabels('Please fill out this form in order to complete your order'); ?></p>
         <form method="POST" action="send-mail.php">
             <label for="name"><?= translateLabels('Name'); ?></label>
-            <input type="text" name="name" id="name" value = "<?= $name ?>" required>
+            <input type="text" name="name" id="name" value = "<?= htmlspecialchars($name) ?>" required>
             <br>
             <label for="name"><?= translateLabels(label: 'Contact details'); ?></label>
-            <input type="text" name="contactDetails" id="contactDetails" value = "<?= $contactDetails ?>" required>
+            <input type="text" name="contactDetails" id="contactDetails" value = "<?= htmlspecialchars($contactDetails) ?>" required>
             <br>
             <label for="name"><?= translateLabels(label: 'Comments'); ?></label>
-            <input type="text" name="comments" id="comments" value = "<?= $comments ?>" >
+            <input type="text" name="comments" id="comments" value = "<?= htmlspecialchars($comments) ?>" >
             <br>
 
             <input type="submit" value = "Checkout">

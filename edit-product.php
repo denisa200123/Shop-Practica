@@ -3,10 +3,10 @@
 session_start();
 require_once 'common.php';
 
-if(isset($_POST["productId"])) {
+if(isset($_POST["productId"]) && filter_var($_POST["productId"], FILTER_VALIDATE_INT)) {
     $productId = $_POST["productId"];
     $_SESSION["productId"] = $productId; // in case the validation fails, we won't lose the id
-} elseif (isset($_SESSION["productId"])) {
+} elseif (isset($_SESSION["productId"]) && filter_var($_SESSION["productId"], FILTER_VALIDATE_INT)) {
     $productId = $_SESSION["productId"];
 } else {
     header("Location: products.php");
@@ -22,10 +22,9 @@ if (filter_var($productId, FILTER_VALIDATE_INT)) {
     
     $selectedProduct = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $name = htmlspecialchars($selectedProduct["title"]);
-    $description = htmlspecialchars($selectedProduct["description"]);
-    $price = htmlspecialchars($selectedProduct["price"]);
-
+    $name = $selectedProduct["title"];
+    $description = $selectedProduct["description"];
+    $price = $selectedProduct["price"];
 
 } else {
     header("Location: products.php");
@@ -49,26 +48,31 @@ if(isset($_SESSION["editing_errors"]) &&  !empty($_SESSION["editing_errors"])) {
     <title>Edit product</title>
 </head>
 <body>
-    <?php if ($selectedProduct): ?>
+    <?php if ($selectedProduct && isset($_SESSION["admin_logged"])): ?>
         <form action= "edit-product-processing.php" method="POST">
             <input type="hidden" name="productId" id="id" value = "<?= htmlspecialchars($productId) ?>">
 
             <label for="name"><?= translateLabels('Name'); ?></label>
-            <input type="text" name="name" id="name" value = "<?= $name ?>">
+            <input type="text" name="name" id="name" value = "<?= htmlspecialchars($name) ?>">
 
             <br>
             <label for="description"><?= translateLabels('Description'); ?></label>
-            <input type="text" name="description" id="description" value = "<?= $description ?>">
+            <input type="text" name="description" id="description" value = "<?= htmlspecialchars($description) ?>">
             
             <br>
             <label for="price"><?= translateLabels('Price'); ?></label>
-            <input type="number" name="price" id="price" step="0.1" min = "0"value = "<?= $price ?>">
+            <input type="number" name="price" id="price" step="0.1" min = "0"value = "<?= htmlspecialchars($price) ?>">
 
             <br>
             <input type="submit" value=" <?= translateLabels("Edit") ?> ">
         </form>
         <br>
 
+        <form action="upload.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="fileToUpload" id="fileToUpload">
+            <input type="submit" value="Upload Image" name="submit">
+        </form>
+           
         <!-- display the checkout errors, if there are any -->
         <?php if(!empty($errors)): ?>
             <?php foreach ($errors as $error): ?>

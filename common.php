@@ -51,6 +51,7 @@ function translateLabels(string $label) {
         'Are you sure you want to delete this item?'=> 'Esti sigur ca vrei sa stergi acest produs?',
         'Yes'=> 'Da',
         "Price doesn't have a valid value!" => "Pretul nu are o valoare valida!",
+        'Add product' => 'Adauga produs',
     ];
     return $labels[$label] ?? $label;
 }
