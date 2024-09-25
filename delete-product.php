@@ -6,7 +6,12 @@ require_once 'common.php';
 $productId = $_POST["productId"];
 // check if the id is an int
 if (filter_var($productId, FILTER_VALIDATE_INT)) {
-    $selectedProduct = $_SESSION['products'][$productId-1];
+    $query = "SELECT * FROM products WHERE id = :id";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":id", $productId);
+    $stmt->execute();
+    
+    $selectedProduct = $stmt->fetch(PDO::FETCH_ASSOC);
 } else {
     header("Location: products.php");
     die();

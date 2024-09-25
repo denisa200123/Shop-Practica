@@ -11,7 +11,6 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $stmt = null;
 $pdo = null;
-$_SESSION['products'] = $products; // using it in deleting, adding and editing pages
 
 ?>
 

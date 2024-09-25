@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && filter_var($id, FILTER_VALIDATE_INT
 
     $stmt = null;
     $pdo = null;
-    unset($_SESSION["products"]);
 }
 header("Location: products.php");
 die();
