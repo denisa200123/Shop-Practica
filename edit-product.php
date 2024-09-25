@@ -21,6 +21,7 @@ $price = htmlspecialchars($selectedProduct["price"]);
 <body>
     <?php if ($_SERVER['REQUEST_METHOD'] === "POST"): ?>
         <form action= "edit-product-processing.php" method="POST">
+            <input type="hidden" name="id" id="id" value = "<?= $_POST["productId"] ?>">
             <label for="name"><?= translateLabels('Name'); ?></label>
             <input type="text" name="name" id="name" value = "<?= $name ?>">
             <br>
