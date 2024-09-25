@@ -52,6 +52,7 @@ function translateLabels(string $label) {
         'Yes'=> 'Da',
         "Price doesn't have a valid value!" => "Pretul nu are o valoare valida!",
         'Add product' => 'Adauga produs',
+        'Save'=> 'Salveaza',
     ];
     return $labels[$label] ?? $label;
 }
