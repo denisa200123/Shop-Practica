@@ -50,6 +50,7 @@ function translateLabels(string $label) {
         'Products page'=> 'Pagina produse',
         'Are you sure you want to delete this item?'=> 'Esti sigur ca vrei sa stergi acest produs?',
         'Yes'=> 'Da',
+        "Price doesn't have a valid value!" => "Pretul nu are o valoare valida!",
     ];
     return $labels[$label] ?? $label;
 }
@@ -61,6 +62,14 @@ function isInputEmpty(array $inputs)
         if (!$input && $input !== '0') {
             return true;
         } 
+    }
+    return false;
+}
+
+function isPriceInvalid(float $price)
+{
+    if ($price <= 0) {
+        return true;
     }
     return false;
 }
