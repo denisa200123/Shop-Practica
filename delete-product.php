@@ -3,19 +3,8 @@
 session_start();
 require_once 'common.php';
 
-$productId = $_POST["productId"]-1;
-$selectedProduct = $_SESSION['products'][$productId];
-
-if (isset($_POST["productToDelete"])) {
-    $query = "DELETE FROM products WHERE id = :id;";
-    $stmt = $pdo->prepare(query: $query);
-    $stmt->bindParam(":id", $productId);
-    $stmt->execute();
-
-    $stmt = null;
-    $pdo = null;
-    unset($_SESSION["products"]);
-}
+$productId = $_POST["productId"];
+$selectedProduct = $_SESSION['products'][$productId-1];
 
 ?>
 <!DOCTYPE html>
@@ -36,13 +25,11 @@ if (isset($_POST["productToDelete"])) {
     <?php if ($_SERVER['REQUEST_METHOD'] === "POST"): ?>
         <h1><?= translateLabels("Are you sure you want to delete this item?"); ?></h1>
 
-        <form method='post'>
-            <input type='hidden' name='productToDelete'>
+        <form method='post' action = "delete-product-processing.php">
+            <input type='hidden' name='productToDelete' value = "<?= htmlspecialchars($productId) ?>">
             <input type='submit' value= "<?= translateLabels('Yes'); ?>" >
         </form>
-
         <br>
-
         <table border="1" cellpadding="10">
             <tr>
                 <th><?= translateLabels('Name') ?></th>
