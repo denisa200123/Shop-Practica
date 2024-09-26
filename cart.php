@@ -84,7 +84,7 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
                     <td><?= htmlspecialchars($product['title']) ?></td>
                     <td><?= htmlspecialchars($product['price']) ?></td>
                     <td><?= htmlspecialchars($product['description']) ?></td>
-                    <td><img src="<?= htmlspecialchars($product['image']) ?>"></td>
+                    <td><img src="<?= "img/" . htmlspecialchars($product['image']) ?>"></td>
                     <td>
                         <form method="post">
                             <input type="hidden" name="productSelected" value="<?= htmlspecialchars($product["id"]) ?>" >

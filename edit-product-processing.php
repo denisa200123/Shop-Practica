@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && filter_var($id, FILTER_VALIDATE_INT
         $price = htmlspecialchars_decode($price);
         $image = htmlspecialchars_decode($image);
 
-        $target_file = "img/" . $image;
+        $image = str_replace("img/", "", $image);
 
         $query = "UPDATE products SET title = :name, description = :description, price = :price, image = :image WHERE id = :id;";
         $stmt = $pdo->prepare($query);
@@ -46,14 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && filter_var($id, FILTER_VALIDATE_INT
         $stmt->bindParam(":name", $name);
         $stmt->bindParam(":description", $description);
         $stmt->bindParam(":price", $price);
-        $stmt->bindParam(":image", $target_file);
+        $stmt->bindParam(":image", $image);
         $stmt->execute();
 
         $stmt = null;
         $pdo = null;
         unset($_SESSION["productId"]);
         unset($_SESSION["editing_input"]);
-        unset($_SESSION["imageUploaded"]);
     }
 }
 header("Location: products.php");

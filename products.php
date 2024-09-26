@@ -50,7 +50,7 @@ $pdo = null;
                     <td><?= htmlspecialchars($product['title']) ?></td>
                     <td><?= htmlspecialchars($product['price']) ?></td>
                     <td><?= htmlspecialchars($product['description']) ?></td>
-                    <td><img src="<?= htmlspecialchars($product['image']) ?>"></td>
+                    <td><img src="<?= "img/" . htmlspecialchars($product['image']) ?>"></td>
                     <td>
                         <form method="post" action="edit-product.php">
                             <input type="hidden" name="productId" value="<?= htmlspecialchars($product["id"]) ?>" >

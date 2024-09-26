@@ -10,6 +10,9 @@ try {
     echo "We encountered a problem " . $e->getMessage();
 }
 
+//allowed image extensions
+$imgExtensions = array("png","jpeg","gif","webp","svg","jpg");
+
 //used to translate labels
 function translateLabels(string $label) {
     $labels = [
@@ -53,7 +56,7 @@ function translateLabels(string $label) {
         "Price doesn't have a valid value!" => "Pretul nu are o valoare valida!",
         'Add product' => 'Adauga produs',
         'Save'=> 'Salveaza',
-        'Upload Image'=> 'Incarca imagine',
+        'Save the image'=> 'Salveaza imaginea',
         'File is not an image'=> 'Fisierul nu e o imagine',
         'File uploaded already'=> 'Fiserul exista deja',
         'Extension is not supported'=> 'Extensia nu este acceptata',

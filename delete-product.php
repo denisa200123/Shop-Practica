@@ -52,7 +52,7 @@ if (filter_var($productId, FILTER_VALIDATE_INT)) {
                 <td><?= htmlspecialchars($selectedProduct['title']) ?></td>
                 <td><?= htmlspecialchars($selectedProduct['price']) ?></td>
                 <td><?= htmlspecialchars($selectedProduct['description']) ?></td>
-                <td><img src="<?= htmlspecialchars($selectedProduct['image']) ?>"</td>
+                <td><img src="<?= "img/" . htmlspecialchars($selectedProduct['image']) ?>"</td>
             </tr>
         </table>
 

@@ -38,7 +38,6 @@ if (isset($_SESSION["editing_errors"]) && !empty($_SESSION["editing_errors"])) {
     unset($_SESSION["editing_errors"]);
 }
 
-
 //check for image errors
 if (isset($_SESSION["imageErrors"]) && !empty($_SESSION["imageErrors"])) {
     $editingErrors = $_SESSION["imageErrors"];
@@ -48,9 +47,9 @@ if (isset($_SESSION["imageErrors"]) && !empty($_SESSION["imageErrors"])) {
 if (isset($_SESSION["imageUploaded"]) && !empty($_SESSION["imageUploaded"])) {
     $imgForm = $_SESSION["imageUploaded"];
 } else {
-    $imgForm = htmlspecialchars($image);
+    $imgForm = $image;
 }
-echo $imgForm;
+
 ?>
 
 <!DOCTYPE html>
@@ -68,12 +67,12 @@ echo $imgForm;
         <form action="process-image.php" method="post" enctype="multipart/form-data">
             <label for="fileToUpload"><?= translateLabels('Image'); ?></label>
             <input type="file" name="fileToUpload" id="fileToUpload">
-            <input type="submit" value="<?= translateLabels("Upload Image") ?>" name="submitImage">
+            <input type="submit" value="<?= translateLabels("Save the image") ?>" name="submitImage">
         </form>
 
         <form action="edit-product-processing.php" method="POST">
             <input type="hidden" name="productId" id="id" value="<?= htmlspecialchars($productId) ?>">
-            <input type="hidden" name="imageName" id="imageName" value="<?= $imgForm ?>">
+            <input type="hidden" name="imageName" id="imageName" value="<?= 'img/' . htmlspecialchars($imgForm) ?>">
 
             <label for="name"><?= translateLabels('Name'); ?></label>
             <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>">

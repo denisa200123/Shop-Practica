@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             //add inline attachments for images
             foreach ($_SESSION["productsInCart"] as $id => $product) {
                 if(isset($product["image"])) {
-                    $mail->addEmbeddedImage(htmlspecialchars($product['image']), "img_embedded_$id");
+                    $mail->addEmbeddedImage(htmlspecialchars("img/" . $product['image']), "img_embedded_$id");
                 }
             }
 

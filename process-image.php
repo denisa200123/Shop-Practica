@@ -17,12 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_FILES["fileToUpload"]["tmp_
         $uploadSuccessful = 0;
     }
 
-    /*if (file_exists($target_file)) {
-        $errors["alreadyExist"] = translateLabels("File uploaded already");
-        $uploadSuccessful = 0;
-    }*/
-
-    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+    if (in_array($imageFileType, $imgExtensions)) {
         $errors["invalidExtension"] = translateLabels("Extension is not supported");
         $uploadSuccessful = 0;
     }
