@@ -62,8 +62,12 @@ function translateLabels(string $label) {
         'Extension is not supported'=> 'Extensia nu este acceptata',
         "Couldn't upload image"=> "Imaginea nu a putut fi incarcata",
         'Image uploaded'=> 'Imagine incarcata',
+        'Choose a language:'=> 'Alege o limba:',
     ];
-    return $labels[$label] ?? $label;
+    if(isset($_SESSION["language"]) &&  $_SESSION["language"] === "RO"){
+        return $labels[$label];
+    }
+    return $label;
 }
 
 //used to check if any user input is empty

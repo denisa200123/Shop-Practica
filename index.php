@@ -1,6 +1,11 @@
 <?php
 require 'common.php';
 session_start();
+
+if(isset($_POST["language"]) && !empty($_POST["language"])){
+    $_SESSION["language"] = $_POST["language"];
+}
+
 //initialize cardIds(stores the ids of the products)
 if (!isset($_SESSION["cartIds"])) {
     $_SESSION["cartIds"] = [];
@@ -50,7 +55,12 @@ $stmt = null;
 </head>
 
 <body>
-
+    <label for="language"><?= translateLabels("Choose a language:") ?></label>
+        <select name="language" id="language">
+            <option value="EN">english</option>
+            <option value="RO">romanian</option>
+        </select>
+    <br>
     <?php if(isset($_SESSION["admin_logged"])): ?>
         <span> <?= translateLabels("Admin logged") ?> </span>
         <a href="products.php"><?= translateLabels('Products page'); ?></a>
