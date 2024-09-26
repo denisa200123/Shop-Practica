@@ -15,7 +15,7 @@ require_once 'common.php';
 </head>
 <body>
     <?php if(isset($_SESSION["admin_logged"])): ?>
-        <form action= "add-product-processing.php" method="POST">
+        <form action="add-product-processing.php" method="POST">
             <label for="name"><?= translateLabels('Name'); ?></label>
             <input type="text" name="name" id="name">
 

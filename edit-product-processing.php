@@ -9,12 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && filter_var($id, FILTER_VALIDATE_INT
     $name = strip_tags($_POST["name"]);
     $description = strip_tags($_POST["description"]);
     $price = strip_tags($_POST["price"]);
+    $image = strip_tags($_POST["imageName"]);
 
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $description = filter_var($description, FILTER_SANITIZE_STRING);
     $price = filter_var($price, FILTER_VALIDATE_FLOAT);
+    $image = filter_var($image, FILTER_SANITIZE_STRING);
 
-    $userInput = [$name, $description, $price];
+    $userInput = [$name, $description, $price, $image];
 
     $errors = [];
 
@@ -34,19 +36,24 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && filter_var($id, FILTER_VALIDATE_INT
         $name = htmlspecialchars_decode($name);
         $description = htmlspecialchars_decode($description);
         $price = htmlspecialchars_decode($price);
+        $image = htmlspecialchars_decode($image);
 
-        $query = "UPDATE products SET title = :name, description = :description, price = :price WHERE id = :id;";
+        $target_file = "img/" . $image;
+
+        $query = "UPDATE products SET title = :name, description = :description, price = :price, image = :image WHERE id = :id;";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(":id", $id);
         $stmt->bindParam(":name", $name);
         $stmt->bindParam(":description", $description);
         $stmt->bindParam(":price", $price);
+        $stmt->bindParam(":image", $target_file);
         $stmt->execute();
 
         $stmt = null;
         $pdo = null;
         unset($_SESSION["productId"]);
         unset($_SESSION["editing_input"]);
+        unset($_SESSION["imageUploaded"]);
     }
 }
 header("Location: products.php");
