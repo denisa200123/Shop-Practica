@@ -34,12 +34,12 @@ if (isset($_SESSION["login_failed"]) && !empty($_SESSION["login_failed"])) {
 
         <form action="login-processing.php" method="POST">
             <label for="username"> <?= translateLabels("Username") ?></label>
-            <input type="text" name="username" id="username" required value = "<?= $username ?>">
+            <input type="text" name="username" id="username" required value="<?= $username ?>">
             <br>
             <label for="password"> <?= translateLabels("Password") ?></label>
             <input type="password" name="password" id="password" required>
             <br>
-            <input type="submit" value = "<?= translateLabels("Login") ?>">
+            <input type="submit" value="<?= translateLabels("Login") ?>">
         </form>
 
         <?php if ($loginFailed): ?>

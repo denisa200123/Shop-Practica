@@ -1,5 +1,6 @@
 <?php 
 require_once "common.php"; 
+$productsInCart = $_SESSION["productsInCart"];
 ?>
 
 <?php if ($_SERVER['REQUEST_METHOD'] === "POST"): ?>
@@ -24,7 +25,6 @@ require_once "common.php";
         <p><?= translateLabels("Contact details")?> : <?= htmlspecialchars($_SESSION["user_input"]["contactDetails"])?></p>
         <p><?= translateLabels("Comments")?> : <?= htmlspecialchars($_SESSION["user_input"]["comments"])?></p>
 
-        <?php $productsInCart = $_SESSION["productsInCart"]; ?>
         <table border="1" cellpadding="10">
             <tr>
                 <th><?= translateLabels('Name') ?></th>

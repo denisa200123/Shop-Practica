@@ -86,9 +86,9 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
                     <td><?= htmlspecialchars($product['description']) ?></td>
                     <td><img src="<?= htmlspecialchars($product['image']) ?>"></td>
                     <td>
-                        <form method='post'>
-                            <input type='hidden' name='productSelected' value = "<?= htmlspecialchars($product["id"]) ?>" >
-                            <input type='submit' value= "<?= translateLabels('Remove'); ?>" >
+                        <form method="post">
+                            <input type="hidden" name="productSelected" value="<?= htmlspecialchars($product["id"]) ?>" >
+                            <input type="submit" value="<?= translateLabels('Remove'); ?>" >
                         </form>
                     </td>
                 </tr>
@@ -100,16 +100,16 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
         <p><?= translateLabels('Please fill out this form in order to complete your order'); ?></p>
         <form method="POST" action="send-mail.php">
             <label for="name"><?= translateLabels('Name'); ?></label>
-            <input type="text" name="name" id="name" value = "<?= htmlspecialchars($name) ?>" required>
+            <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>" required>
             <br>
             <label for="name"><?= translateLabels(label: 'Contact details'); ?></label>
-            <input type="text" name="contactDetails" id="contactDetails" value = "<?= htmlspecialchars($contactDetails) ?>" required>
+            <input type="text" name="contactDetails" id="contactDetails" value="<?= htmlspecialchars($contactDetails) ?>" required>
             <br>
             <label for="name"><?= translateLabels(label: 'Comments'); ?></label>
-            <input type="text" name="comments" id="comments" value = "<?= htmlspecialchars($comments) ?>" >
+            <input type="text" name="comments" id="comments" value="<?= htmlspecialchars($comments) ?>" >
             <br>
 
-            <input type="submit" value = "Checkout">
+            <input type="submit" value="Checkout">
         </form>
     <?php else: ?>
         <?= translateLabels('Cosul e gol'); ?>

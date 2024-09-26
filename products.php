@@ -52,15 +52,15 @@ $pdo = null;
                     <td><?= htmlspecialchars($product['description']) ?></td>
                     <td><img src="<?= htmlspecialchars($product['image']) ?>"></td>
                     <td>
-                        <form method='post' action="edit-product.php">
-                            <input type='hidden' name='productId' value= "<?= htmlspecialchars($product["id"]) ?>" >
-                            <input type='submit' value= "<?= translateLabels('Edit'); ?>" >
+                        <form method="post" action="edit-product.php">
+                            <input type="hidden" name="productId" value="<?= htmlspecialchars($product["id"]) ?>" >
+                            <input type="submit" value="<?= translateLabels('Edit'); ?>" >
                         </form>
                     </td>
                     <td>
-                        <form method='post' action="delete-product.php">
-                            <input type='hidden' name='productId' value= "<?= htmlspecialchars($product["id"]) ?>" >
-                            <input type='submit' value= "<?= translateLabels('Remove'); ?>" >
+                        <form method="post" action="delete-product.php">
+                            <input type="hidden" name="productId" value="<?= htmlspecialchars($product["id"]) ?>" >
+                            <input type="submit" value="<?= translateLabels('Remove'); ?>" >
                         </form>
                     </td>
                 </tr>

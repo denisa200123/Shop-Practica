@@ -88,9 +88,9 @@ $stmt = null;
                 <td><?= htmlspecialchars($product['description']) ?></td>
                 <td><img src="<?= htmlspecialchars($product['image']) ?>"></td>
                 <td>
-                    <form method='post'>
-                        <input type='hidden' name='productSelected' value= "<?= htmlspecialchars($product["id"]) ?>" >
-                        <input type='submit' value= "<?= translateLabels('Add'); ?>" >
+                    <form method="post">
+                        <input type="hidden" name="productSelected" value="<?= htmlspecialchars($product["id"]) ?>" >
+                        <input type="submit" value="<?= translateLabels('Add'); ?>" >
                     </form>
                 </td>
             </tr>
