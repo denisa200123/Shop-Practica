@@ -34,13 +34,13 @@ if (filter_var($productId, FILTER_VALIDATE_INT)) {
 
 //check for editing errors
 if (isset($_SESSION["editing_errors"]) && !empty($_SESSION["editing_errors"])) {
-    $imageErrors = $_SESSION["editing_errors"];
+    $editingErrors = $_SESSION["editing_errors"];
     unset($_SESSION["editing_errors"]);
 }
 
 //check for image errors
 if (isset($_SESSION["imageErrors"]) && !empty($_SESSION["imageErrors"])) {
-    $editingErrors = $_SESSION["imageErrors"];
+    $imageErrors = $_SESSION["imageErrors"];
     unset($_SESSION["imageErrors"]);
 }
 
@@ -66,6 +66,7 @@ if (isset($_SESSION["imageUploaded"]) && !empty($_SESSION["imageUploaded"])) {
     <?php if ($selectedProduct && isset($_SESSION["admin_logged"])): ?>
         <form action="process-image.php" method="post" enctype="multipart/form-data">
             <label for="fileToUpload"><?= translateLabels('Image'); ?></label>
+            <input type="hidden" name="originFile" id="originFile" value="<?= htmlspecialchars("edit-product.php") ?>">
             <input type="file" name="fileToUpload" id="fileToUpload">
             <input type="submit" value="<?= translateLabels("Save the image") ?>" name="submitImage">
         </form>

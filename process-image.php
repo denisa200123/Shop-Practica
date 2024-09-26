@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_FILES["fileToUpload"]["tmp_
         $uploadSuccessful = 0;
     }
 
-    if (in_array($imageFileType, $imgExtensions)) {
+    if (!in_array($imageFileType, $imgExtensions)) {
         $errors["invalidExtension"] = translateLabels("Extension is not supported");
         $uploadSuccessful = 0;
     }
@@ -30,6 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_FILES["fileToUpload"]["tmp_
     }
 
     $_SESSION["imageErrors"] = $errors;
+
+    header("Location: " . $_POST["originFile"]);
+    die();
 }
-header("Location: edit-product.php");
+header("Location: products.php");
 die();

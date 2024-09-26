@@ -52,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && filter_var($id, FILTER_VALIDATE_INT
         $stmt = null;
         $pdo = null;
         unset($_SESSION["productId"]);
-        unset($_SESSION["editing_input"]);
     }
 }
 header("Location: products.php");

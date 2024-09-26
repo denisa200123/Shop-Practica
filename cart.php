@@ -113,6 +113,7 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
         </form>
     <?php else: ?>
         <?= translateLabels('Cosul e gol'); ?>
+        <?php unset($_SESSION["productsInCart"]); ?>
     <?php endif; ?>
     <br>
     

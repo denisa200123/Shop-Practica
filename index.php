@@ -1,7 +1,6 @@
 <?php
 require 'common.php';
 session_start();
-
 //initialize cardIds(stores the ids of the products)
 if (!isset($_SESSION["cartIds"])) {
     $_SESSION["cartIds"] = [];
