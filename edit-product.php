@@ -68,7 +68,8 @@ if(isset($_SESSION["editing_errors"]) &&  !empty($_SESSION["editing_errors"])) {
         </form>
         <br>
 
-        <form action="upload.php" method="post" enctype="multipart/form-data">
+        <form action="upload-image.php" method="post" enctype="multipart/form-data">
+            <label for="fileToUpload"><?= translateLabels('Image'); ?></label>
             <input type="file" name="fileToUpload" id="fileToUpload">
             <input type="submit" value="Upload Image" name="submit">
         </form>
