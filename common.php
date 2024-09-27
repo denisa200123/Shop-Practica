@@ -11,7 +11,7 @@ try {
 }
 
 //allowed image extensions
-$imgExtensions = array("png","jpeg","gif","webp","svg","jpg", "jfif");
+$imgExtensions = array("png","jpeg","gif","webp","svg","jpg");
 
 //used to translate labels
 function translateLabels(string $label) {
@@ -56,7 +56,6 @@ function translateLabels(string $label) {
         "Price doesn't have a valid value!" => "Pretul nu are o valoare valida!",
         'Add product' => 'Adauga produs',
         'Save'=> 'Salveaza',
-        'Save the image'=> 'Salveaza imaginea',
         'File is not an image'=> 'Fisierul nu e o imagine',
         'File uploaded already'=> 'Fiserul exista deja',
         'Extension is not supported'=> 'Extensia nu este acceptata',

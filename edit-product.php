@@ -44,12 +44,6 @@ if (isset($_SESSION["imageErrors"]) && !empty($_SESSION["imageErrors"])) {
     unset($_SESSION["imageErrors"]);
 }
 
-if (isset($_SESSION["imageUploaded"]) && !empty($_SESSION["imageUploaded"])) {
-    $imgForm = $_SESSION["imageUploaded"];
-} else {
-    $imgForm = $image;
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -65,16 +59,10 @@ if (isset($_SESSION["imageUploaded"]) && !empty($_SESSION["imageUploaded"])) {
 <body>
     <?php if ($selectedProduct && isset($_SESSION["admin_logged"])): ?>
         <?php include_once "language-switcher.php"; ?>
-        <form action="process-image.php" method="post" enctype="multipart/form-data">
-            <label for="fileToUpload"><?= translateLabels('Image'); ?></label>
-            <input type="hidden" name="originFile" id="originFile" value="<?= htmlspecialchars("edit-product.php") ?>">
-            <input type="file" name="fileToUpload" id="fileToUpload">
-            <input type="submit" value="<?= translateLabels("Save the image") ?>" name="submitImage">
-        </form>
 
-        <form action="edit-product-processing.php" method="POST">
+        <form action="edit-product-processing.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="productId" id="id" value="<?= htmlspecialchars($productId) ?>">
-            <input type="hidden" name="imageName" id="imageName" value="<?= 'img/' . htmlspecialchars($imgForm) ?>">
+            <input type="hidden" name="image" id="image" value="<?= 'img/' . htmlspecialchars($image) ?>">
 
             <label for="name"><?= translateLabels('Name'); ?></label>
             <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>">
@@ -87,17 +75,17 @@ if (isset($_SESSION["imageUploaded"]) && !empty($_SESSION["imageUploaded"])) {
             <label for="price"><?= translateLabels('Price'); ?></label>
             <input type="number" name="price" id="price" step="0.1" min="0" value="<?= htmlspecialchars($price) ?>">
 
+            <br>
+            <label for="fileToUpload"><?= translateLabels('Image'); ?></label>
+            <input type="file" name="fileToUpload" id="fileToUpload">
+
             <br><br>
             <input type="submit" value=" <?= translateLabels("Edit") ?> ">
         </form>
-        <br>
 
-        <?php if(isset($_SESSION["imageUploaded"]) && !empty($_SESSION["imageUploaded"])): ?>
-            <?= translateLabels("Image uploaded") ?>
-            <?php unset($_SESSION["imageUploaded"]); ?>
-            <br>
+        <br>
         <!-- display the image errors, if there are any -->
-        <?php elseif (!empty($imageErrors)): ?>
+        <?php if (!empty($imageErrors)): ?>
             <?php foreach ($imageErrors as $error): ?>
                 <?= $error ?>
                 <br>
