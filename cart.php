@@ -65,6 +65,8 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
 </head>
 
 <body>
+    <?php include_once "language-switcher.php"; ?>
+
     <h1><?= translateLabels('Your cart'); ?></h1>
 
     <!-- display the cart products and the checkout form if the cart is not empty;
@@ -112,7 +114,7 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
             <input type="submit" value="Checkout">
         </form>
     <?php else: ?>
-        <?= translateLabels('Cosul e gol'); ?>
+        <?= translateLabels('The cart is empty'); ?>
         <?php unset($_SESSION["productsInCart"]); ?>
     <?php endif; ?>
     <br>

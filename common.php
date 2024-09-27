@@ -11,7 +11,7 @@ try {
 }
 
 //allowed image extensions
-$imgExtensions = array("png","jpeg","gif","webp","svg","jpg");
+$imgExtensions = array("png","jpeg","gif","webp","svg","jpg", "jfif");
 
 //used to translate labels
 function translateLabels(string $label) {
@@ -63,6 +63,9 @@ function translateLabels(string $label) {
         "Couldn't upload image"=> "Imaginea nu a putut fi incarcata",
         'Image uploaded'=> 'Imagine incarcata',
         'Choose a language:'=> 'Alege o limba:',
+        'Change language'=> 'Schimba limba',
+        'english'=> 'engleza',
+        'romanian'=> 'romana',
     ];
     if(isset($_SESSION["language"]) &&  $_SESSION["language"] === "RO"){
         return $labels[$label];

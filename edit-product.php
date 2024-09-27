@@ -64,6 +64,7 @@ if (isset($_SESSION["imageUploaded"]) && !empty($_SESSION["imageUploaded"])) {
 
 <body>
     <?php if ($selectedProduct && isset($_SESSION["admin_logged"])): ?>
+        <?php include_once "language-switcher.php"; ?>
         <form action="process-image.php" method="post" enctype="multipart/form-data">
             <label for="fileToUpload"><?= translateLabels('Image'); ?></label>
             <input type="hidden" name="originFile" id="originFile" value="<?= htmlspecialchars("edit-product.php") ?>">

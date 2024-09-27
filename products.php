@@ -30,6 +30,8 @@ $pdo = null;
 </head>
 <body>
     <?php if (isset($_SESSION['admin_logged'])): ?>
+        <?php include_once "language-switcher.php"; ?>
+        
         <p> <?= translateLabels("Admin logged") ?> </p>
         <span> <?= translateLabels("Want to logout?")?> </span>
         <a href="logout.php"> <?= translateLabels("Logout") ?> </a>
