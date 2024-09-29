@@ -6,9 +6,9 @@ session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     //using strip_tags to sanitize user input(all the html and php tags are removed)
-    $name = strip_tags($_POST["name"]);
-    $contactDetails = strip_tags($_POST["contactDetails"]);
-    $comments = strip_tags($_POST["comments"]);
+    $name = isset($_POST["name"]) ? strip_tags($_POST["name"]) : "";
+    $contactDetails = isset($_POST["name"]) ? strip_tags($_POST["contactDetails"]) : "";
+    $comments = isset($_POST["name"]) ? strip_tags($_POST["comments"]) : "";
     
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $contactDetails = filter_var($contactDetails, FILTER_SANITIZE_STRING);

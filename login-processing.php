@@ -5,8 +5,8 @@ require "common.php";
 
 if($_SERVER['REQUEST_METHOD'] === "POST") {
     //using strip_tags to sanitize user input(all the html and php tags are removed)
-    $username = strip_tags($_POST["username"]);
-    $password = strip_tags($_POST["password"]);
+    $username = isset($_POST["username"]) ? strip_tags($_POST["username"]) : "";
+    $password = isset($_POST["password"]) ? strip_tags($_POST["password"]) : "";
 
     $username = filter_var($username, FILTER_SANITIZE_STRING);
     $password = filter_var($password, FILTER_SANITIZE_STRING);

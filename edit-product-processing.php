@@ -3,7 +3,7 @@
 session_start();
 require_once 'common.php';
 
-$id = $_POST["productId"];
+$id = isset($_POST["productId"]) ? $_POST["productId"] : "";
 
 if ($_SERVER['REQUEST_METHOD'] === "POST" && filter_var($id, FILTER_VALIDATE_INT)) {
     $uploadedImage = 0;
@@ -26,13 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && filter_var($id, FILTER_VALIDATE_INT
         $image = basename($_FILES["fileToUpload"]["name"]);
         $uploadedImage = 1;
     } else {
-        $image = $_POST["image"];
+        $image = isset($_POST["image"]) ? $_POST["image"] : "";
     }
 
     //THIS SECTION IS FOR VALIDATING ALL DATA
-    $name = strip_tags($_POST["name"]);
-    $description = strip_tags($_POST["description"]);
-    $price = strip_tags($_POST["price"]);
+    $name = isset($_POST["name"]) ? strip_tags($_POST["name"]) : "";
+    $description = isset($_POST["description"]) ? strip_tags($_POST["description"]) : "";
+    $price = isset($_POST["price"]) ? strip_tags($_POST["price"]) : "";
     $image = strip_tags($image);
     
     $name = filter_var($name, FILTER_SANITIZE_STRING);

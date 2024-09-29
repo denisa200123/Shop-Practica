@@ -22,9 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_FILES["fileToUpload"]["tmp_
     $image = basename($_FILES["fileToUpload"]["name"]);
 
 
-    $name = strip_tags($_POST["name"]);
-    $description = strip_tags($_POST["description"]);
-    $price = strip_tags($_POST["price"]);
+    $name = isset($_POST["name"]) ? strip_tags($_POST["name"]) : "";
+    $description = isset($_POST["description"]) ? strip_tags($_POST["description"]) : "";
+    $price = isset($_POST["price"]) ? strip_tags($_POST["price"]) : "";
     $image = strip_tags($image);
 
     $name = filter_var($name, FILTER_SANITIZE_STRING);
