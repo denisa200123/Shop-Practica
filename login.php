@@ -56,6 +56,9 @@ if (isset($_SESSION["login_failed"]) && !empty($_SESSION["login_failed"])) {
             <?php endforeach; ?>
         <?php endif; ?>
 
+        <br><br>
+        <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
+
     <?php else: ?>
         <?php header("Location: products.php"); ?>
         <?php die(); ?>

@@ -54,8 +54,10 @@ $stmt = null;
     <?php include_once "language-switcher.php"; ?>
 
     <?php if(isset($_SESSION["admin_logged"])): ?>
-        <span> <?= translateLabels("Admin logged") ?> </span>
+        <p> <?= translateLabels("Admin logged") ?> </p>
         <a href="products.php"><?= translateLabels('Products page'); ?></a>
+        <br>
+        <a href="orders.php"><?= translateLabels('Orders page'); ?></a>
     <?php else: ?>
         <span><?= translateLabels("Do you have an admin account?") ?></span>
         <a href="login.php"><?= translateLabels("Login") ?></a>

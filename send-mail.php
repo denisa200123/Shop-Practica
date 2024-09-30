@@ -69,8 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
 
                 //include the order details in "orders" table
                 $customerDetails = "";
-                foreach($_SESSION["user_input"] as $input){
-                    $customerDetails .= $input . " ";
+                foreach($_SESSION["user_input"] as $detail => $input){
+                    if($input){
+                        $customerDetails .= $detail . ": " . $input . "\n";
+                    }
                 }
                 
                 $cartIds = "";

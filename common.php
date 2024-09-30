@@ -66,6 +66,12 @@ function translateLabels(string $label) {
         'No products selected'=> 'Produsele nu au fost selectate',
         'english'=> 'engleza',
         'romanian'=> 'romana',
+        'No orders'=> 'Nicio comanda',
+        'Date'=> 'Data',
+        'Customer details'=> 'Detaliile clientului',
+        'Purchased products'=> 'Produse cumparate',
+        'Orders page'=> 'Pagina comenzi',
+        'Total price'=> 'Pret total',
     ];
     if(isset($_SESSION["language"]) &&  $_SESSION["language"] === "RO"){
         return $labels[$label];
