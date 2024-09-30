@@ -3,9 +3,27 @@
 require_once 'common.php';
 session_start();
 
-$query = "SELECT * FROM products";
-$stmt = $pdo->prepare($query);
-$stmt->execute();
+if (!isset($_SESSION["sort"]) || (isset($_SESSION["sort"]) && $_SESSION["sort"] == "none")) {
+    $query = "SELECT * FROM products;";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    unset($_SESSION["sort"]);
+} elseif (isset($_SESSION["sort"]) && $_SESSION["sort"] == "title") {
+    $query = "SELECT * FROM products ORDER BY title;";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    unset($_SESSION["sort"]);
+} elseif (isset($_SESSION["sort"]) && $_SESSION["sort"] == "price") {
+    $query = "SELECT * FROM products ORDER BY price;";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    unset($_SESSION["sort"]);
+} elseif (isset($_SESSION["sort"]) && $_SESSION["sort"] == "description") {
+    $query = "SELECT * FROM products ORDER BY description;";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    unset($_SESSION["sort"]);
+}
 
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -35,7 +53,10 @@ $pdo = null;
         <p> <?= translateLabels("Admin logged") ?> </p>
         <span> <?= translateLabels("Want to logout?")?> </span>
         <a href="logout.php"> <?= translateLabels("Logout") ?> </a>
-        <br>
+        <br><br>
+
+        <!-- sort by property -->
+        <?php include_once "sort-products.php"; ?>
         
         <!-- display the products -->
         <table border="1" cellpadding="10">
