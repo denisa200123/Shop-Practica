@@ -75,16 +75,16 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
                     }
                 }
                 
-                $cartIds = "";
-                foreach($_SESSION["cartIds"] as $id){
-                    $cartIds .= $id . " ";
+                $cartProducts = "";
+                foreach($_SESSION["productsInCart"] as $productName){
+                    $cartProducts .= $productName["title"] . ", ";
                 }
                 
                 $query = "INSERT INTO orders(creation_date, customer_details, purchased_products, total_price) VALUES (:date, :customer_details, :products_id, :total)";
                 $stmt = $pdo->prepare($query);
                 $stmt->bindParam(":date", $date);
                 $stmt->bindParam(":customer_details", $customerDetails);
-                $stmt->bindParam(":products_id", $cartIds);
+                $stmt->bindParam(":products_id", $cartProducts);
                 $stmt->bindParam(":total", $_SESSION["totalPrice"]);
                 $stmt->execute();
             
