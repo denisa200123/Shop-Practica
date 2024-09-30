@@ -1,6 +1,6 @@
 <?php 
 require_once "common.php"; 
-$productsInCart = $_SESSION["productsInCart"];
+$productsInCart = isset($_SESSION["productsInCart"]) ? $_SESSION["productsInCart"] : "";
 ?>
 
 <?php if ($_SERVER['REQUEST_METHOD'] === "POST"): ?>
@@ -33,14 +33,18 @@ $productsInCart = $_SESSION["productsInCart"];
                 <th><?= translateLabels('Image') ?></th>       
             </tr>
             <!-- display the info about each product -->
-            <?php foreach ($productsInCart as $id => $product): ?>
-                <tr>
-                    <td><?= htmlspecialchars($product['title']) ?></td>
-                    <td><?= htmlspecialchars($product['price']) ?></td>
-                    <td><?= htmlspecialchars($product['description']) ?></td>
-                    <td><img src="cid:img_embedded_<?=$id?>"></td>
-                </tr>
-            <?php endforeach; ?>
+            <?php if($productsInCart): ?>
+                <?php foreach ($productsInCart as $id => $product): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($product['title']) ?></td>
+                        <td><?= htmlspecialchars($product['price']) ?></td>
+                        <td><?= htmlspecialchars($product['description']) ?></td>
+                        <td><img src="cid:img_embedded_<?=$id?>"></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <h1><?= translateLabels("No products selected") ?></h1>
+            <?php endif; ?>
         </table>
                 
     </body>

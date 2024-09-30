@@ -4,7 +4,7 @@ require_once 'config.php';
 require_once 'common.php';
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === "POST") {
+if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"])) {
     //using strip_tags to sanitize user input(all the html and php tags are removed)
     $name = isset($_POST["name"]) ? strip_tags($_POST["name"]) : "";
     $contactDetails = isset($_POST["name"]) ? strip_tags($_POST["contactDetails"]) : "";

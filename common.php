@@ -63,6 +63,7 @@ function translateLabels(string $label) {
         'Image uploaded'=> 'Imagine incarcata',
         'Choose a language:'=> 'Alege o limba:',
         'Change language'=> 'Schimba limba',
+        'No products selected'=> 'Produsele nu au fost selectate',
         'english'=> 'engleza',
         'romanian'=> 'romana',
     ];
