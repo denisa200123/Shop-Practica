@@ -1,5 +1,6 @@
 <?php
 require 'common.php';
+date_default_timezone_set('Europe/Bucharest');
 session_start();
 
 // if a product is selected, then it'll be removed
@@ -101,6 +102,7 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
         <!-- form for sending checkout info-->
         <p><?= translateLabels('Please fill out this form in order to complete your order'); ?></p>
         <form method="POST" action="send-mail.php">
+            <input type='hidden' name='date' value=" <?= date("Y/m/d") ?>">
             <label for="name"><?= translateLabels('Name'); ?></label>
             <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>" required>
             <br>

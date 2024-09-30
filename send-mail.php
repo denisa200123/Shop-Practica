@@ -9,13 +9,15 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
     $name = isset($_POST["name"]) ? strip_tags($_POST["name"]) : "";
     $contactDetails = isset($_POST["name"]) ? strip_tags($_POST["contactDetails"]) : "";
     $comments = isset($_POST["name"]) ? strip_tags($_POST["comments"]) : "";
-    
+    $date = isset($_POST["date"]) ? strip_tags($_POST["date"]) : "";
+   
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $contactDetails = filter_var($contactDetails, FILTER_SANITIZE_STRING);
     $comments = filter_var($comments, FILTER_SANITIZE_STRING);
-
+    $date = preg_replace("([^0-9/])", "", $date);
+    
     //comments can be empty
-    $userInput = [$name, $contactDetails];
+    $userInput = [$name, $contactDetails, $date];
 
     $errors = [];
     if(isInputEmpty($userInput)){
@@ -32,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
     $checkout_data = [
         "name" => htmlspecialchars_decode($name),
         "contactDetails" => htmlspecialchars_decode($contactDetails),
-        "comments" => htmlspecialchars_decode($comments),
+        "comments" => htmlspecialchars_decode($comments)
     ];
     $_SESSION["user_input"] = $checkout_data;
 
@@ -47,9 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
         if($cartContents) {
             $mail = require __DIR__ . "/mailer.php";
 
-            //add inline attachments for images
+            //add inline attachments for images and calculate the summed price
+            $_SESSION["totalPrice"] = 0;
             foreach ($_SESSION["productsInCart"] as $id => $product) {
-                if(isset($product["image"])) {
+                if(isset($product["image"]) && isset($product["price"])) {
+                    $_SESSION["totalPrice"] += $product["price"];
                     $mail->addEmbeddedImage(htmlspecialchars("img/" . $product['image']), "img_embedded_$id");
                 }
             }
@@ -58,11 +62,36 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
             $mail->addAddress(SHOP_EMAIL);
             $mail->Subject = translateLabels("Checkout information");
             $mail->Body = $cartContents;  
-    
+
             try {
+                //send mail
                 $mail->send();
+
+                //include the order details in "orders" table
+                $customerDetails = "";
+                foreach($_SESSION["user_input"] as $input){
+                    $customerDetails .= $input . " ";
+                }
+                
+                $cartIds = "";
+                foreach($_SESSION["cartIds"] as $id){
+                    $cartIds .= $id . " ";
+                }
+                
+                $query = "INSERT INTO orders(creation_date, customer_details, purchased_products, total_price) VALUES (:date, :customer_details, :products_id, :total)";
+                $stmt = $pdo->prepare($query);
+                $stmt->bindParam(":date", $date);
+                $stmt->bindParam(":customer_details", $customerDetails);
+                $stmt->bindParam(":products_id", $cartIds);
+                $stmt->bindParam(":total", $_SESSION["totalPrice"]);
+                $stmt->execute();
+            
+                $stmt = null;
+                $pdo = null;
+
                 $_SESSION["checkout_success"] = true;
                 unset($_SESSION["cartIds"]);
+                unset($_SESSION["totalPrice"]);
                 unset($_SESSION["productsInCart"]);
             } catch (Exception $e) {
                 echo "The message couldn't be sent!: {$mail->ErrorInfo}";
