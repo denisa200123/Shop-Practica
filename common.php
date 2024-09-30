@@ -54,7 +54,7 @@ function translateLabels(string $label) {
         'Are you sure you want to delete this item?'=> 'Esti sigur ca vrei sa stergi acest produs?',
         'Yes'=> 'Da',
         "Price doesn't have a valid value!" => "Pretul nu are o valoare valida!",
-        'Add product' => 'Adauga produs',
+        'Add a product' => 'Adauga un produs',
         'Save'=> 'Salveaza',
         'File is not an image'=> 'Fisierul nu e o imagine',
         'File uploaded already'=> 'Fiserul exista deja',
@@ -75,7 +75,8 @@ function translateLabels(string $label) {
         'Sort by name'=> 'Sorteaza dupa nume',
         'Sort by:'=> 'Sorteaza dupa:',
         'Sort'=> 'Sorteaza',
-        'None'=> 'Niciuna',
+        'Nothing'=> 'Nimic',
+        'Looking for a product?'=> 'Cauti un produs?',
     ];
     if(isset($_SESSION["language"]) &&  $_SESSION["language"] === "RO" && $labels[$label]){
         return $labels[$label];

@@ -25,7 +25,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST["sortProducts"]) && iss
 
     <label for="sort"><?= translateLabels("Sort by:") ?></label>
     <select name="sort" id="sort">
-        <option value="none"> <?= translateLabels(label: "None") ?></option>
+        <option value="none"> <?= translateLabels(label: "Nothing") ?></option>
         <option value="name"> <?= translateLabels(label: "Name") ?></option>
         <option value="price"><?= translateLabels("Price") ?></option>
         <option value="description"><?= translateLabels("Description") ?></option>

@@ -10,7 +10,7 @@ $stmt1->execute();
 
 $nrOfProducts = $stmt1->rowCount();
 
-$productsPerPage = 2; //how many products to display per page
+$productsPerPage = 3; //how many products to display per page
 $maxPages = ceil($nrOfProducts/$productsPerPage); // maximum number of pages
 
 //get page from url, default 1
@@ -75,9 +75,19 @@ $pdo = null;
         <a href="logout.php"> <?= translateLabels("Logout") ?> </a>
         <br><br>
 
+        <!-- add product -->
+        <a href="product.php"><?= translateLabels("Add a product") ?></a>
+
+        <br><br>
+        <span> <?= translateLabels("Looking for a product?") ?></span>
+        <form action="search-product.php" method="get">
+            <input type="text" name="productToSearch" id="productToSearch">
+        </form>
+        <br><br>
+
         <!-- sort by property -->
         <?php include_once "sort-products.php"; ?>
-        <a href="product.php"><?= translateLabels("Add product") ?></a>
+
         <!-- display the products -->
         <table border="1" cellpadding="10">
             <tr>
@@ -109,6 +119,7 @@ $pdo = null;
                 </tr>
             <?php endforeach; ?>
         </table>
+        <!-- pagination -->
         <?php include 'pagination.php'; ?>
 
         <br><br>
