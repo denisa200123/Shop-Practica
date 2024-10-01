@@ -2,11 +2,34 @@
 require 'common.php';
 session_start();
 
-$query = "SELECT * FROM orders;";
+$query = "SELECT DISTINCT orderId FROM ordersproducts;";
 $stmt = $pdo->prepare($query);
 $stmt->execute();
 
-$orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$ordersId = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+foreach ($ordersId as $id => $order) {
+    echo "Order Id: " . $order["orderId"];
+    $query = 'SELECT products.title
+    FROM products 
+    INNER JOIN ordersproducts 
+    ON products.id = ordersproducts.productId
+    WHERE orderId = :orderId';
+
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':orderId', $order["orderId"]);
+    $stmt->execute();
+
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo "<br>Products: ";
+    foreach ($products as $product) {
+        echo $product["title"] . " ";
+    }
+    echo "<br><br>";
+}
+
+$stmt = null;
+$pdo = null;
 
 ?>
 
@@ -19,35 +42,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>Orders</title>
 </head>
 <body>
-    <?php include_once "language-switcher.php"; ?>
-
-    <?php if (isset($_SESSION['admin_logged'])): ?>
-
-        <?php if (!empty($orders)): ?>
-            <!-- display the orders -->
-            <table border="1" cellpadding="10">
-                <tr>
-                    <th><?= ('Id') ?></th>
-                    <th><?= translateLabels('Date') ?></th>
-                </tr>
-                <?php foreach ($orders as $order): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($order['id']) ?></td>
-                        <td><?= htmlspecialchars($order['creation_date']) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-
-        <?php else: ?>
-            <?= translateLabels('No orders'); ?>
-        <?php endif; ?>
-
-        <br><br>
-        <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
-
-    <?php else: ?>
-        <?php header("Location: index.php"); ?>
-        <?php die(); ?>
-    <?php endif; ?>
+    
 </body>
 </html>
