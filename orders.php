@@ -2,34 +2,30 @@
 require 'common.php';
 session_start();
 
-$query = "SELECT DISTINCT orderId FROM ordersproducts;";
+$query = "SELECT o.id, o.creation_date, p.title, p.price 
+          FROM ordersproducts op
+          JOIN orders o ON op.orderId = o.id
+          JOIN products p ON op.productId = p.id
+          GROUP BY o.id, p.title;";
+
 $stmt = $pdo->prepare($query);
 $stmt->execute();
+$orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$ordersId = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$currentOrderId = null;
 
-foreach ($ordersId as $id => $order) {
-    echo "Order Id: " . $order["orderId"];
-    $query = 'SELECT products.title
-    FROM products 
-    INNER JOIN ordersproducts 
-    ON products.id = ordersproducts.productId
-    WHERE orderId = :orderId';
-
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':orderId', $order["orderId"]);
-    $stmt->execute();
-
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo "<br>Products: ";
-    foreach ($products as $product) {
-        echo $product["title"] . " ";
+foreach ($orders as $order) {
+    $total = 0;
+    if ($currentOrderId !== $order['id']) {
+        if ($currentOrderId !== null) {
+            echo "<br><br>";
+        }
+        echo "Order Id: " . $order["id"] . "<br>";
+        echo "Creation date: " . $order["creation_date"] . "<br>Products: ";
+        $currentOrderId = $order['id'];
     }
-    echo "<br><br>";
+    echo $order['title'] . ", ";
 }
-
-$stmt = null;
-$pdo = null;
 
 ?>
 
@@ -41,7 +37,13 @@ $pdo = null;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders</title>
 </head>
-<body>
-    
+<body> 
+
+    <?php if (isset($_SESSION["admin_logged"])): ?>
+
+    <?php else: ?>
+        <?php header("Location: index.php"); ?>
+        <?php die(); ?>
+    <?php endif; ?>
 </body>
 </html>
