@@ -49,11 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
         if ($cartContents) {
             $mail = require __DIR__ . "/mailer.php";
 
-            //add inline attachments for images and calculate the summed price
-            $_SESSION["totalPrice"] = 0;
             foreach ($_SESSION["productsInCart"] as $id => $product) {
-                if (isset($product["image"]) && isset($product["price"])) {
-                    $_SESSION["totalPrice"] += $product["price"];
+                if (isset($product["image"])) {
                     $mail->addEmbeddedImage(htmlspecialchars("img/" . $product['image']), "img_embedded_$id");
                 }
             }
@@ -66,34 +63,26 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
             try {
                 //send mail
                 $mail->send();
-
-                //include the order details in "orders" table
-                $customerDetails = "";
-                foreach ($_SESSION["user_input"] as $detail => $input) {
-                    if ($input) {
-                        $customerDetails .= $detail . ": " . $input . "\n";
-                    }
-                }
                 
-                $cartProducts = "";
-                foreach ($_SESSION["productsInCart"] as $productName) {
-                    $cartProducts .= $productName["title"] . ", ";
-                }
-                
-                $query = "INSERT INTO orders(creation_date, customer_details, purchased_products, total_price) VALUES (:date, :customer_details, :products_id, :total)";
+                $query = "INSERT INTO orders(creation_date) VALUES (:date)";
                 $stmt = $pdo->prepare($query);
                 $stmt->bindParam(":date", $date);
-                $stmt->bindParam(":customer_details", $customerDetails);
-                $stmt->bindParam(":products_id", $cartProducts);
-                $stmt->bindParam(":total", $_SESSION["totalPrice"]);
                 $stmt->execute();
-            
+                $orderId = $pdo->lastInsertId();
+
+                foreach ($_SESSION["productsInCart"] as $product) {
+                    $query = "INSERT INTO ordersproducts(orderId, productId) VALUES (:orderId, :productId)";
+                    $stmt = $pdo->prepare($query);
+                    $stmt->bindParam(":orderId", $orderId);
+                    $stmt->bindParam(":productId", $product["id"]);
+                    $stmt->execute();
+                }
+
                 $stmt = null;
                 $pdo = null;
 
                 $_SESSION["checkout_success"] = true;
                 unset($_SESSION["cartIds"]);
-                unset($_SESSION["totalPrice"]);
                 unset($_SESSION["productsInCart"]);
             } catch (Exception $e) {
                 echo "The message couldn't be sent!: {$mail->ErrorInfo}";

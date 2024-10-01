@@ -27,17 +27,13 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <!-- display the orders -->
             <table border="1" cellpadding="10">
                 <tr>
+                    <th><?= ('Id') ?></th>
                     <th><?= translateLabels('Date') ?></th>
-                    <th><?= translateLabels('Customer details') ?></th>
-                    <th><?= translateLabels('Purchased products') ?></th>
-                    <th><?= translateLabels('Total price') ?></th>    
                 </tr>
                 <?php foreach ($orders as $order): ?>
                     <tr>
+                        <td><?= htmlspecialchars($order['id']) ?></td>
                         <td><?= htmlspecialchars($order['creation_date']) ?></td>
-                        <td><?= nl2br(htmlspecialchars($order['customer_details'])) ?></td>
-                        <td><?= htmlspecialchars($order['purchased_products']) ?></td>
-                        <td><?= htmlspecialchars($order['total_price']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             </table>
