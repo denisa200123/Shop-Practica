@@ -78,10 +78,12 @@ $pdo = null;
         <!-- add product -->
         <a href="product.php"><?= translateLabels("Add a product") ?></a>
 
+        <!-- search product -->
         <br><br>
         <span> <?= translateLabels("Looking for a product?") ?></span>
         <form action="search-product.php" method="get">
             <input type="text" name="productToSearch" id="productToSearch">
+            <input type="submit" value="<?= translateLabels('Search'); ?>" >
         </form>
         <br><br>
 
