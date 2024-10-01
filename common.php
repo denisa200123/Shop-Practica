@@ -78,7 +78,7 @@ function translateLabels(string $label) {
         'Nothing'=> 'Nimic',
         'Looking for a product?'=> 'Cauti un produs?',
     ];
-    if(isset($_SESSION["language"]) &&  $_SESSION["language"] === "RO" && $labels[$label]){
+    if (isset($_SESSION["language"]) &&  $_SESSION["language"] === "RO" && $labels[$label]) {
         return $labels[$label];
     }
     return $label;

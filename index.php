@@ -53,7 +53,7 @@ $stmt = null;
 <body>
     <?php include_once "language-switcher.php"; ?>
 
-    <?php if(isset($_SESSION["admin_logged"])): ?>
+    <?php if (isset($_SESSION["admin_logged"])): ?>
         <p> <?= translateLabels("Admin logged") ?> </p>
         <a href="products.php"><?= translateLabels('Products page'); ?></a>
         <br>
@@ -67,7 +67,7 @@ $stmt = null;
     <h1>
         <?php if (count($productsNotInCart) === 0): ?>
             <?= translateLabels('You bought everything!'); ?>
-        <?php elseif(count($productsNotInCart) > 0): ?>
+        <?php elseif (count($productsNotInCart) > 0): ?>
             <?= translateLabels('What you can buy:'); ?>
         <?php else: ?>
             <?= translateLabels('Something is not right!'); ?>

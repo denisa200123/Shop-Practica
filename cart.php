@@ -31,7 +31,7 @@ $comments = isset($_SESSION["user_input"]["comments"]) ? $_SESSION["user_input"]
 unset($_SESSION["user_input"]);
 
 //check if there are checkout errors
-if(isset($_SESSION["checkout_errors"]) &&  !empty($_SESSION["checkout_errors"])) {
+if (isset($_SESSION["checkout_errors"]) &&  !empty($_SESSION["checkout_errors"])) {
     $errors = $_SESSION["checkout_errors"];
     unset($_SESSION["checkout_errors"]);
 }
@@ -122,7 +122,7 @@ if (isset($_SESSION["checkout_failed"]) && !empty($_SESSION["checkout_failed"]))
     <br>
     
     <!-- display the checkout errors, if there are any -->
-    <?php if(!empty($errors)): ?>
+    <?php if (!empty($errors)): ?>
         <?php foreach ($errors as $error): ?>
             <?= $error ?>
             <br>

@@ -1,5 +1,5 @@
 <?php
-if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST["sortProducts"]) && isset($_POST["sort"])
+if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST["sortProducts"]) && isset($_POST["sort"])
 && $_POST["sortProducts"] === "sort products" && in_array($_POST["sort"], ['none', 'name', 'price', 'description'])) {
     switch ($_POST['sort']) {
         case "name":

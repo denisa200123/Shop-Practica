@@ -3,7 +3,7 @@
 session_start();
 require_once 'common.php';
 
-$productId =  isset($_POST["productId"]) ? strip_tags($_POST["productId"]) : "";
+$productId = isset($_POST["productId"]) ? strip_tags($_POST["productId"]) : "";
 // check if the id is an int
 if (filter_var($productId, FILTER_VALIDATE_INT)) {
     $query = "SELECT * FROM products WHERE id = :id";

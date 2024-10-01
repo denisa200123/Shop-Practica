@@ -36,11 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_FILES["fileToUpload"]["tmp_
 
     $addErrors = [];
 
-    if(isInputEmpty($userInput)){
+    if (isInputEmpty($userInput)) {
         $addErrors["emptyInput"] = translateLabels( "Not all fields were filled!");
     }
 
-    if(isPriceInvalid($price)){
+    if (isPriceInvalid($price)) {
         $addErrors["invalidPrice"] = translateLabels( "Price doesn't have a valid value!");
     }
 

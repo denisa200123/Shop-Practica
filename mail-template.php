@@ -33,7 +33,7 @@ $productsInCart = isset($_SESSION["productsInCart"]) ? $_SESSION["productsInCart
                 <th><?= translateLabels('Image') ?></th>       
             </tr>
             <!-- display the info about each product -->
-            <?php if($productsInCart): ?>
+            <?php if ($productsInCart): ?>
                 <?php foreach ($productsInCart as $id => $product): ?>
                     <tr>
                         <td><?= htmlspecialchars($product['title']) ?></td>

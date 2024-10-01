@@ -7,7 +7,7 @@ $username = isset($_SESSION["login_username"]) ? $_SESSION["login_username"] : "
 unset($_SESSION["login_username"]);
 
 //check if there are login errors
-if(isset($_SESSION["login_errors"]) &&  !empty($_SESSION["login_errors"])) {
+if (isset($_SESSION["login_errors"]) &&  !empty($_SESSION["login_errors"])) {
     $errors = $_SESSION["login_errors"];
     unset($_SESSION["login_errors"]);
 }
@@ -30,7 +30,7 @@ if (isset($_SESSION["login_failed"]) && !empty($_SESSION["login_failed"])) {
 <body>
 
     <!-- if admin is logged in, he should be redirected to products -->
-    <?php if(!isset($_SESSION["admin_logged"])): ?>
+    <?php if (!isset($_SESSION["admin_logged"])): ?>
         <?php include_once "language-switcher.php"; ?>
         <form action="login-processing.php" method="POST">
             <label for="username"> <?= translateLabels("Username") ?></label>
@@ -49,7 +49,7 @@ if (isset($_SESSION["login_failed"]) && !empty($_SESSION["login_failed"])) {
         <br>
         
         <!-- display the login errors, if there are any -->
-        <?php if(!empty($errors)): ?>
+        <?php if (!empty($errors)): ?>
             <?php foreach ($errors as $error): ?>
                 <?= $error ?>
                 <br>

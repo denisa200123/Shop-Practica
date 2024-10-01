@@ -1,6 +1,6 @@
 <?php 
 
-if($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST["languageForm"]) && isset($_POST["language"])
+if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST["languageForm"]) && isset($_POST["language"])
     && $_POST["languageForm"] === "language form" && in_array($_POST["language"], ['RO', 'ENG'])) {
     $_SESSION["language"] = $_POST["language"];
 }

@@ -44,11 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && filter_var($id, FILTER_VALIDATE_INT
 
     $editingErrors = [];
 
-    if(isInputEmpty($userInput)){
+    if (isInputEmpty($userInput)) {
         $editingErrors["emptyInput"] = translateLabels( "Not all fields were filled!");
     }
 
-    if(isPriceInvalid($price)){
+    if (isPriceInvalid($price)) {
         $editingErrors["invalidPrice"] = translateLabels( "Price doesn't have a valid value!");
     }
 
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && filter_var($id, FILTER_VALIDATE_INT
         $pdo = null;
         unset($_SESSION["productId"]);
 
-        if($uploadedImage) { 
+        if ($uploadedImage) { 
             move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
         }
     } else {

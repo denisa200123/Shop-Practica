@@ -20,13 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
     $userInput = [$name, $contactDetails, $date];
 
     $errors = [];
-    if(isInputEmpty($userInput)){
+    if (isInputEmpty($userInput)) {
         $errors["emptyInput"] = translateLabels( "Not all fields were filled!");
     } 
 
     //name should contain only letters, spaces, dashes
     $filteredName=str_replace(array(" ", "-"), "", $name);
-    if(!ctype_alpha($filteredName) && strlen($filteredName) > 0) {
+    if (!ctype_alpha($filteredName) && strlen($filteredName) > 0) {
         $errors["invalidName"] = translateLabels("The 'name' field contains invalid characters!");
     } 
 
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
     ];
     $_SESSION["user_input"] = $checkout_data;
 
-    if($errors) {
+    if ($errors) {
         $_SESSION["checkout_errors"] = $errors;
     } else {
         ob_start();
@@ -46,13 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
         $cartContents = ob_get_clean();
 
         //if the file that contains info from the cart page was found, try to send email
-        if($cartContents) {
+        if ($cartContents) {
             $mail = require __DIR__ . "/mailer.php";
 
             //add inline attachments for images and calculate the summed price
             $_SESSION["totalPrice"] = 0;
             foreach ($_SESSION["productsInCart"] as $id => $product) {
-                if(isset($product["image"]) && isset($product["price"])) {
+                if (isset($product["image"]) && isset($product["price"])) {
                     $_SESSION["totalPrice"] += $product["price"];
                     $mail->addEmbeddedImage(htmlspecialchars("img/" . $product['image']), "img_embedded_$id");
                 }
@@ -69,14 +69,14 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_SESSION["productsInCart"]))
 
                 //include the order details in "orders" table
                 $customerDetails = "";
-                foreach($_SESSION["user_input"] as $detail => $input){
-                    if($input){
+                foreach ($_SESSION["user_input"] as $detail => $input) {
+                    if ($input) {
                         $customerDetails .= $detail . ": " . $input . "\n";
                     }
                 }
                 
                 $cartProducts = "";
-                foreach($_SESSION["productsInCart"] as $productName){
+                foreach ($_SESSION["productsInCart"] as $productName) {
                     $cartProducts .= $productName["title"] . ", ";
                 }
                 

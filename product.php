@@ -32,7 +32,7 @@ unset($_SESSION["adding_input"]);
     <title>Add product</title>
 </head>
 <body>
-    <?php if(isset($_SESSION["admin_logged"])): ?>
+    <?php if (isset($_SESSION["admin_logged"])): ?>
         <?php include_once "language-switcher.php"; ?>
 
         <form action="add-product-processing.php" enctype="multipart/form-data" method="POST">
