@@ -1,3 +1,11 @@
+<?php
+
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
+    die('Direct access not permitted');
+}
+
+?>
+
 <?php if ($maxPages > 0): ?>
     <?php if ($page > 1): ?>
         <a href="products.php?page=<?= $page - 1 ?>">Prev</a>

@@ -2,6 +2,10 @@
 
 require_once 'config.php';
 
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
+    die('Direct access not permitted');
+}
+
 //db connection
 try {
     $pdo = new PDO("mysql:host=" . HOST . ";dbname=" . DBNAME, USERNAME, PASSWORD);
@@ -80,9 +84,11 @@ function translateLabels(string $label) {
         'Search'=> 'Cauta',
         "Sorry, we didn't find the product"=> "Ne pare rau, nu am gasit produsul",
         "Products found"=> "Produse gasite",
+        "Order id"=> "Id comanda",
+        "Products"=> "Produse",
     ];
-    if (isset($_SESSION["language"]) &&  $_SESSION["language"] === "RO" && $labels[$label]) {
-        return $labels[$label];
+    if (isset($_SESSION["language"]) &&  $_SESSION["language"] === "RO") {
+        return $labels[$label] ?? $label;
     }
     return $label;
 }
