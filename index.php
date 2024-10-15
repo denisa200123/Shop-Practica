@@ -3,27 +3,27 @@ require 'common.php';
 session_start();
 
 //initialize cardIds(stores the ids of the products)
-if (!isset($_SESSION["cartIds"])) {
-    $_SESSION["cartIds"] = [];
+if (!isset($_SESSION['cartIds'])) {
+    $_SESSION['cartIds'] = [];
 }
 
 // if a product is selected, add it to the cart if it's not already there
-if (isset($_POST["productSelected"]) && !in_array($_POST["productSelected"], $_SESSION["cartIds"])
-    && filter_var($_POST["productSelected"], FILTER_VALIDATE_INT)) {
-    array_push($_SESSION["cartIds"], $_POST["productSelected"]);
+if (isset($_POST['id']) && !in_array($_POST['id'], $_SESSION['cartIds'])
+    && filter_var($_POST['id'], FILTER_VALIDATE_INT)) {
+    array_push($_SESSION['cartIds'], $_POST['id']);
 }
 
-if (!empty($_SESSION["cartIds"])) {
+if (!empty($_SESSION['cartIds'])) {
     //when there are products in the cart, select all the products that are not in it
-    $cartProducts = implode(',', array_fill(0, count($_SESSION["cartIds"]), '?'));
+    $cartProducts = implode(',', array_fill(0, count($_SESSION['cartIds']), '?'));
     $query = "SELECT * FROM products WHERE id NOT IN ($cartProducts)";
     $stmt = $pdo->prepare($query);
-    $stmt->execute($_SESSION["cartIds"]);
+    $stmt->execute($_SESSION['cartIds']);
 } else {
     // when the cart is empty, select all products
-    $query = "SELECT * FROM products";
+    $query = 'SELECT * FROM products';
     $stmt = $pdo->prepare($query);
-    $stmt->execute($_SESSION["cartIds"]);
+    $stmt->execute($_SESSION['cartIds']);
 }
 
 //fetch all products
@@ -51,16 +51,16 @@ $stmt = null;
 </head>
 
 <body>
-    <?php include_once "language-switcher.php"; ?>
+    <?php include_once 'language-switcher.php'; ?>
     
-    <?php if (isset($_SESSION["admin_logged"])): ?>
-        <p> <?= translateLabels("Admin logged") ?> </p>
+    <?php if (isset($_SESSION['admin_logged'])): ?>
+        <p><?= translateLabels('Admin logged') ?></p>
         <a href="products.php"><?= translateLabels('Products page'); ?></a>
         <br>
         <a href="orders.php"><?= translateLabels('Orders page'); ?></a>
     <?php else: ?>
-        <span><?= translateLabels("Do you have an admin account?") ?></span>
-        <a href="login.php"><?= translateLabels("Login") ?></a>
+        <span><?= translateLabels('Do you have an admin account?') ?></span>
+        <a href="login.php"><?= translateLabels('Login') ?></a>
     <?php endif; ?>
 
     <!-- display message (are there products in the cart or not) -->
@@ -89,11 +89,11 @@ $stmt = null;
                 <td><?= htmlspecialchars($product['title']) ?></td>
                 <td><?= htmlspecialchars($product['price']) ?></td>
                 <td><?= htmlspecialchars($product['description']) ?></td>
-                <td><img src="<?= "img/" . htmlspecialchars($product['image']) ?>"></td>
+                <td><img src="img/<?= htmlspecialchars($product['image']) ?>"></td>
                 <td>
                     <form method="post">
-                        <input type="hidden" name="productSelected" value="<?= htmlspecialchars($product["id"]) ?>" >
-                        <input type="submit" value="<?= translateLabels('Add'); ?>" >
+                        <input type="hidden" name="id" value="<?= htmlspecialchars($product['id']) ?>" >
+                        <input type="submit" value="<?= translateLabels('Add') ?>" >
                     </form>
                 </td>
             </tr>
