@@ -3,17 +3,16 @@
 session_start();
 require_once 'common.php';
 
-if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET["productToSearch"]) && !empty($_GET["productToSearch"])) {
-    $productName = strip_tags($_GET["productToSearch"]);
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['productToSearch']) && !empty($_GET['productToSearch'])) {
+    $productName = strip_tags($_GET['productToSearch']);
     $productName = filter_var($productName, FILTER_SANITIZE_STRING);
     $productName = htmlspecialchars_decode($productName);
-    $productName = "%" . $productName . "%";
+    $productName = '%' . $productName . '%';
     $productName = strtolower($productName);
-
 
     $query = "SELECT * FROM products WHERE lower(title) LIKE :productName";
     $stmt = $pdo->prepare($query);
-    $stmt->bindParam(":productName", $productName);
+    $stmt->bindParam(':productName', $productName);
     $stmt->execute();
 
     $productsFound = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -21,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET["productToSearch"]) && !
     $stmt = null;
     $pdo = null;
 } else {
-    header("Location: products.php");
+    header('Location: products.php');
     die();
 }
 
@@ -44,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET["productToSearch"]) && !
 <body>
     <!-- display the found products -->
     <?php if ($productsFound): ?>
-        <h1> <?= translateLabels("Products found"); ?></h1>
+        <h1> <?= translateLabels('Products found'); ?></h1>
         <table border="1" cellpadding="10">
             <tr>
                 <th><?= translateLabels('Name') ?></th>
@@ -57,12 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET["productToSearch"]) && !
                     <td><?= htmlspecialchars($product['title']) ?></td>
                     <td><?= htmlspecialchars($product['price']) ?></td>
                     <td><?= htmlspecialchars($product['description']) ?></td>
-                    <td><img src="<?= "img/" . htmlspecialchars($product['image']) ?>"></td>
+                    <td><img src="img/<?= htmlspecialchars($product['image']) ?>"></td>
                 </tr>
             <?php endforeach; ?>
         </table>
     <?php else: ?>
-        <h1> <?= translateLabels("Sorry, we didn't find the product"); ?> </h1>
+        <h1> <?= translateLabels('Sorry, we did not find the product'); ?> </h1>
     <?php endif; ?>
     <br>
     <a href="products.php"><?= translateLabels('Products page'); ?></a>

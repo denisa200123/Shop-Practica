@@ -52,7 +52,7 @@ $stmt = null;
 
 <body>
     <?php include_once 'language-switcher.php'; ?>
-    
+
     <?php if (isset($_SESSION['admin_logged'])): ?>
         <p><?= translateLabels('Admin logged') ?></p>
         <a href="products.php"><?= translateLabels('Products page'); ?></a>

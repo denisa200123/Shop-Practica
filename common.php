@@ -20,7 +20,8 @@ $locales = [
 	'ro' => translateLabels('Romanian'),
 ];
 
-function translateLabels($label) {
+function translateLabels($label) 
+{
     if (isset($_SESSION['language']) &&  $_SESSION['language'] === 'ro') {
         return RO_TRANSLATIONS[$label] ?? $label;
     }

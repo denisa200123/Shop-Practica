@@ -5,10 +5,10 @@ session_start();
 
 //get number of products from table
 $query = "SELECT * FROM products";
-$stmt1 = $pdo->prepare($query);
-$stmt1->execute();
+$stmt = $pdo->prepare($query);
+$stmt->execute();
 
-$nrOfProducts = $stmt1->rowCount();
+$nrOfProducts = $stmt->rowCount();
 
 $productsPerPage = 3; //how many products to display per page
 $maxPages = ceil($nrOfProducts/$productsPerPage); // maximum number of pages
@@ -18,31 +18,22 @@ $page = isset($_GET['page']) && is_numeric($_GET['page'])  && $_GET['page']>0 &&
 
 $currentPage = ($page - 1) * $productsPerPage;
 
-if (!isset($_SESSION["sort"]) || (isset($_SESSION["sort"]) && $_SESSION["sort"] == "none")) {
-    $query = "SELECT * FROM products LIMIT ?, ?";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(1, $currentPage, PDO::PARAM_INT);
-    $stmt->bindParam(2, $productsPerPage, PDO::PARAM_INT);
-    $stmt->execute();
-} elseif (isset($_SESSION["sort"]) && $_SESSION["sort"] == "title") {
-    $query = "SELECT * FROM products ORDER BY title LIMIT ?, ?;";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(1, $currentPage, PDO::PARAM_INT);
-    $stmt->bindParam(2, $productsPerPage, PDO::PARAM_INT);
-    $stmt->execute();
-} elseif (isset($_SESSION["sort"]) && $_SESSION["sort"] == "price") {
-    $query = "SELECT * FROM products ORDER BY price LIMIT ?, ?;";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(1, $currentPage, PDO::PARAM_INT);
-    $stmt->bindParam(2, $productsPerPage, PDO::PARAM_INT);
-    $stmt->execute();
-} elseif (isset($_SESSION["sort"]) && $_SESSION["sort"] == "description") {
-    $query = "SELECT * FROM products ORDER BY description LIMIT ?, ?;";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(1, $currentPage, PDO::PARAM_INT);
-    $stmt->bindParam(2, $productsPerPage, PDO::PARAM_INT);
-    $stmt->execute();
+$query = '';
+
+if (!isset($_SESSION['sort']) || (isset($_SESSION['sort']) && $_SESSION['sort'] == 'none')) {
+    $query = 'SELECT * FROM products LIMIT ?, ?';
+} elseif (isset($_SESSION['sort']) && $_SESSION['sort'] == 'title') {
+    $query = 'SELECT * FROM products ORDER BY title LIMIT ?, ?;';
+} elseif (isset($_SESSION['sort']) && $_SESSION['sort'] == 'price') {
+    $query = 'SELECT * FROM products ORDER BY price LIMIT ?, ?;';
+} elseif (isset($_SESSION['sort']) && $_SESSION['sort'] == 'description') {
+    $query = 'SELECT * FROM products ORDER BY description LIMIT ?, ?;';
 }
+
+$stmt = $pdo->prepare($query);
+$stmt->bindParam(1, $currentPage, PDO::PARAM_INT);
+$stmt->bindParam(2, $productsPerPage, PDO::PARAM_INT);
+$stmt->execute();
 
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -67,28 +58,28 @@ $pdo = null;
 </head>
 <body>
     <?php if (isset($_SESSION['admin_logged'])): ?>
-        <?php include_once "language-switcher.php"; ?>
+        <?php include_once 'language-switcher.php'; ?>
         
-        <span> <?= translateLabels("Admin logged") ?> </span>
+        <span><?= translateLabels('Admin logged') ?></span>
         <br>
-        <span> <?= translateLabels("Want to logout?")?> </span>
-        <a href="logout.php"> <?= translateLabels("Logout") ?> </a>
+        <span><?= translateLabels('Want to logout?')?></span>
+        <a href="logout.php"><?= translateLabels('Logout') ?></a>
         <br><br>
 
         <!-- add product -->
-        <a href="product.php"><?= translateLabels("Add a product") ?></a>
+        <a href="product.php"><?= translateLabels('Add a product') ?></a>
 
         <!-- search product -->
         <br><br>
-        <span> <?= translateLabels("Looking for a product?") ?></span>
+        <span> <?= translateLabels('Looking for a product?') ?></span>
         <form action="search-product.php" method="get">
             <input type="text" name="productToSearch" id="productToSearch">
-            <input type="submit" value="<?= translateLabels('Search'); ?>" >
+            <input type="submit" value="<?= translateLabels('Search'); ?>">
         </form>
         <br><br>
 
         <!-- sort by property -->
-        <?php include_once "sort-products.php"; ?>
+        <?php include_once 'sort-products.php'; ?>
 
         <!-- display the products -->
         <table border="1" cellpadding="10">
@@ -105,17 +96,17 @@ $pdo = null;
                     <td><?= htmlspecialchars($product['title']) ?></td>
                     <td><?= htmlspecialchars($product['price']) ?></td>
                     <td><?= htmlspecialchars($product['description']) ?></td>
-                    <td><img src="<?= "img/" . htmlspecialchars($product['image']) ?>"></td>
+                    <td><img src="img/<?= htmlspecialchars($product['image']) ?>"></td>
                     <td>
                         <form method="post" action="edit-product.php">
-                            <input type="hidden" name="productId" value="<?= htmlspecialchars($product["id"]) ?>" >
-                            <input type="submit" value="<?= translateLabels('Edit'); ?>" >
+                            <input type="hidden" name="productId" value="<?= htmlspecialchars($product['id']) ?>">
+                            <input type="submit" value="<?= translateLabels('Edit'); ?>">
                         </form>
                     </td>
                     <td>
                         <form method="post" action="delete-product.php">
-                            <input type="hidden" name="productId" value="<?= htmlspecialchars($product["id"]) ?>" >
-                            <input type="submit" value="<?= translateLabels('Remove'); ?>" >
+                            <input type="hidden" name="productId" value="<?= htmlspecialchars($product['id']) ?>">
+                            <input type="submit" value="<?= translateLabels('Remove'); ?>">
                         </form>
                     </td>
                 </tr>
@@ -128,7 +119,7 @@ $pdo = null;
         <br>
         <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
     <?php else: ?>
-        <?php header("Location: index.php"); ?>
+        <?php header('Location: index.php'); ?>
         <?php die(); ?>
     <?php endif; ?>
 </body>

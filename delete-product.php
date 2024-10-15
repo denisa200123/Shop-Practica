@@ -3,17 +3,17 @@
 session_start();
 require_once 'common.php';
 
-$productId = isset($_POST["productId"]) ? strip_tags($_POST["productId"]) : "";
+$productId = isset($_POST['productId']) ? strip_tags($_POST['productId']) : '';
 // check if the id is an int
 if (filter_var($productId, FILTER_VALIDATE_INT)) {
     $query = "SELECT * FROM products WHERE id = :id";
     $stmt = $pdo->prepare($query);
-    $stmt->bindParam(":id", $productId);
+    $stmt->bindParam(':id', $productId);
     $stmt->execute();
     
     $selectedProduct = $stmt->fetch(PDO::FETCH_ASSOC);
 } else {
-    header("Location: products.php");
+    header('Location: products.php');
     die();
 }
 
@@ -33,8 +33,8 @@ if (filter_var($productId, FILTER_VALIDATE_INT)) {
     </style>
 </head>
 <body>
-    <?php if ($_SERVER['REQUEST_METHOD'] === "POST" && $selectedProduct): ?>
-        <h1><?= translateLabels("Are you sure you want to delete this item?"); ?></h1>
+    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && $selectedProduct): ?>
+        <h1><?= translateLabels('Are you sure you want to delete this item?'); ?></h1>
 
         <form method="post" action="delete-product-processing.php">
             <input type="hidden" name="productId" value="<?= htmlspecialchars($productId) ?>">
@@ -52,15 +52,15 @@ if (filter_var($productId, FILTER_VALIDATE_INT)) {
                 <td><?= htmlspecialchars($selectedProduct['title']) ?></td>
                 <td><?= htmlspecialchars($selectedProduct['price']) ?></td>
                 <td><?= htmlspecialchars($selectedProduct['description']) ?></td>
-                <td><img src="<?= "img/" . htmlspecialchars($selectedProduct['image']) ?>"</td>
+                <td><img src="img/<?= htmlspecialchars($selectedProduct['image']) ?>"></td>
             </tr>
         </table>
 
         <br>
 
-        <a href="products.php"><?= translateLabels("Products page") ?></a>
+        <a href='products.php'><?= translateLabels('Products page') ?></a>
     <?php else: ?>
-        <?php header("Location: products.php");?>
+        <?php header('Location: products.php');?>
         <?php die(); ?>
     <?php endif; ?>
 </body>

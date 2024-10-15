@@ -21,8 +21,8 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body> 
 
-    <?php if (isset($_SESSION["admin_logged"])): ?>
-        <?php include_once "language-switcher.php"; ?>
+    <?php if (isset($_SESSION['admin_logged'])): ?>
+        <?php include_once 'language-switcher.php'; ?>
         
         <?php if($orders): ?>
             <table border="1" cellpadding="10">
@@ -45,7 +45,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= htmlspecialchars($order['total_price']) ?></td>
                         <td>
                             <form method="get" action="order.php">
-                                <input type="hidden" name="orderId" value="<?= htmlspecialchars($order["id"]) ?>" >
+                                <input type="hidden" name="orderId" value="<?= htmlspecialchars($order['id']) ?>" >
                                 <input type="submit" value="<?= translateLabels('See products'); ?>" >
                             </form>
                         </td>
@@ -53,12 +53,12 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php endforeach; ?>
             </table>
         <?php else: ?>
-            <h1> <?= translateLabels("No orders")?> </h1>
+            <h1> <?= translateLabels('No orders')?> </h1>
         <?php endif; ?>
 
         <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
     <?php else: ?>
-        <?php header("Location: index.php"); ?>
+        <?php header('Location: index.php'); ?>
         <?php die(); ?>
     <?php endif; ?>
 </body>

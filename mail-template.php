@@ -1,9 +1,9 @@
 <?php 
-require_once "common.php"; 
-$productsInCart = isset($_SESSION["productsInCart"]) ? $_SESSION["productsInCart"] : "";
+require_once 'common.php'; 
+$productsInCart = isset($_SESSION['productsInCart']) ? $_SESSION['productsInCart'] : '';
 ?>
 
-<?php if ($_SERVER['REQUEST_METHOD'] === "POST"): ?>
+<?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -19,11 +19,11 @@ $productsInCart = isset($_SESSION["productsInCart"]) ? $_SESSION["productsInCart
         </style>
     </head>
     <body>
-        <h1><?= translateLabels("Information about your order") ?></h1>
+        <h1><?= translateLabels('Information about your order') ?></h1>
 
-        <p><?= translateLabels("Name")?> : <?= htmlspecialchars($_SESSION["user_input"]["name"]) ?></p>
-        <p><?= translateLabels("Contact details")?> : <?= htmlspecialchars($_SESSION["user_input"]["contactDetails"])?></p>
-        <p><?= translateLabels("Comments")?> : <?= htmlspecialchars($_SESSION["user_input"]["comments"])?></p>
+        <p><?= translateLabels('Name')?> : <?= htmlspecialchars($_SESSION['user_input']['name']) ?></p>
+        <p><?= translateLabels('Contact details')?> : <?= htmlspecialchars($_SESSION['user_input']['contactDetails'])?></p>
+        <p><?= translateLabels('Comments')?> : <?= htmlspecialchars($_SESSION['user_input']['comments'])?></p>
 
         <table border="1" cellpadding="10">
             <tr>
@@ -39,17 +39,17 @@ $productsInCart = isset($_SESSION["productsInCart"]) ? $_SESSION["productsInCart
                         <td><?= htmlspecialchars($product['title']) ?></td>
                         <td><?= htmlspecialchars($product['price']) ?></td>
                         <td><?= htmlspecialchars($product['description']) ?></td>
-                        <td><img src="cid:img_embedded_<?=$id?>"></td>
+                        <td><img src="cid:img_embedded_<?= $id ?>"></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
-                <h1><?= translateLabels("No products selected") ?></h1>
+                <h1><?= translateLabels('No products selected') ?></h1>
             <?php endif; ?>
         </table>
                 
     </body>
     </html>
 <?php else: ?>
-    <?php header("Location: index.php"); ?>
+    <?php header('Location: index.php'); ?>
     <?php die(); ?>
 <?php endif; ?>

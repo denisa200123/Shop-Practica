@@ -1,24 +1,25 @@
 <?php
 
 session_start();
-require "common.php";
+require 'common.php';
 
-$username = isset($_SESSION["login_username"]) ? $_SESSION["login_username"] : "";
-unset($_SESSION["login_username"]);
+$username = isset($_SESSION['login_username']) ? $_SESSION['login_username'] : '';
+unset($_SESSION['login_username']);
 
 //check if there are login errors
-if (isset($_SESSION["login_errors"]) &&  !empty($_SESSION["login_errors"])) {
-    $errors = $_SESSION["login_errors"];
-    unset($_SESSION["login_errors"]);
+if (isset($_SESSION['login_errors']) &&  !empty($_SESSION['login_errors'])) {
+    $errors = $_SESSION['login_errors'];
+    unset($_SESSION['login_errors']);
 }
 
 $loginFailed = false;
-if (isset($_SESSION["login_failed"]) && !empty($_SESSION["login_failed"])) {
+if (isset($_SESSION['login_failed']) && !empty($_SESSION['login_failed'])) {
     $loginFailed = true;
-    unset($_SESSION["login_failed"]);
+    unset($_SESSION['login_failed']);
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,20 +31,20 @@ if (isset($_SESSION["login_failed"]) && !empty($_SESSION["login_failed"])) {
 <body>
 
     <!-- if admin is logged in, he should be redirected to products -->
-    <?php if (!isset($_SESSION["admin_logged"])): ?>
-        <?php include_once "language-switcher.php"; ?>
+    <?php if (!isset($_SESSION['admin_logged'])): ?>
+        <?php include_once 'language-switcher.php'; ?>
         <form action="login-processing.php" method="POST">
-            <label for="username"> <?= translateLabels("Username") ?></label>
+            <label for="username"><?= translateLabels('Username') ?></label>
             <input type="text" name="username" id="username" required value="<?= $username ?>">
             <br>
-            <label for="password"> <?= translateLabels("Password") ?></label>
+            <label for="password"><?= translateLabels('Password') ?></label>
             <input type="password" name="password" id="password" required>
             <br>
-            <input type="submit" value="<?= translateLabels("Login") ?>">
+            <input type="submit" value="<?= translateLabels('Login') ?>">
         </form>
 
         <?php if ($loginFailed): ?>
-            <?= translateLabels("Login failed!") ?>
+            <?= translateLabels('Login failed!') ?>
         <?php endif; ?>
 
         <br>
@@ -57,10 +58,10 @@ if (isset($_SESSION["login_failed"]) && !empty($_SESSION["login_failed"])) {
         <?php endif; ?>
 
         <br><br>
-        <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
+        <a href='index.php'><?= translateLabels('Go to main page'); ?></a>
 
     <?php else: ?>
-        <?php header("Location: products.php"); ?>
+        <?php header('Location: products.php'); ?>
         <?php die(); ?>
     <?php endif; ?>
 

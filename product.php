@@ -4,22 +4,22 @@ session_start();
 require_once 'common.php';
 
 //check for adding function errors
-if (isset($_SESSION["addErrors"]) && !empty($_SESSION["addErrors"])) {
-    $addErrors = $_SESSION["addErrors"];
-    unset($_SESSION["addErrors"]);
+if (isset($_SESSION['addErrors']) && !empty($_SESSION['addErrors'])) {
+    $addErrors = $_SESSION['addErrors'];
+    unset($_SESSION['addErrors']);
 }
 
 //check for image errors
-if (isset($_SESSION["imgErrors"]) && !empty($_SESSION["imgErrors"])) {
-    $imageErrors = $_SESSION["imgErrors"];
-    unset($_SESSION["imgErrors"]);
+if (isset($_SESSION['imgErrors']) && !empty($_SESSION['imgErrors'])) {
+    $imageErrors = $_SESSION['imgErrors'];
+    unset($_SESSION['imgErrors']);
 }
 
 //if validation fails, remember the form fields
-$name = isset($_SESSION["adding_input"]["name"]) ? $_SESSION["adding_input"]["name"] : "";
-$contactDetails = isset($_SESSION["adding_input"]["description"]) ? $_SESSION["adding_input"]["description"] : "";
-$comments = isset($_SESSION["adding_input"]["price"]) ? $_SESSION["adding_input"]["price"] : "";
-unset($_SESSION["adding_input"]);
+$name = isset($_SESSION['adding_input']['name']) ? $_SESSION['adding_input']['name'] : '';
+$contactDetails = isset($_SESSION['adding_input']['description']) ? $_SESSION['adding_input']['description'] : '';
+$comments = isset($_SESSION['adding_input']['price']) ? $_SESSION['adding_input']['price'] : '';
+unset($_SESSION['adding_input']);
 
 ?>
 
@@ -32,8 +32,8 @@ unset($_SESSION["adding_input"]);
     <title>Add product</title>
 </head>
 <body>
-    <?php if (isset($_SESSION["admin_logged"])): ?>
-        <?php include_once "language-switcher.php"; ?>
+    <?php if (isset($_SESSION['admin_logged'])): ?>
+        <?php include_once 'language-switcher.php'; ?>
 
         <form action="add-product-processing.php" enctype="multipart/form-data" method="POST">
             <label for="name"><?= translateLabels('Name'); ?></label>
@@ -52,7 +52,7 @@ unset($_SESSION["adding_input"]);
             <input type="file" name="fileToUpload" id="fileToUpload" required>
 
             <br><br>
-            <input type="submit" value=" <?= translateLabels("Add") ?> ">
+            <input type="submit" value=" <?= translateLabels('Add') ?> ">
         </form>
 
         <!-- display the image errors, if there are any -->
@@ -71,9 +71,9 @@ unset($_SESSION["adding_input"]);
         <?php endif; ?>
 
         <br>
-        <a href="products.php"><?= translateLabels("Products page") ?></a>
+        <a href="products.php"><?= translateLabels('Products page') ?></a>
     <?php else: ?>
-        <?php header("Location: index.php");?>
+        <?php header('Location: index.php');?>
         <?php die(); ?>
     <?php endif; ?>
 </body>
