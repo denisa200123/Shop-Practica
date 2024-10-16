@@ -1,34 +1,37 @@
 <?php
 
+session_start();
 require_once 'config.php';
 require_once 'common.php';
-session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['productsInCart'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['productsInCart'])
+    && is_array($_SESSION['productsInCart']) && !empty($_SESSION['productsInCart'])) {
+
     //using strip_tags to sanitize user input(all the html and php tags are removed)
-    $name = isset($_POST['name']) ? strip_tags($_POST['name']) : '';
-    $contactDetails = isset($_POST['name']) ? strip_tags($_POST['contactDetails']) : '';
-    $comments = isset($_POST['name']) ? strip_tags($_POST['comments']) : '';
-    $date = isset($_POST['date']) ? strip_tags($_POST['date']) : '';
-   
+    $name = htmlspecialchars(strip_tags($_POST['name'] ?? ''));
+    $contactDetails = htmlspecialchars(strip_tags($_POST['contactDetails'] ?? ''));
+    $comments = htmlspecialchars(strip_tags($_POST['comments'] ?? ''));
+    $date = htmlspecialchars(strip_tags($_POST['date'] ?? ''));
+
+
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $contactDetails = filter_var($contactDetails, FILTER_SANITIZE_STRING);
     $comments = filter_var($comments, FILTER_SANITIZE_STRING);
     $date = preg_replace('([^0-9/])', '', $date);
-    
+
     //comments can be empty
     $userInput = [$name, $contactDetails, $date];
 
     $errors = [];
     if (isInputEmpty($userInput)) {
-        $errors['emptyInput'] = translateLabels( 'Not all fields were filled!');
-    } 
+        $errors['emptyInput'] = translateLabels('Not all fields were filled!');
+    }
 
     //name should contain only letters, spaces, dashes
-    $filteredName=str_replace(array(' ', '-'), '', $name);
+    $filteredName = str_replace(array(' ', '-'), '', $name);
     if (!ctype_alpha($filteredName) && strlen($filteredName) > 0) {
         $errors['invalidName'] = translateLabels('The "name" field contains invalid characters!');
-    } 
+    }
 
     //save user input; used when validation fails so user doesn't have to write again and also for sending the email to the manager
     $checkout_data = [
@@ -62,39 +65,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['productsInCart']))
             $mail->setFrom('user@gmail.com');
             $mail->addAddress(SHOP_EMAIL);
             $mail->Subject = translateLabels('Checkout information');
-            $mail->Body = $cartContents;  
+            $mail->Body = $cartContents;
 
-            try {
-                //send mail
-                $mail->send();
-                $query = "INSERT INTO orders(creation_date, customer_name, contact_details, comments, total_price) VALUES
+            //send mail
+            $mail->send();
+            $query = "INSERT INTO orders(creation_date, customer_name, contact_details, comments, total_price) VALUES
                         (:date, :customerName, :contactDetails, :comments, :total)";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(':date', $date);
+            $stmt->bindParam(':customerName', $checkout_data['name']);
+            $stmt->bindParam(':contactDetails', $checkout_data['contactDetails']);
+            $stmt->bindParam(':comments', $checkout_data['comments']);
+            $stmt->bindParam(':total', $total);
+            $stmt->execute();
+            $orderId = $pdo->lastInsertId();
+
+            foreach ($_SESSION['productsInCart'] as $product) {
+                $query = "INSERT INTO ordersproducts(order_id, product_id) VALUES (:orderId, :productId)";
                 $stmt = $pdo->prepare($query);
-                $stmt->bindParam(':date', $date);
-                $stmt->bindParam(':customerName', $checkout_data['name']);
-                $stmt->bindParam(':contactDetails', $checkout_data['contactDetails']);
-                $stmt->bindParam(':comments', $checkout_data['comments']);
-                $stmt->bindParam(':total', $total);
+                $stmt->bindParam(':orderId', $orderId);
+                $stmt->bindParam(':productId', $product['id']);
                 $stmt->execute();
-                $orderId = $pdo->lastInsertId();
-
-                foreach ($_SESSION['productsInCart'] as $product) {
-                    $query = "INSERT INTO ordersproducts(order_id, product_id) VALUES (:orderId, :productId)";
-                    $stmt = $pdo->prepare($query);
-                    $stmt->bindParam(':orderId', $orderId);
-                    $stmt->bindParam(':productId', $product['id']);
-                    $stmt->execute();
-                }
-
-                $stmt = null;
-                $pdo = null;
-
-                $_SESSION['checkout_success'] = true;
-                unset($_SESSION['cartIds']);
-                unset($_SESSION['productsInCart']);
-            } catch (Exception $e) {
-                echo 'The message could not be sent!';
             }
+
+            $stmt = null;
+            $pdo = null;
+
+            $_SESSION['checkout_success'] = true;
+            unset($_SESSION['cartIds']);
+            unset($_SESSION['productsInCart']);
         } else {
             $_SESSION['checkout_failed'] = true;
         }

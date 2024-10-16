@@ -34,17 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileToUpload']['tmp_
 
     $userInput = [$name, $description, $price, $image];
 
-    $addErrors = [];
+    $addProductErrors = [];
 
     if (isInputEmpty($userInput)) {
-        $addErrors['emptyInput'] = translateLabels( 'Not all fields were filled!');
+        $addProductErrors['emptyInput'] = translateLabels( 'Not all fields were filled!');
     }
 
     if (isPriceInvalid($price)) {
-        $addErrors['invalidPrice'] = translateLabels( 'Price does not have a valid value!');
+        $addProductErrors['invalidPrice'] = translateLabels( 'Price does not have a valid value!');
     }
 
-    if (empty($addErrors) && empty($imgErrors)) {
+    if (empty($addProductErrors) && empty($imgErrors)) {
         $name = htmlspecialchars_decode($name);
         $description = htmlspecialchars_decode($description);
         $price = htmlspecialchars_decode($price);
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileToUpload']['tmp_
         ];
         $_SESSION['adding_input'] = $adding_data;
         $_SESSION['imgErrors'] = $imgErrors;
-        $_SESSION['addErrors'] = $addErrors;
+        $_SESSION['addProductErrors'] = $addProductErrors;
     }
 }
 header('Location: product.php');

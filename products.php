@@ -1,7 +1,11 @@
 <?php
 
-require_once 'common.php';
 session_start();
+require_once 'common.php';
+
+if (!isset($_SESSION['sort'])) {
+    $_SESSION['sort'] = 'none';
+}
 
 //get number of products from table
 $query = "SELECT * FROM products";
@@ -10,7 +14,7 @@ $stmt->execute();
 
 $nrOfProducts = $stmt->rowCount();
 
-$productsPerPage = 3; //how many products to display per page
+$productsPerPage = 1; //how many products to display per page
 $maxPages = ceil($nrOfProducts/$productsPerPage); // maximum number of pages
 
 //get page from url, default 1
@@ -18,17 +22,16 @@ $page = isset($_GET['page']) && is_numeric($_GET['page'])  && $_GET['page']>0 &&
 
 $currentPage = ($page - 1) * $productsPerPage;
 
-$query = '';
+$sortOptions = ['none', 'title', 'price', 'description'];
+$sort = isset($_SESSION['sort']) && in_array($_SESSION['sort'], $sortOptions) ? $_SESSION['sort'] : 'none';
 
-if (!isset($_SESSION['sort']) || (isset($_SESSION['sort']) && $_SESSION['sort'] == 'none')) {
-    $query = 'SELECT * FROM products LIMIT ?, ?';
-} elseif (isset($_SESSION['sort']) && $_SESSION['sort'] == 'title') {
-    $query = 'SELECT * FROM products ORDER BY title LIMIT ?, ?;';
-} elseif (isset($_SESSION['sort']) && $_SESSION['sort'] == 'price') {
-    $query = 'SELECT * FROM products ORDER BY price LIMIT ?, ?;';
-} elseif (isset($_SESSION['sort']) && $_SESSION['sort'] == 'description') {
-    $query = 'SELECT * FROM products ORDER BY description LIMIT ?, ?;';
+$query = 'SELECT * FROM products';
+
+if ($sort !== 'none') {
+    $query .= " ORDER BY $sort";
 }
+
+$query .= " LIMIT ?, ?";
 
 $stmt = $pdo->prepare($query);
 $stmt->bindParam(1, $currentPage, PDO::PARAM_INT);

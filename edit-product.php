@@ -32,17 +32,9 @@ if (filter_var($productId, FILTER_VALIDATE_INT)) {
     die();
 }
 
-//check for editing errors
-if (isset($_SESSION['editing_errors']) && !empty($_SESSION['editing_errors'])) {
-    $editingErrors = $_SESSION['editing_errors'];
-    unset($_SESSION['editing_errors']);
-}
-
-//check for image errors
-if (isset($_SESSION['imageErrors']) && !empty($_SESSION['imageErrors'])) {
-    $imageErrors = $_SESSION['imageErrors'];
-    unset($_SESSION['imageErrors']);
-}
+$editingErrors = $_SESSION['editing_errors'] ?? [];
+$imageErrors = $_SESSION['imageErrors'] ?? [];
+unset($_SESSION['imageErrors'], $_SESSION['editing_errors']);
 
 ?>
 
@@ -73,7 +65,7 @@ if (isset($_SESSION['imageErrors']) && !empty($_SESSION['imageErrors'])) {
 
             <br>
             <label for="price"><?= translateLabels('Price'); ?></label>
-            <input type="number" name="price" id="price" step="0.1" min="0" value="<?= htmlspecialchars($price) ?>">
+            <input type="number" name="price" id="price" step="0.01" min="0" value="<?= htmlspecialchars($price) ?>">
 
             <br>
             <label for="fileToUpload"><?= translateLabels('Image'); ?></label>

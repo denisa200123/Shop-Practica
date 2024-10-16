@@ -3,7 +3,7 @@
 session_start();
 require_once 'common.php';
 
-$id = isset($_POST['productId']) ? $_POST['productId'] : '';
+$id = $_POST['productId'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT)) {
     $uploadedImage = 0;

@@ -1,7 +1,7 @@
 <?php
+session_start();
 require 'common.php';
 date_default_timezone_set('Europe/Bucharest');
-session_start();
 
 // if a product is selected, then it'll be removed
 if (isset($_POST['id']) && ($key = array_search($_POST['id'], $_SESSION['cartIds'])) !== false
@@ -11,23 +11,26 @@ if (isset($_POST['id']) && ($key = array_search($_POST['id'], $_SESSION['cartIds
 }
 
 //when there are products in the cart, select all the products that are in it
-if (isset($_SESSION['cartIds']) && !empty($_SESSION['cartIds'])) {
+if (isset($_SESSION['cartIds']) && is_array($_SESSION['cartIds']) && !empty($_SESSION['cartIds'])) {
     $cartProducts = implode(',', array_fill(0, count($_SESSION['cartIds']), '?'));
     $query = "SELECT * FROM products WHERE id IN ($cartProducts)";
     $stmt = $pdo->prepare($query);
     $stmt->execute($_SESSION['cartIds']);
+    
+    $productsInCart = $stmt->fetchAll(PDO::FETCH_ASSOC); //used in mail-template to display the products
+    $_SESSION['productsInCart'] = $productsInCart;
 
-    $productsInCart = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $_SESSION['productsInCart'] = $productsInCart; //used in mail-template to display the products
-
-    $pdo = null;
-    $stmt = null;
+} else {
+    $productsInCart = [];
 }
 
+$pdo = null;
+$stmt = null;
+
 //if validation fails, remember the form fields
-$name = isset($_SESSION['user_input']['name']) ? $_SESSION['user_input']['name'] : '';
-$contactDetails = isset($_SESSION['user_input']['contactDetails']) ? $_SESSION['user_input']['contactDetails'] : '';
-$comments = isset($_SESSION['user_input']['comments']) ? $_SESSION['user_input']['comments'] : '';
+$name = $_SESSION['user_input']['name'] ?? '';
+$contactDetails = $_SESSION['user_input']['contactDetails'] ?? '';
+$comments = $_SESSION['user_input']['comments'] ?? '';
 unset($_SESSION['user_input']);
 
 //check if there are checkout errors
@@ -36,17 +39,9 @@ if (isset($_SESSION['checkout_errors']) &&  !empty($_SESSION['checkout_errors'])
     unset($_SESSION['checkout_errors']);
 }
 
-$checkoutSuccess = false;
-if (isset($_SESSION['checkout_success']) && !empty($_SESSION['checkout_success'])) {
-    $checkoutSuccess = true;
-    unset($_SESSION['checkout_success']);
-}
-
-$checkoutFailed = false;
-if (isset($_SESSION['checkout_failed']) && !empty($_SESSION['checkout_failed'])) {
-    $checkoutFailed = true;
-    unset($_SESSION['checkout_failed']);
-}
+$checkoutSuccess = isset($_SESSION['checkout_success']);
+$checkoutFailed = isset($_SESSION['checkout_failed']);
+unset($_SESSION['checkout_success'], $_SESSION['checkout_failed']);
 
 ?>
 <!DOCTYPE html>
@@ -106,10 +101,10 @@ if (isset($_SESSION['checkout_failed']) && !empty($_SESSION['checkout_failed']))
             <label for="name"><?= translateLabels('Name'); ?></label>
             <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>" required>
             <br>
-            <label for="name"><?= translateLabels('Contact details'); ?></label>
+            <label for="contactDetails"><?= translateLabels('Contact details'); ?></label>
             <input type="text" name="contactDetails" id="contactDetails" value="<?= htmlspecialchars($contactDetails) ?>" required>
             <br>
-            <label for="name"><?= translateLabels('Comments'); ?></label>
+            <label for="comments"><?= translateLabels('Comments'); ?></label>
             <input type="text" name="comments" id="comments" value="<?= htmlspecialchars($comments) ?>" >
             <br>
 
@@ -124,7 +119,7 @@ if (isset($_SESSION['checkout_failed']) && !empty($_SESSION['checkout_failed']))
     <!-- display the checkout errors, if there are any -->
     <?php if (!empty($errors)): ?>
         <?php foreach ($errors as $error): ?>
-            <?= $error ?>
+            <?= htmlspecialchars($error) ?>
             <br>
         <?php endforeach; ?>
     <?php endif; ?>

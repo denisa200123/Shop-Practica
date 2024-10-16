@@ -3,7 +3,7 @@
 session_start();
 require 'common.php';
 
-$username = isset($_SESSION['login_username']) ? $_SESSION['login_username'] : '';
+$username = $_SESSION['login_username'] ?? '';
 unset($_SESSION['login_username']);
 
 //check if there are login errors

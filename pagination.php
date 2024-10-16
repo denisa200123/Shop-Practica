@@ -1,45 +1,45 @@
 <?php
 
+require_once 'common.php';
+
 if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
     die('Direct access not permitted');
 }
 
-?>
-
-<?php if ($maxPages > 0): ?>
+if ($maxPages > 0): ?>
     <?php if ($page > 1): ?>
-        <a href="products.php?page=<?= $page - 1 ?>">Prev</a>
+        <?= createPageLink($page - 1, translateLabels('Previous')) ?>
     <?php endif; ?>
 
     <?php if ($page > 3): ?>
-        <a href="products.php?page=1">1</a>
+        <?= createPageLink(1) ?>
         ...
     <?php endif; ?>
 
     <?php if ($page - 2 > 0): ?>
-        <a href="products.php?page=<?= $page - 2 ?>"><?= $page - 2 ?></a>
+        <?= createPageLink($page - 2) ?>
     <?php endif; ?>
 
     <?php if ($page - 1 > 0): ?>
-        <a href="products.php?page=<?= $page - 1 ?>"><?= $page - 1 ?></a>
+        <?= createPageLink($page - 1) ?>
     <?php endif; ?>
 
-    <a href="products.php?page=<?= $page ?>"><?= $page ?></a>
+    <?= $page ?> <!-- current  page-->
 
-    <?php if ($page + 1 < $maxPages + 1): ?>
-        <a href="products.php?page=<?= $page + 1 ?>"><?= $page + 1 ?></a>
+    <?php if ($page + 1 <= $maxPages): ?>
+        <?= createPageLink($page + 1) ?>
     <?php endif; ?>
 
-    <?php if ($page + 2 < $maxPages + 1): ?>
-        <a href="products.php?page=<?= $page + 2 ?>"><?= $page + 2 ?></a>
+    <?php if ($page + 2 <= $maxPages): ?>
+        <?= createPageLink($page + 2) ?>
     <?php endif; ?>
 
     <?php if ($page < $maxPages - 2): ?>
         ...
-        <a href="products.php?page=<?= $maxPages ?>"><?= $maxPages ?></a>
+        <?= createPageLink($maxPages) ?>
     <?php endif; ?>
 
     <?php if ($page < $maxPages): ?>
-        <a href="products.php?page=<?= $page + 1 ?>">Next</a>
+        <?= createPageLink($page + 1, translateLabels('Next')) ?>
     <?php endif; ?>
 <?php endif; ?>

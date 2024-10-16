@@ -4,10 +4,9 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
     die('Direct access not permitted');
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sortProducts']) && isset($_POST['sort'])
-&& $_POST['sortProducts'] === 'sort products' && in_array($_POST['sort'], ['none', 'name', 'price', 'description'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sort']) && in_array($_POST['sort'], $sortOptions)) {
     switch ($_POST['sort']) {
-        case 'name':
+        case 'title':
             $_SESSION['sort'] = 'title';
             break;
         case 'price':
@@ -33,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sortProducts']) && is
     <select name="sort" id="sort">
         <option value="none"> <?= translateLabels('Nothing') ?></option>
 
-        <option value="name" <?= ($_SESSION['sort'] === 'title') ?  "selected" : "" ?> >
+        <option value="title" <?= ($_SESSION['sort'] === 'title') ?  "selected" : "" ?> >
             <?= translateLabels("Name") ?>
         </option>
 

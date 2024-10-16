@@ -1,24 +1,17 @@
 <?php
 
 session_start();
+
 require_once 'common.php';
 
-//check for adding function errors
-if (isset($_SESSION['addErrors']) && !empty($_SESSION['addErrors'])) {
-    $addErrors = $_SESSION['addErrors'];
-    unset($_SESSION['addErrors']);
-}
-
-//check for image errors
-if (isset($_SESSION['imgErrors']) && !empty($_SESSION['imgErrors'])) {
-    $imageErrors = $_SESSION['imgErrors'];
-    unset($_SESSION['imgErrors']);
-}
+$addProductErrors = isset($_SESSION['addProductErrors']) ? $_SESSION['addProductErrors'] : [];
+$imageErrors = isset($_SESSION['imgErrors']) ? $_SESSION['imgErrors'] : [];
+unset($_SESSION['addProductErrors'], $_SESSION['imgErrors']);
 
 //if validation fails, remember the form fields
-$name = isset($_SESSION['adding_input']['name']) ? $_SESSION['adding_input']['name'] : '';
-$contactDetails = isset($_SESSION['adding_input']['description']) ? $_SESSION['adding_input']['description'] : '';
-$comments = isset($_SESSION['adding_input']['price']) ? $_SESSION['adding_input']['price'] : '';
+$name = $_SESSION['adding_input']['name'] ?? '';
+$description = $_SESSION['adding_input']['description'] ?? '';
+$price = $_SESSION['adding_input']['price'] ?? '';
 unset($_SESSION['adding_input']);
 
 ?>
@@ -41,11 +34,11 @@ unset($_SESSION['adding_input']);
 
             <br>
             <label for="description"><?= translateLabels('Description'); ?></label>
-            <input type="text" name="description" id="description" value="<?= htmlspecialchars($contactDetails) ?>" required>
+            <input type="text" name="description" id="description" value="<?= htmlspecialchars($description) ?>" required>
 
             <br>
             <label for="price"><?= translateLabels('Price'); ?></label>
-            <input type="number" name="price" id="price" step="0.1" min="0" value="<?= htmlspecialchars($comments) ?>" required>
+            <input type="number" name="price" id="price" step="0.01" min="0" value="<?= htmlspecialchars($price) ?>" required>
 
             <br>
             <label for="fileToUpload"><?= translateLabels('Image'); ?></label>
@@ -63,8 +56,8 @@ unset($_SESSION['adding_input']);
             <?php endforeach; ?>
         <?php endif; ?>
 
-        <?php if (!empty($addErrors)): ?>
-            <?php foreach ($addErrors as $error): ?>
+        <?php if (!empty($addProductErrors)): ?>
+            <?php foreach ($addProductErrors as $error): ?>
                 <?= $error ?>
                 <br>
             <?php endforeach; ?>
