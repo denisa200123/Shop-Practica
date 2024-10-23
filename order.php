@@ -38,7 +38,7 @@ if (filter_var($orderId, FILTER_VALIDATE_INT)) {
     </style>
 </head>
 <body>
-    <?php if (isset($_SESSION['admin_logged'])): ?>
+    <?php if (isset($_SESSION['admin_logged_in'])): ?>
         <?php include_once 'language-switcher.php'; ?>
         
         <?php if ($products): ?>

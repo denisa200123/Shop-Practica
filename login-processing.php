@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($username === ADMIN_USERNAME && $password === ADMIN_PASSWORD) {
-        $_SESSION['admin_logged'] = true;
+        $_SESSION['admin_logged_in'] = true;
         header('Location: products.php');
         die();
     } else {

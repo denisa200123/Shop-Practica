@@ -31,7 +31,7 @@ if (!empty($_SESSION['login_failed'])) {
 <body>
 
     <!-- if admin is logged in, he should be redirected to products -->
-    <?php if (!isset($_SESSION['admin_logged'])): ?>
+    <?php if (!isset($_SESSION['admin_logged_in'])): ?>
         <?php include_once 'language-switcher.php'; ?>
         <form action="login-processing.php" method="POST">
             <label for="username"><?= translateLabels('Username') ?></label>

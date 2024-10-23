@@ -2,8 +2,8 @@
 
 session_start();
 
-if (isset($_SESSION['admin_logged'])) {
-    unset($_SESSION['admin_logged']);
+if (isset($_SESSION['admin_logged_in'])) {
+    unset($_SESSION['admin_logged_in']);
     unset($_SESSION['products']);
 }
 

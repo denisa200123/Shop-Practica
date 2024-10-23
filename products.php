@@ -60,7 +60,7 @@ $pdo = null;
     </style>
 </head>
 <body>
-    <?php if (isset($_SESSION['admin_logged'])): ?>
+    <?php if (isset($_SESSION['admin_logged_in'])): ?>
         <?php include_once 'language-switcher.php'; ?>
         
         <span><?= translateLabels('Admin logged') ?></span>

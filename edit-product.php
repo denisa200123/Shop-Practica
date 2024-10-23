@@ -49,7 +49,7 @@ unset($_SESSION['imageErrors'], $_SESSION['editing_errors']);
 </head>
 
 <body>
-    <?php if ($selectedProduct && isset($_SESSION['admin_logged'])): ?>
+    <?php if ($selectedProduct && isset($_SESSION['admin_logged_in'])): ?>
         <?php include_once 'language-switcher.php'; ?>
 
         <form action="edit-product-processing.php" method="POST" enctype="multipart/form-data">

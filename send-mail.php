@@ -33,12 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['productsInCart'
     }
 
     //save user input; used when validation fails so user doesn't have to write again and also for sending the email to the manager
-    $checkout_data = [
+    $checkoutData = [
         'name' => htmlspecialchars_decode($name),
         'contactDetails' => htmlspecialchars_decode($contactDetails),
         'comments' => htmlspecialchars_decode($comments)
     ];
-    $_SESSION['user_input'] = $checkout_data;
+    $_SESSION['user_input'] = $checkoutData;
 
     if ($errors) {
         $_SESSION['checkout_errors'] = $errors;
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['productsInCart'
 
         //if the file that contains info from the cart page was found, try to send email
         if ($cartContents) {
-            $mail = require __DIR__ . '/mailer.php';
+            $mail = require_once __DIR__ . '/mailer.php';
             $total = 0;
             foreach ($_SESSION['productsInCart'] as $id => $product) {
                 if (isset($product['price'])) {
@@ -72,9 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['productsInCart'
                         (:date, :customerName, :contactDetails, :comments, :total)";
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(':date', $date);
-            $stmt->bindParam(':customerName', $checkout_data['name']);
-            $stmt->bindParam(':contactDetails', $checkout_data['contactDetails']);
-            $stmt->bindParam(':comments', $checkout_data['comments']);
+            $stmt->bindParam(':customerName', $checkoutData['name']);
+            $stmt->bindParam(':contactDetails', $checkoutData['contactDetails']);
+            $stmt->bindParam(':comments', $checkoutData['comments']);
             $stmt->bindParam(':total', $total);
             $stmt->execute();
             $orderId = $pdo->lastInsertId();

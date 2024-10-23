@@ -1,7 +1,6 @@
 <?php
 session_start();
 require 'common.php';
-date_default_timezone_set('Europe/Bucharest');
 
 // if a product is selected, then it'll be removed
 if (isset($_POST['id']) && ($key = array_search($_POST['id'], $_SESSION['cartIds'])) !== false
