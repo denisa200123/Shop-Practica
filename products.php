@@ -18,7 +18,7 @@ $productsPerPage = 1; //how many products to display per page
 $maxPages = ceil($nrOfProducts/$productsPerPage); // maximum number of pages
 
 //get page from url, default 1
-$page = isset($_GET['page']) && is_numeric($_GET['page'])  && $_GET['page']>0 && $_GET['page']<=$maxPages ? $_GET['page'] : 1;
+$page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page']>0 && $_GET['page']<=$maxPages ? $_GET['page'] : 1;
 
 $currentPage = ($page - 1) * $productsPerPage;
 
@@ -51,7 +51,7 @@ $pdo = null;
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
+    <title><?= translateLabels('Products') ?></title>
     <style>
         img {
             width: 150px;
@@ -74,10 +74,10 @@ $pdo = null;
 
         <!-- search product -->
         <br><br>
-        <span> <?= translateLabels('Looking for a product?') ?></span>
+        <span><?= translateLabels('Looking for a product?') ?></span>
         <form action="search-product.php" method="get">
             <input type="text" name="productToSearch" id="productToSearch">
-            <input type="submit" value="<?= translateLabels('Search'); ?>">
+            <input type="submit" value="<?= translateLabels('Search') ?>">
         </form>
         <br><br>
 
@@ -90,9 +90,9 @@ $pdo = null;
                 <th><?= translateLabels('Name') ?></th>
                 <th><?= translateLabels('Price') ?></th>
                 <th><?= translateLabels('Description') ?></th>
-                <th><?= translateLabels('Image') ?></th>    
-                <th><?= translateLabels('Edit') ?></th>   
-                <th><?= translateLabels('Remove') ?></th> 
+                <th><?= translateLabels('Image') ?></th>
+                <th><?= translateLabels('Edit') ?></th>
+                <th><?= translateLabels('Remove') ?></th>
             </tr>
             <?php foreach ($products as $product): ?>
                 <tr>
@@ -103,13 +103,13 @@ $pdo = null;
                     <td>
                         <form method="post" action="edit-product.php">
                             <input type="hidden" name="productId" value="<?= htmlspecialchars($product['id']) ?>">
-                            <input type="submit" value="<?= translateLabels('Edit'); ?>">
+                            <input type="submit" value="<?= translateLabels('Edit') ?>">
                         </form>
                     </td>
                     <td>
                         <form method="post" action="delete-product.php">
                             <input type="hidden" name="productId" value="<?= htmlspecialchars($product['id']) ?>">
-                            <input type="submit" value="<?= translateLabels('Remove'); ?>">
+                            <input type="submit" value="<?= translateLabels('Remove') ?>">
                         </form>
                     </td>
                 </tr>
@@ -120,7 +120,7 @@ $pdo = null;
 
         <br><br>
         <br>
-        <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
+        <a href="index.php"><?= translateLabels('Go to main page') ?></a>
     <?php else: ?>
         <?php header('Location: index.php'); ?>
         <?php die(); ?>

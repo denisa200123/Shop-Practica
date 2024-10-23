@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $errors = [];
     if (isInputEmpty($userInput)) {
-        $errors['emptyInput'] = translateLabels( 'Not all fields were filled!');
+        $errors['emptyInput'] = translateLabels('Not all fields were filled!');
     }
 
     if ($username === ADMIN_USERNAME && $password === ADMIN_PASSWORD) {
@@ -24,14 +24,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die();
     } else {
         $_SESSION['login_username'] = $username; //remember username
-        $errors['incorrectCredentials'] = translateLabels( 'Incorrect login information!');
+        $errors['incorrectCredentials'] = translateLabels('Incorrect login information!');
         $_SESSION['login_failed'] = true;
     }
 
     if ($errors) {
         $_SESSION['login_errors'] = $errors;
         $_SESSION['login_failed'] = true;
-    } 
+    }
 }
 
 header('Location: login.php');

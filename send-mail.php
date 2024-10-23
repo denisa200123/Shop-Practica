@@ -4,8 +4,7 @@ session_start();
 require_once 'config.php';
 require_once 'common.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['productsInCart'])
-    && is_array($_SESSION['productsInCart']) && !empty($_SESSION['productsInCart'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['productsInCart']) && !empty($_SESSION['productsInCart'])) {
 
     //using strip_tags to sanitize user input(all the html and php tags are removed)
     $name = htmlspecialchars(strip_tags($_POST['name'] ?? ''));

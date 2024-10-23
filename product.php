@@ -22,30 +22,30 @@ unset($_SESSION['adding_input']);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add product</title>
+    <title><?= translateLabels('Add product') ?></title>
 </head>
 <body>
     <?php if (isset($_SESSION['admin_logged'])): ?>
         <?php include_once 'language-switcher.php'; ?>
 
         <form action="add-product-processing.php" enctype="multipart/form-data" method="POST">
-            <label for="name"><?= translateLabels('Name'); ?></label>
+            <label for="name"><?= translateLabels('Name') ?></label>
             <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>" required>
 
             <br>
-            <label for="description"><?= translateLabels('Description'); ?></label>
+            <label for="description"><?= translateLabels('Description') ?></label>
             <input type="text" name="description" id="description" value="<?= htmlspecialchars($description) ?>" required>
 
             <br>
-            <label for="price"><?= translateLabels('Price'); ?></label>
+            <label for="price"><?= translateLabels('Price') ?></label>
             <input type="number" name="price" id="price" step="0.01" min="0" value="<?= htmlspecialchars($price) ?>" required>
 
             <br>
-            <label for="fileToUpload"><?= translateLabels('Image'); ?></label>
+            <label for="fileToUpload"><?= translateLabels('Image') ?></label>
             <input type="file" name="fileToUpload" id="fileToUpload" required>
 
             <br><br>
-            <input type="submit" value=" <?= translateLabels('Add') ?> ">
+            <input type="submit" value="<?= translateLabels('Add') ?>">
         </form>
 
         <!-- display the image errors, if there are any -->

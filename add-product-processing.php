@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 session_start();
 require_once 'common.php';
@@ -37,11 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileToUpload']['tmp_
     $addProductErrors = [];
 
     if (isInputEmpty($userInput)) {
-        $addProductErrors['emptyInput'] = translateLabels( 'Not all fields were filled!');
+        $addProductErrors['emptyInput'] = translateLabels('Not all fields were filled!');
     }
 
     if (isPriceInvalid($price)) {
-        $addProductErrors['invalidPrice'] = translateLabels( 'Price does not have a valid value!');
+        $addProductErrors['invalidPrice'] = translateLabels('Price does not have a valid value!');
     }
 
     if (empty($addProductErrors) && empty($imgErrors)) {
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileToUpload']['tmp_
         if (file_exists($target_file)) {
             $imgNoExtension = pathinfo(basename($_FILES['fileToUpload']['name']), PATHINFO_FILENAME);
             $extension = strtolower(pathinfo(basename($_FILES['fileToUpload']['name']), PATHINFO_EXTENSION));
-            
+
             //if the file exists => increase index
             //for example: if you want to upload 'img1.png', but the file already exists, check first if 'img11.png' doesn't exist (in order to not overwrite it)
             //if 'img11.png' exists, try 'img12' etc.
@@ -63,13 +63,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileToUpload']['tmp_
                 $index++;
             }
 
-            $image =  $imgNoExtension . $index . '.' . $extension;
+            $image = $imgNoExtension . $index . '.' . $extension;
             $target_file = $target_dir . $image;
         }
-        
+
         $image = str_replace($target_dir, '', $image);
 
-        $query = "INSERT INTO products(title, description, price, image) VALUES (:name,  :description,  :price,  :image);";
+        $query = "INSERT INTO products(title, description, price, image) VALUES (:name, :description, :price, :image);";
         $stmt = $pdo->prepare($query);
 
         $stmt->bindParam(':name', $name);

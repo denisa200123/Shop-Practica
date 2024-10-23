@@ -7,10 +7,10 @@ $orderId = $_GET['orderId'] ?? '';
 
 if (filter_var($orderId, FILTER_VALIDATE_INT)) {
     $query = "SELECT products.title, products.description, products.price, products.image
-    FROM products 
-    INNER JOIN ordersproducts 
+    FROM products
+    INNER JOIN ordersproducts
     ON products.id = ordersproducts.product_id
-    WHERE order_id = :orderId;";    
+    WHERE order_id = :orderId;";
 
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':orderId', $orderId);
@@ -29,7 +29,7 @@ if (filter_var($orderId, FILTER_VALIDATE_INT)) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order</title>
+    <title><?= translateLabels('Order') ?></title>
     <style>
         img {
             width: 150px;
@@ -49,7 +49,7 @@ if (filter_var($orderId, FILTER_VALIDATE_INT)) {
                 <th><?= translateLabels('Product name') ?></th>
                 <th><?= translateLabels('Description') ?></th>
                 <th><?= translateLabels('Price') ?></th>
-                <th><?= translateLabels('Image') ?></th>  
+                <th><?= translateLabels('Image') ?></th>
                 </tr>
                 <?php foreach ($products as $product): ?>
                     <tr>
@@ -60,12 +60,12 @@ if (filter_var($orderId, FILTER_VALIDATE_INT)) {
                     </tr>
                 <?php endforeach; ?>
             </table>
-            
+
         <?php else: ?>
             <h1><?= translateLabels('We did not find an order with this id')?></h1>
         <?php endif; ?>
 
-        <a href="orders.php"><?= translateLabels('Go to orders page'); ?></a>
+        <a href="orders.php"><?= translateLabels('Go to orders page') ?></a>
 
     <?php else: ?>
         <?php header('Location: index.php'); ?>

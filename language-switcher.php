@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['language'])
 }
 ?>
 
-<form method="POST"> 
+<form method="POST">
     <label for="language"><?= translateLabels('Choose a language:') ?></label>
     <select name="language" id="language">
         <?php foreach($locales as $code => $locale): ?>
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['language'])
             <?php if ($_SESSION['language'] === $code): ?>
                 selected
             <?php endif; ?>
-            
+
             ><?= translateLabels(htmlspecialchars($locale)) ?>
             </option>
         <?php endforeach; ?>

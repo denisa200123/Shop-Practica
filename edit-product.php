@@ -45,7 +45,7 @@ unset($_SESSION['imageErrors'], $_SESSION['editing_errors']);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit product</title>
+    <title><?= translateLabels('Edit product') ?></title>
 </head>
 
 <body>
@@ -56,19 +56,19 @@ unset($_SESSION['imageErrors'], $_SESSION['editing_errors']);
             <input type="hidden" name="productId" id="id" value="<?= htmlspecialchars($productId) ?>">
             <input type="hidden" name="image" id="image" value="img/<?= htmlspecialchars($image) ?>">
 
-            <label for="name"><?= translateLabels('Name'); ?></label>
+            <label for="name"><?= translateLabels('Name') ?></label>
             <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>">
 
             <br>
-            <label for="description"><?= translateLabels('Description'); ?></label>
+            <label for="description"><?= translateLabels('Description') ?></label>
             <input type="text" name="description" id="description" value="<?= htmlspecialchars($description) ?>">
 
             <br>
-            <label for="price"><?= translateLabels('Price'); ?></label>
+            <label for="price"><?= translateLabels('Price') ?></label>
             <input type="number" name="price" id="price" step="0.01" min="0" value="<?= htmlspecialchars($price) ?>">
 
             <br>
-            <label for="fileToUpload"><?= translateLabels('Image'); ?></label>
+            <label for="fileToUpload"><?= translateLabels('Image') ?></label>
             <input type="file" name="fileToUpload" id="fileToUpload">
 
             <br><br>

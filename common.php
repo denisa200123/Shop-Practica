@@ -21,11 +21,11 @@ $imgExtensions = array('png', 'jpeg', 'gif', 'webp', 'svg', 'jpg');
 
 //available translations
 $locales = [
-	'en' => translateLabels('English'),
-	'ro' => translateLabels('Romanian'),
+    'en' => translateLabels('English'),
+    'ro' => translateLabels('Romanian'),
 ];
 
-function translateLabels($label) 
+function translateLabels($label)
 {
     if (isset($_SESSION['language']) && $_SESSION['language'] === 'ro') {
         return RO_TRANSLATIONS[$label] ?? $label;
@@ -39,7 +39,7 @@ function isInputEmpty(array $inputs)
     foreach ($inputs as $input) {
         if (!$input && $input !== '0') {
             return true;
-        } 
+        }
     }
     return false;
 }

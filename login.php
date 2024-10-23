@@ -7,13 +7,13 @@ $username = $_SESSION['login_username'] ?? '';
 unset($_SESSION['login_username']);
 
 //check if there are login errors
-if (isset($_SESSION['login_errors']) &&  !empty($_SESSION['login_errors'])) {
+if (!empty($_SESSION['login_errors'])) {
     $errors = $_SESSION['login_errors'];
     unset($_SESSION['login_errors']);
 }
 
 $loginFailed = false;
-if (isset($_SESSION['login_failed']) && !empty($_SESSION['login_failed'])) {
+if (!empty($_SESSION['login_failed'])) {
     $loginFailed = true;
     unset($_SESSION['login_failed']);
 }
@@ -26,7 +26,7 @@ if (isset($_SESSION['login_failed']) && !empty($_SESSION['login_failed'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title><?= translateLabels('Login') ?></title>
 </head>
 <body>
 
@@ -48,7 +48,7 @@ if (isset($_SESSION['login_failed']) && !empty($_SESSION['login_failed'])) {
         <?php endif; ?>
 
         <br>
-        
+
         <!-- display the login errors, if there are any -->
         <?php if (!empty($errors)): ?>
             <?php foreach ($errors as $error): ?>
@@ -58,7 +58,7 @@ if (isset($_SESSION['login_failed']) && !empty($_SESSION['login_failed'])) {
         <?php endif; ?>
 
         <br><br>
-        <a href='index.php'><?= translateLabels('Go to main page'); ?></a>
+        <a href='index.php'><?= translateLabels('Go to main page') ?></a>
 
     <?php else: ?>
         <?php header('Location: products.php'); ?>

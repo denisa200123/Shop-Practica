@@ -24,7 +24,7 @@ if ($maxPages > 0): ?>
         <?= createPageLink($page - 1) ?>
     <?php endif; ?>
 
-    <?= $page ?> <!-- current  page-->
+    <?= $page ?> <!-- current page-->
 
     <?php if ($page + 1 <= $maxPages): ?>
         <?= createPageLink($page + 1) ?>

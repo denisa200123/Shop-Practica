@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 session_start();
 require_once 'common.php';
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT
     $description = isset($_POST['description']) ? strip_tags($_POST['description']) : '';
     $price = isset($_POST['price']) ? strip_tags($_POST['price']) : '';
     $image = strip_tags($image);
-    
+
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $description = filter_var($description, FILTER_SANITIZE_STRING);
     $price = filter_var($price, FILTER_VALIDATE_FLOAT);
@@ -45,11 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT
     $editingErrors = [];
 
     if (isInputEmpty($userInput)) {
-        $editingErrors['emptyInput'] = translateLabels( 'Not all fields were filled!');
+        $editingErrors['emptyInput'] = translateLabels('Not all fields were filled!');
     }
 
     if (isPriceInvalid($price)) {
-        $editingErrors['invalidPrice'] = translateLabels( 'Price does not have a valid value!');
+        $editingErrors['invalidPrice'] = translateLabels('Price does not have a valid value!');
     }
 
     if (empty($editingErrors) && empty($imgErrors)) {
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT
         if (file_exists($target_file) && $uploadedImage) {
             $imgNoExtension = pathinfo(basename($_FILES['fileToUpload']['name']), PATHINFO_FILENAME);
             $extension = strtolower(pathinfo(basename($_FILES['fileToUpload']['name']), PATHINFO_EXTENSION));
-            
+
             //if the file exists => increase index
             //for example: if you want to upload 'img1.png', but the file already exists, check first if 'img11.png' doesn't exist (in order to not overwrite it)
             //if 'img11.png' exists, try 'img12' etc.
@@ -71,12 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT
                 $index++;
             }
 
-            $image =  $imgNoExtension . $index . '.' . $extension;
+            $image = $imgNoExtension . $index . '.' . $extension;
             $target_file = $target_dir . $image;
         }
-        
+
         $image = str_replace($target_dir, '', $image);
-        
+
         $query = "UPDATE products SET title = :name, description = :description, price = :price, image = :image WHERE id = :id;";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':id', $id);
@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT
         $pdo = null;
         unset($_SESSION['productId']);
 
-        if ($uploadedImage) { 
+        if ($uploadedImage) {
             move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_file);
         }
     } else {

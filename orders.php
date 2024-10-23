@@ -17,23 +17,23 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders</title>
+    <title><?= translateLabels('Orders') ?></title>
 </head>
-<body> 
+<body>
 
     <?php if (isset($_SESSION['admin_logged'])): ?>
         <?php include_once 'language-switcher.php'; ?>
-        
+
         <?php if($orders): ?>
             <table border="1" cellpadding="10">
                 <tr>
                     <th><?= translateLabels('Order id') ?></th>
                     <th><?= translateLabels('Date') ?></th>
                     <th><?= translateLabels('Customer name') ?></th>
-                    <th><?= translateLabels('Contact details') ?></th>    
+                    <th><?= translateLabels('Contact details') ?></th>
                     <th><?= translateLabels('Comments') ?></th>
                     <th><?= translateLabels('Total price') ?></th>
-                    <th><?= translateLabels('Products') ?></th>  
+                    <th><?= translateLabels('Products') ?></th>
                 </tr>
                 <?php foreach ($orders as $order): ?>
                     <tr>
@@ -46,17 +46,17 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td>
                             <form method="get" action="order.php">
                                 <input type="hidden" name="orderId" value="<?= htmlspecialchars($order['id']) ?>" >
-                                <input type="submit" value="<?= translateLabels('See products'); ?>" >
+                                <input type="submit" value="<?= translateLabels('See products') ?>" >
                             </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </table>
         <?php else: ?>
-            <h1> <?= translateLabels('No orders')?> </h1>
+            <h1><?= translateLabels('No orders')?></h1>
         <?php endif; ?>
 
-        <a href="index.php"><?= translateLabels('Go to main page'); ?></a>
+        <a href="index.php"><?= translateLabels('Go to main page') ?></a>
     <?php else: ?>
         <?php header('Location: index.php'); ?>
         <?php die(); ?>

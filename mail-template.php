@@ -1,5 +1,5 @@
-<?php 
-require_once 'common.php'; 
+<?php
+require_once 'common.php';
 $productsInCart = isset($_SESSION['productsInCart']) ? $_SESSION['productsInCart'] : '';
 ?>
 
@@ -21,16 +21,16 @@ $productsInCart = isset($_SESSION['productsInCart']) ? $_SESSION['productsInCart
     <body>
         <h1><?= translateLabels('Information about your order') ?></h1>
 
-        <p><?= translateLabels('Name')?> : <?= htmlspecialchars($_SESSION['user_input']['name']) ?></p>
-        <p><?= translateLabels('Contact details')?> : <?= htmlspecialchars($_SESSION['user_input']['contactDetails'])?></p>
-        <p><?= translateLabels('Comments')?> : <?= htmlspecialchars($_SESSION['user_input']['comments'])?></p>
+        <p><?= translateLabels('Name')?>: <?= htmlspecialchars($_SESSION['user_input']['name']) ?></p>
+        <p><?= translateLabels('Contact details')?>: <?= htmlspecialchars($_SESSION['user_input']['contactDetails'])?></p>
+        <p><?= translateLabels('Comments')?>: <?= htmlspecialchars($_SESSION['user_input']['comments'])?></p>
 
         <table border="1" cellpadding="10">
             <tr>
                 <th><?= translateLabels('Name') ?></th>
                 <th><?= translateLabels('Price') ?></th>
                 <th><?= translateLabels('Description') ?></th>
-                <th><?= translateLabels('Image') ?></th>       
+                <th><?= translateLabels('Image') ?></th>
             </tr>
             <!-- display the info about each product -->
             <?php if ($productsInCart): ?>
@@ -46,7 +46,7 @@ $productsInCart = isset($_SESSION['productsInCart']) ? $_SESSION['productsInCart
                 <h1><?= translateLabels('No products selected') ?></h1>
             <?php endif; ?>
         </table>
-                
+
     </body>
     </html>
 <?php else: ?>

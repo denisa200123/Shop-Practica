@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 session_start();
 require_once 'common.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['productToSearch']) && !empty($_GET['productToSearch'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['productToSearch'])) {
     $productName = strip_tags($_GET['productToSearch']);
     $productName = filter_var($productName, FILTER_SANITIZE_STRING);
     $productName = htmlspecialchars_decode($productName);
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['productToSearch']) && !
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search product</title>
+    <title><?= translateLabels('Search product') ?></title>
     <style>
         img {
             width: 150px;
@@ -43,13 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['productToSearch']) && !
 <body>
     <!-- display the found products -->
     <?php if ($productsFound): ?>
-        <h1> <?= translateLabels('Products found'); ?></h1>
+        <h1><?= translateLabels('Products found'); ?></h1>
         <table border="1" cellpadding="10">
             <tr>
                 <th><?= translateLabels('Name') ?></th>
                 <th><?= translateLabels('Price') ?></th>
                 <th><?= translateLabels('Description') ?></th>
-                <th><?= translateLabels('Image') ?></th>    
+                <th><?= translateLabels('Image') ?></th>
             </tr>
             <?php foreach ($productsFound as $product): ?>
                 <tr>
@@ -61,9 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['productToSearch']) && !
             <?php endforeach; ?>
         </table>
     <?php else: ?>
-        <h1> <?= translateLabels('Sorry, we did not find the product'); ?> </h1>
+        <h1><?= translateLabels('Sorry, we did not find the product') ?></h1>
     <?php endif; ?>
     <br>
-    <a href="products.php"><?= translateLabels('Products page'); ?></a>
+    <a href="products.php"><?= translateLabels('Products page') ?></a>
 </body>
 </html>

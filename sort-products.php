@@ -30,17 +30,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sort']) && in_array($
 
     <label for="sort"><?= translateLabels('Sort by:') ?></label>
     <select name="sort" id="sort">
-        <option value="none"> <?= translateLabels('Nothing') ?></option>
+        <option value="none"><?= translateLabels('Nothing') ?></option>
 
-        <option value="title" <?= ($_SESSION['sort'] === 'title') ?  "selected" : "" ?> >
+        <option value="title"<?= ($_SESSION['sort'] === 'title') ? "selected" : "" ?>>
             <?= translateLabels("Name") ?>
         </option>
 
-        <option value="price" <?= ($_SESSION['sort'] === 'price') ?  "selected" : "" ?> >
+        <option value="price"<?= ($_SESSION['sort'] === 'price') ? "selected" : "" ?>>
             <?= translateLabels("Price") ?>
         </option>
 
-        <option value="description" <?= ($_SESSION['sort'] === 'description') ?  "selected" : "" ?> >
+        <option value="description"<?= ($_SESSION['sort'] === 'description') ? "selected" : "" ?>>
             <?= translateLabels("Description") ?>
         </option>
     </select>

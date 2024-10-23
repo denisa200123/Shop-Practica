@@ -72,6 +72,14 @@ define('RO_TRANSLATIONS', [
     'We did not find an order with this id' => 'Nu am gasit o comanda cu acest id',
     'Product name' => 'Nume produs',
     'Go to orders page' => 'Spre pagina comenzi',
-    'Next'=> 'Urmatorul',
-    'Previous'=> 'Inapoi',
+    'Next' => 'Urmatorul',
+    'Previous' => 'Inapoi',
+    'Cart' => 'Cos',
+    'Remove product' => 'Stergere produs',
+    'Edit product' => 'Editare produs',
+    'Index' => 'Index',
+    'Order' => 'Comanda',
+    'Orders' => 'Comenzi',
+    'Add product' => 'Adaugare produs',
+    'Search product' => 'Cautare produs'
 ]);
