@@ -22,9 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['language'])
 
             <?php if ($_SESSION['language'] === $code): ?>
                 selected
-            <?php endif; ?>
-
-            ><?= translateLabels(htmlspecialchars($locale)) ?>
+            <?php endif; ?>>
+                <?= translateLabels(htmlspecialchars($locale)) ?>
             </option>
         <?php endforeach; ?>
     </select>
