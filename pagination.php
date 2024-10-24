@@ -1,10 +1,10 @@
 <?php
 
-require_once 'common.php';
-
 if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
     die('Direct access not permitted');
 }
+
+require_once 'common.php';
 
 if ($maxPages > 0): ?>
     <?php if ($page > 1): ?>

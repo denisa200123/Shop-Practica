@@ -1,10 +1,10 @@
 <?php
 
+require_once  __DIR__ . '/vendor/autoload.php';
+require_once 'config.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-require __DIR__ . '/vendor/autoload.php';
 
 $mail = new PHPMailer(true);
 
@@ -17,6 +17,6 @@ $mail->Port = 587;
 $mail->Username = SMTP_USERNAME;
 $mail->Password = SMTP_PASSWORD;
 
-$mail->isHtml(true);
+$mail->isHtml();
 
 return $mail;

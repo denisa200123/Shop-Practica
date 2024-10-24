@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require 'common.php';
+require_once 'common.php';
 
 $query = "SELECT * FROM orders;";
 
@@ -58,8 +58,8 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <a href="index.php"><?= translateLabels('Go to main page') ?></a>
     <?php else: ?>
-        <?php header('Location: index.php'); ?>
-        <?php die(); ?>
+        <?php header('Location: index.php');
+        die(); ?>
     <?php endif; ?>
 </body>
 </html>

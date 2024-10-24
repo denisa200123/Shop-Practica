@@ -1,11 +1,11 @@
 <?php 
 
-if (!isset($_SESSION['language'])) {
-    $_SESSION['language'] = 'en';
-}
-
 if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
     die('Direct access not permitted');
+}
+
+if (!isset($_SESSION['language'])) {
+    $_SESSION['language'] = '';
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['language'])

@@ -28,7 +28,7 @@ unset($_SESSION['product_info']);
     <?php if (isset($_SESSION['admin_logged_in'])): ?>
         <?php include_once 'language-switcher.php'; ?>
 
-        <form action="add-product-processing.php" enctype="multipart/form-data" method="POST">
+        <form action="create-product-processing.php" enctype="multipart/form-data" method="POST">
             <label for="name"><?= translateLabels('Name') ?></label>
             <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>" required>
 
@@ -66,8 +66,8 @@ unset($_SESSION['product_info']);
         <br>
         <a href="products.php"><?= translateLabels('Products page') ?></a>
     <?php else: ?>
-        <?php header('Location: index.php');?>
-        <?php die(); ?>
+        <?php header('Location: index.php');
+        die(); ?>
     <?php endif; ?>
 </body>
 </html>

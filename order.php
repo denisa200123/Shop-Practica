@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require 'common.php';
+require_once 'common.php';
 
 $orderId = $_GET['orderId'] ?? '';
 
@@ -68,8 +68,8 @@ if (filter_var($orderId, FILTER_VALIDATE_INT)) {
         <a href="orders.php"><?= translateLabels('Go to orders page') ?></a>
 
     <?php else: ?>
-        <?php header('Location: index.php'); ?>
-        <?php die(); ?>
+        <?php header('Location: index.php');
+        die(); ?>
     <?php endif; ?>
 </body>
 </html>

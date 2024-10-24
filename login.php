@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require 'common.php';
+require_once 'common.php';
 
 $username = $_SESSION['login_username'] ?? '';
 unset($_SESSION['login_username']);
@@ -61,8 +61,8 @@ if (!empty($_SESSION['login_failed'])) {
         <a href='index.php'><?= translateLabels('Go to main page') ?></a>
 
     <?php else: ?>
-        <?php header('Location: products.php'); ?>
-        <?php die(); ?>
+        <?php header('Location: products.php');
+        die(); ?>
     <?php endif; ?>
 
 </body>

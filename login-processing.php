@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-require 'common.php';
+require_once 'common.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //using strip_tags to sanitize user input(all the html and php tags are removed)

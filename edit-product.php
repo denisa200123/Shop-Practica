@@ -88,8 +88,8 @@ unset($_SESSION['image_errors'], $_SESSION['product_editing_errors']);
         <br>
         <a href='products.php'><?= translateLabels('Products page') ?></a>
     <?php else: ?>
-        <?php header('Location: products.php'); ?>
-        <?php die(); ?>
+        <?php header('Location: products.php');
+        die(); ?>
     <?php endif; ?>
 </body>
 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'common.php';
+require_once 'common.php';
 
 //initialize cardIds(stores the ids of the products)
 if (!isset($_SESSION['cart_ids'])) {

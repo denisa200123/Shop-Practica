@@ -10,16 +10,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['products_in_car
     $name = htmlspecialchars(strip_tags($_POST['name'] ?? ''));
     $contactDetails = htmlspecialchars(strip_tags($_POST['contactDetails'] ?? ''));
     $comments = htmlspecialchars(strip_tags($_POST['comments'] ?? ''));
-    $date = htmlspecialchars(strip_tags($_POST['date'] ?? ''));
-
 
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $contactDetails = filter_var($contactDetails, FILTER_SANITIZE_STRING);
     $comments = filter_var($comments, FILTER_SANITIZE_STRING);
-    $date = preg_replace('([^0-9/])', '', $date);
 
     //comments can be empty
-    $userInput = [$name, $contactDetails, $date];
+    $userInput = [$name, $contactDetails];
 
     $errors = [];
     if (isInputEmpty($userInput)) {
@@ -57,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['products_in_car
                 }
 
                 if (isset($product['image'])) {
-                    $mail->addEmbeddedImage(htmlspecialchars('img/' . $product['image']), "img_embedded_$id");
+                    $mail->addEmbeddedImage('img/' . $product['image'], "img_embedded_$id");
                 }
             }
 
@@ -67,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['products_in_car
             $mail->Body = $cartContents;
 
             //send mail
+            $date = date('Y/m/d');
             $mail->send();
             $query = "INSERT INTO orders(creation_date, customer_name, contact_details, comments, total_price) VALUES
                         (:date, :customerName, :contactDetails, :comments, :total)";

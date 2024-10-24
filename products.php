@@ -14,7 +14,7 @@ $stmt->execute();
 
 $nrOfProducts = $stmt->rowCount();
 
-$productsPerPage = 1; //how many products to display per page
+$productsPerPage = 2; //how many products to display per page
 $maxPages = ceil($nrOfProducts/$productsPerPage); // maximum number of pages
 
 //get page from url, default 1
@@ -122,8 +122,8 @@ $pdo = null;
         <br>
         <a href="index.php"><?= translateLabels('Go to main page') ?></a>
     <?php else: ?>
-        <?php header('Location: index.php'); ?>
-        <?php die(); ?>
+        <?php header('Location: index.php');
+        die(); ?>
     <?php endif; ?>
 </body>
 </html>

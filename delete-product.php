@@ -60,8 +60,8 @@ if (filter_var($productId, FILTER_VALIDATE_INT) && $_SERVER['REQUEST_METHOD'] ==
 
         <a href='products.php'><?= translateLabels('Products page') ?></a>
     <?php else: ?>
-        <?php header('Location: products.php') ?>
-        <?php die(); ?>
+        <?php header('Location: products.php');
+        die(); ?>
     <?php endif; ?>
 </body>
 </html>
