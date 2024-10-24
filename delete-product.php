@@ -38,7 +38,7 @@ if (filter_var($productId, FILTER_VALIDATE_INT) && $_SERVER['REQUEST_METHOD'] ==
 
         <form method="post" action="delete-product-processing.php">
             <input type="hidden" name="productId" value="<?= htmlspecialchars($productId) ?>">
-            <input type="submit" value="<?= translateLabels('Yes') ?>" >
+            <input type="submit" value="<?= translateLabels('Yes') ?>">
         </form>
         <br>
         <table border="1" cellpadding="10">

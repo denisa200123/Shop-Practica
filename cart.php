@@ -84,8 +84,8 @@ unset($_SESSION['checkout_success'], $_SESSION['checkout_failed']);
                     <td><img src='img/<?= htmlspecialchars($product['image']) ?>'></td>
                     <td>
                         <form method="post">
-                            <input type="hidden" name="id" value="<?= htmlspecialchars($product['id']) ?>" >
-                            <input type="submit" value="<?= translateLabels('Remove') ?>" >
+                            <input type="hidden" name="id" value="<?= htmlspecialchars($product['id']) ?>">
+                            <input type="submit" value="<?= translateLabels('Remove') ?>">
                         </form>
                     </td>
                 </tr>
@@ -103,7 +103,7 @@ unset($_SESSION['checkout_success'], $_SESSION['checkout_failed']);
             <input type="text" name="contactDetails" id="contactDetails" value="<?= htmlspecialchars($contactDetails) ?>" required>
             <br>
             <label for="comments"><?= translateLabels('Comments') ?></label>
-            <input type="text" name="comments" id="comments" value="<?= htmlspecialchars($comments) ?>" >
+            <input type="text" name="comments" id="comments" value="<?= htmlspecialchars($comments) ?>">
             <br>
 
             <input type="submit" value="Checkout">

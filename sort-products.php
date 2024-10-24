@@ -45,5 +45,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sort']) && in_array($
         </option>
     </select>
 
-    <input type="submit" value="<?= translateLabels('Sort')?>">
+    <input type="submit" value="<?= translateLabels('Sort') ?>">
 </form>

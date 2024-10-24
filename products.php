@@ -65,7 +65,7 @@ $pdo = null;
         
         <span><?= translateLabels('Admin logged') ?></span>
         <br>
-        <span><?= translateLabels('Want to logout?')?></span>
+        <span><?= translateLabels('Want to logout?') ?></span>
         <a href="logout.php"><?= translateLabels('Logout') ?></a>
         <br><br>
 

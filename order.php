@@ -42,7 +42,7 @@ if (filter_var($orderId, FILTER_VALIDATE_INT)) {
         <?php include_once 'language-switcher.php'; ?>
         
         <?php if ($products): ?>
-            <h1><?= translateLabels('Order id') . ': ' . htmlspecialchars($orderId)?></h1>
+            <h1><?= translateLabels('Order id') . ': ' . htmlspecialchars($orderId) ?></h1>
 
             <table border="1" cellpadding="10">
                 <tr>
@@ -62,7 +62,7 @@ if (filter_var($orderId, FILTER_VALIDATE_INT)) {
             </table>
 
         <?php else: ?>
-            <h1><?= translateLabels('We did not find an order with this id')?></h1>
+            <h1><?= translateLabels('We did not find an order with this id') ?></h1>
         <?php endif; ?>
 
         <a href="orders.php"><?= translateLabels('Go to orders page') ?></a>

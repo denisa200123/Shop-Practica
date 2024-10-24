@@ -24,7 +24,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php if (isset($_SESSION['admin_logged_in'])): ?>
         <?php include_once 'language-switcher.php'; ?>
 
-        <?php if($orders): ?>
+        <?php if ($orders): ?>
             <table border="1" cellpadding="10">
                 <tr>
                     <th><?= translateLabels('Order id') ?></th>
@@ -45,15 +45,15 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td><?= htmlspecialchars($order['total_price']) ?></td>
                         <td>
                             <form method="get" action="order.php">
-                                <input type="hidden" name="orderId" value="<?= htmlspecialchars($order['id']) ?>" >
-                                <input type="submit" value="<?= translateLabels('See products') ?>" >
+                                <input type="hidden" name="orderId" value="<?= htmlspecialchars($order['id']) ?>">
+                                <input type="submit" value="<?= translateLabels('See products') ?>">
                             </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </table>
         <?php else: ?>
-            <h1><?= translateLabels('No orders')?></h1>
+            <h1><?= translateLabels('No orders') ?></h1>
         <?php endif; ?>
 
         <a href="index.php"><?= translateLabels('Go to main page') ?></a>

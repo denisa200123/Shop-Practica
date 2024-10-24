@@ -25,9 +25,9 @@ $productsInCart = $_SESSION['products_in_cart'] ?? '';
 <body>
     <h1><?= translateLabels('Information about your order') ?></h1>
 
-    <p><?= translateLabels('Name')?>: <?= htmlspecialchars($_SESSION['user_input']['name']) ?></p>
-    <p><?= translateLabels('Contact details')?>: <?= htmlspecialchars($_SESSION['user_input']['contactDetails'])?></p>
-    <p><?= translateLabels('Comments')?>: <?= htmlspecialchars($_SESSION['user_input']['comments'])?></p>
+    <p><?= translateLabels('Name') ?>: <?= htmlspecialchars($_SESSION['user_input']['name']) ?></p>
+    <p><?= translateLabels('Contact details') ?>: <?= htmlspecialchars($_SESSION['user_input']['contactDetails']) ?></p>
+    <p><?= translateLabels('Comments') ?>: <?= htmlspecialchars($_SESSION['user_input']['comments']) ?></p>
 
     <table border="1" cellpadding="10">
         <tr>
