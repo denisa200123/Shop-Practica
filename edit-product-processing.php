@@ -7,12 +7,12 @@ $id = $_POST['productId'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT)) {
     $uploadedImage = 0;
-    $target_dir = 'img/';
-    if (isset($_FILES['fileToUpload']['tmp_name']) && !empty($_FILES['fileToUpload']['tmp_name'])) {
+    $targetDir = 'img/';
+    if (!empty($_FILES['fileToUpload']['tmp_name'])) {
         // ALL THIS SECTION IS FOR VALIDATING THE UPLOADED IMAGE
         $check = getimagesize($_FILES['fileToUpload']['tmp_name']);
-        $target_file = $target_dir . basename($_FILES['fileToUpload']['name']);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $targetFile = $targetDir . basename($_FILES['fileToUpload']['name']);
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
         $imgErrors = [];
         if (!$check) {
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT
         $image = basename($_FILES['fileToUpload']['name']);
         $uploadedImage = 1;
     } else {
-        $image = isset($_POST['image']) ? $_POST['image'] : '';
+        $image = $_POST['image'] ?? '';
     }
 
     //THIS SECTION IS FOR VALIDATING ALL DATA
@@ -40,26 +40,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT
     $price = filter_var($price, FILTER_VALIDATE_FLOAT);
     $image = filter_var($image, FILTER_SANITIZE_STRING);
 
-    $userInput = [$name, $description, $price, $image];
+    $productInfo = [$name, $description, $price, $image];
 
-    $editingErrors = [];
+    $productEditingErrors = [];
 
-    if (isInputEmpty($userInput)) {
-        $editingErrors['emptyInput'] = translateLabels('Not all fields were filled!');
+    if (isInputEmpty($productInfo)) {
+        $productEditingErrors['emptyInput'] = translateLabels('Not all fields were filled!');
     }
 
     if (isPriceInvalid($price)) {
-        $editingErrors['invalidPrice'] = translateLabels('Price does not have a valid value!');
+        $productEditingErrors['invalidPrice'] = translateLabels('Price does not have a valid value!');
     }
 
-    if (empty($editingErrors) && empty($imgErrors)) {
+    if (empty($productEditingErrors) && empty($imgErrors)) {
         $name = htmlspecialchars_decode($name);
         $description = htmlspecialchars_decode($description);
         $price = htmlspecialchars_decode($price);
         $image = htmlspecialchars_decode($image);
 
         //rename file if it already exists
-        if (file_exists($target_file) && $uploadedImage) {
+        if (file_exists($targetFile) && $uploadedImage) {
             $imgNoExtension = pathinfo(basename($_FILES['fileToUpload']['name']), PATHINFO_FILENAME);
             $extension = strtolower(pathinfo(basename($_FILES['fileToUpload']['name']), PATHINFO_EXTENSION));
 
@@ -67,15 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT
             //for example: if you want to upload 'img1.png', but the file already exists, check first if 'img11.png' doesn't exist (in order to not overwrite it)
             //if 'img11.png' exists, try 'img12' etc.
             $index = 1;
-            while (file_exists($target_dir . $imgNoExtension . $index . '.' . $extension)) {
+            while (file_exists($targetDir . $imgNoExtension . $index . '.' . $extension)) {
                 $index++;
             }
 
             $image = $imgNoExtension . $index . '.' . $extension;
-            $target_file = $target_dir . $image;
+            $targetFile = $targetDir . $image;
         }
 
-        $image = str_replace($target_dir, '', $image);
+        $image = str_replace($targetDir, '', $image);
 
         $query = "UPDATE products SET title = :name, description = :description, price = :price, image = :image WHERE id = :id;";
         $stmt = $pdo->prepare($query);
@@ -88,14 +88,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT
 
         $stmt = null;
         $pdo = null;
-        unset($_SESSION['productId']);
+        unset($_SESSION['product_id']);
 
         if ($uploadedImage) {
-            move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_file);
+            move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $targetFile);
         }
     } else {
-        $_SESSION['imageErrors'] = $imgErrors;
-        $_SESSION['editing_errors'] = $editingErrors;
+        $_SESSION['image_errors'] = $imgErrors;
+        $_SESSION['product_editing_errors'] = $productEditingErrors;
         header('Location: edit-product.php');
         die();
     }

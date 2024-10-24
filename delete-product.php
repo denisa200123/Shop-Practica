@@ -5,7 +5,7 @@ require_once 'common.php';
 
 $productId = isset($_POST['productId']) ? strip_tags($_POST['productId']) : '';
 // check if the id is an int
-if (filter_var($productId, FILTER_VALIDATE_INT)) {
+if (filter_var($productId, FILTER_VALIDATE_INT) && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $query = "SELECT * FROM products WHERE id = :id";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $productId);
@@ -33,7 +33,7 @@ if (filter_var($productId, FILTER_VALIDATE_INT)) {
     </style>
 </head>
 <body>
-    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && $selectedProduct): ?>
+    <?php if ($selectedProduct): ?>
         <h1><?= translateLabels('Are you sure you want to delete this item?') ?></h1>
 
         <form method="post" action="delete-product-processing.php">

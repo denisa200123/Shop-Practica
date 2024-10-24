@@ -3,19 +3,19 @@ session_start();
 require 'common.php';
 
 //initialize cardIds(stores the ids of the products)
-if (!isset($_SESSION['cartIds'])) {
-    $_SESSION['cartIds'] = [];
+if (!isset($_SESSION['cart_ids'])) {
+    $_SESSION['cart_ids'] = [];
 }
 
 // if a product is selected, add it to the cart if it's not already there
-if (isset($_POST['id']) && !in_array($_POST['id'], $_SESSION['cartIds'])
+if (isset($_POST['id']) && !in_array($_POST['id'], $_SESSION['cart_ids'])
     && filter_var($_POST['id'], FILTER_VALIDATE_INT)) {
-    $_SESSION['cartIds'][] = $_POST['id'];
+    $_SESSION['cart_ids'][] = $_POST['id'];
 }
 
-if (!empty($_SESSION['cartIds']) && is_array($_SESSION['cartIds'])) {
+if (!empty($_SESSION['cart_ids']) && is_array($_SESSION['cart_ids'])) {
     //when there are products in the cart, select all the products that are not in it
-    $cartProducts = implode(',', array_fill(0, count($_SESSION['cartIds']), '?'));
+    $cartProducts = implode(',', array_fill(0, count($_SESSION['cart_ids']), '?'));
     $query = "SELECT * FROM products WHERE id NOT IN ($cartProducts)";
 } else {
     // when the cart is empty, select all products
@@ -23,7 +23,7 @@ if (!empty($_SESSION['cartIds']) && is_array($_SESSION['cartIds'])) {
 }
 
 $stmt = $pdo->prepare($query);
-$stmt->execute(!empty($_SESSION['cartIds']) ? $_SESSION['cartIds'] : []);
+$stmt->execute(!empty($_SESSION['cart_ids']) ? $_SESSION['cart_ids'] : []);
 $productsNotInCart = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $pdo = null;

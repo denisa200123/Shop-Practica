@@ -1,6 +1,6 @@
 <?php
 require_once 'common.php';
-$productsInCart = isset($_SESSION['productsInCart']) ? $_SESSION['productsInCart'] : '';
+$productsInCart = $_SESSION['products_in_cart'] ?? '';
 ?>
 
 <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>

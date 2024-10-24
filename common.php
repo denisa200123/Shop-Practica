@@ -17,7 +17,7 @@ try {
 
 
 //allowed image extensions
-$imgExtensions = array('png', 'jpeg', 'gif', 'webp', 'svg', 'jpg');
+$imgExtensions = array('png', 'jpeg', 'gif', 'svg', 'jpg');
 
 //available translations
 $locales = [

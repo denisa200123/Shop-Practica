@@ -5,36 +5,29 @@ require_once 'common.php';
 
 if (isset($_POST['productId']) && filter_var($_POST['productId'], FILTER_VALIDATE_INT)) {
     $productId = $_POST['productId'];
-    $_SESSION['productId'] = $productId; // in case the validation fails, we won't lose the id
-} elseif (isset($_SESSION['productId']) && filter_var($_SESSION['productId'], FILTER_VALIDATE_INT)) {
-    $productId = $_SESSION['productId'];
+    $_SESSION['product_id'] = $productId; // in case the validation fails, we won't lose the id
+} elseif (isset($_SESSION['product_id']) && filter_var($_SESSION['product_id'], FILTER_VALIDATE_INT)) {
+    $productId = $_SESSION['product_id'];
 } else {
     header('Location: products.php');
     die();
 }
 
-// check if the id is an int
-if (filter_var($productId, FILTER_VALIDATE_INT)) {
-    $query = "SELECT * FROM products WHERE id = :id";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':id', $productId);
-    $stmt->execute();
+$query = "SELECT * FROM products WHERE id = :id";
+$stmt = $pdo->prepare($query);
+$stmt->bindParam(':id', $productId);
+$stmt->execute();
 
-    $selectedProduct = $stmt->fetch(PDO::FETCH_ASSOC);
+$selectedProduct = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $name = $selectedProduct['title'];
-    $description = $selectedProduct['description'];
-    $price = $selectedProduct['price'];
-    $image = $selectedProduct['image'];
+$name = $selectedProduct['title'];
+$description = $selectedProduct['description'];
+$price = $selectedProduct['price'];
+$image = $selectedProduct['image'];
 
-} else {
-    header('Location: products.php');
-    die();
-}
-
-$editingErrors = $_SESSION['editing_errors'] ?? [];
-$imageErrors = $_SESSION['imageErrors'] ?? [];
-unset($_SESSION['imageErrors'], $_SESSION['editing_errors']);
+$productEditingErrors = $_SESSION['product_editing_errors'] ?? [];
+$imageErrors = $_SESSION['image_errors'] ?? [];
+unset($_SESSION['image_errors'], $_SESSION['product_editing_errors']);
 
 ?>
 
@@ -85,8 +78,8 @@ unset($_SESSION['imageErrors'], $_SESSION['editing_errors']);
         <?php endif; ?>
 
         <!-- display the editing errors, if there are any -->
-        <?php if (!empty($editingErrors)): ?>
-            <?php foreach ($editingErrors as $error): ?>
+        <?php if (!empty($productEditingErrors)): ?>
+            <?php foreach ($productEditingErrors as $error): ?>
                 <?= $error ?>
                 <br>
             <?php endforeach; ?>

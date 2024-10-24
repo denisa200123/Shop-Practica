@@ -4,15 +4,15 @@ session_start();
 
 require_once 'common.php';
 
-$addProductErrors = isset($_SESSION['addProductErrors']) ? $_SESSION['addProductErrors'] : [];
-$imageErrors = isset($_SESSION['imgErrors']) ? $_SESSION['imgErrors'] : [];
-unset($_SESSION['addProductErrors'], $_SESSION['imgErrors']);
+$productCreationErrors = $_SESSION['product_creation_errors'] ?? [];
+$imageErrors = $_SESSION['img_errors'] ?? [];
+unset($_SESSION['product_creation_errors'], $_SESSION['img_errors']);
 
 //if validation fails, remember the form fields
-$name = $_SESSION['adding_input']['name'] ?? '';
-$description = $_SESSION['adding_input']['description'] ?? '';
-$price = $_SESSION['adding_input']['price'] ?? '';
-unset($_SESSION['adding_input']);
+$name = $_SESSION['product_info']['name'] ?? '';
+$description = $_SESSION['product_info']['description'] ?? '';
+$price = $_SESSION['product_info']['price'] ?? '';
+unset($_SESSION['product_info']);
 
 ?>
 
@@ -56,8 +56,8 @@ unset($_SESSION['adding_input']);
             <?php endforeach; ?>
         <?php endif; ?>
 
-        <?php if (!empty($addProductErrors)): ?>
-            <?php foreach ($addProductErrors as $error): ?>
+        <?php if (!empty($productCreationErrors)): ?>
+            <?php foreach ($productCreationErrors as $error): ?>
                 <?= $error ?>
                 <br>
             <?php endforeach; ?>

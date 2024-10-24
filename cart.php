@@ -3,21 +3,21 @@ session_start();
 require 'common.php';
 
 // if a product is selected, then it'll be removed
-if (isset($_POST['id']) && ($key = array_search($_POST['id'], $_SESSION['cartIds'])) !== false
+if (isset($_POST['id']) && ($key = array_search($_POST['id'], $_SESSION['cart_ids'])) !== false
     && filter_var($_POST['id'], FILTER_VALIDATE_INT)) {
-    unset($_SESSION['cartIds'][$key]); //unset value
-    $_SESSION['cartIds'] = array_values($_SESSION['cartIds']); // reindex array
+    unset($_SESSION['cart_ids'][$key]); //unset value
+    $_SESSION['cart_ids'] = array_values($_SESSION['cart_ids']); // reindex array
 }
 
 //when there are products in the cart, select all the products that are in it
-if (isset($_SESSION['cartIds']) && is_array($_SESSION['cartIds'])) {
-    $cartProducts = implode(',', array_fill(0, count($_SESSION['cartIds']), '?'));
+if (isset($_SESSION['cart_ids']) && is_array($_SESSION['cart_ids'])) {
+    $cartProducts = implode(',', array_fill(0, count($_SESSION['cart_ids']), '?'));
     $query = "SELECT * FROM products WHERE id IN ($cartProducts)";
     $stmt = $pdo->prepare($query);
-    $stmt->execute($_SESSION['cartIds']);
+    $stmt->execute($_SESSION['cart_ids']);
 
     $productsInCart = $stmt->fetchAll(PDO::FETCH_ASSOC); //used in mail-template to display the products
-    $_SESSION['productsInCart'] = $productsInCart;
+    $_SESSION['products_in_cart'] = $productsInCart;
 
 } else {
     $productsInCart = [];
@@ -33,7 +33,7 @@ $comments = $_SESSION['user_input']['comments'] ?? '';
 unset($_SESSION['user_input']);
 
 //check if there are checkout errors
-if (isset($_SESSION['checkout_errors']) && !empty($_SESSION['checkout_errors'])) {
+if (!empty($_SESSION['checkout_errors'])) {
     $errors = $_SESSION['checkout_errors'];
     unset($_SESSION['checkout_errors']);
 }
@@ -111,7 +111,7 @@ unset($_SESSION['checkout_success'], $_SESSION['checkout_failed']);
         </form>
     <?php else: ?>
         <?= translateLabels('The cart is empty') ?>
-        <?php unset($_SESSION['productsInCart']); ?>
+        <?php unset($_SESSION['products_in_cart']); ?>
     <?php endif; ?>
     <br>
 

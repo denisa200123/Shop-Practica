@@ -3,12 +3,12 @@
 session_start();
 require_once 'common.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileToUpload']['tmp_name']) && !empty($_FILES['fileToUpload']['tmp_name'])) {
-    $target_dir = 'img/';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['fileToUpload']['tmp_name'])) {
+    $targetDir = 'img/';
     // ALL THIS SECTION IS FOR VALIDATING THE UPLOADED IMAGE
     $check = getimagesize($_FILES['fileToUpload']['tmp_name']);
-    $target_file = $target_dir . basename($_FILES['fileToUpload']['name']);
-    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $targetFile = $targetDir . basename($_FILES['fileToUpload']['name']);
+    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
     $imgErrors = [];
     if (!$check) {
@@ -32,26 +32,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileToUpload']['tmp_
     $price = filter_var($price, FILTER_VALIDATE_FLOAT);
     $image = filter_var($image, FILTER_SANITIZE_STRING);
 
-    $userInput = [$name, $description, $price, $image];
+    $productInfo = [$name, $description, $price, $image];
 
-    $addProductErrors = [];
+    $productCreationErrors = [];
 
-    if (isInputEmpty($userInput)) {
-        $addProductErrors['emptyInput'] = translateLabels('Not all fields were filled!');
+    if (isInputEmpty($productInfo)) {
+        $productCreationErrors['emptyInput'] = translateLabels('Not all fields were filled!');
     }
 
     if (isPriceInvalid($price)) {
-        $addProductErrors['invalidPrice'] = translateLabels('Price does not have a valid value!');
+        $productCreationErrors['invalidPrice'] = translateLabels('Price does not have a valid value!');
     }
 
-    if (empty($addProductErrors) && empty($imgErrors)) {
+    if (empty($productCreationErrors) && empty($imgErrors)) {
         $name = htmlspecialchars_decode($name);
         $description = htmlspecialchars_decode($description);
         $price = htmlspecialchars_decode($price);
         $image = htmlspecialchars_decode($image);
 
         //rename file if it already exists
-        if (file_exists($target_file)) {
+        if (file_exists($targetFile)) {
             $imgNoExtension = pathinfo(basename($_FILES['fileToUpload']['name']), PATHINFO_FILENAME);
             $extension = strtolower(pathinfo(basename($_FILES['fileToUpload']['name']), PATHINFO_EXTENSION));
 
@@ -59,15 +59,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileToUpload']['tmp_
             //for example: if you want to upload 'img1.png', but the file already exists, check first if 'img11.png' doesn't exist (in order to not overwrite it)
             //if 'img11.png' exists, try 'img12' etc.
             $index = 1;
-            while (file_exists($target_dir . $imgNoExtension . $index . '.' . $extension)) {
+            while (file_exists($targetDir . $imgNoExtension . $index . '.' . $extension)) {
                 $index++;
             }
 
             $image = $imgNoExtension . $index . '.' . $extension;
-            $target_file = $target_dir . $image;
+            $targetFile = $targetDir . $image;
         }
 
-        $image = str_replace($target_dir, '', $image);
+        $image = str_replace($targetDir, '', $image);
 
         $query = "INSERT INTO products(title, description, price, image) VALUES (:name, :description, :price, :image);";
         $stmt = $pdo->prepare($query);
@@ -81,18 +81,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['fileToUpload']['tmp_
         $stmt = null;
         $pdo = null;
 
-        move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_file);
+        move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $targetFile);
         header('Location: products.php');
         die();
     } else {
-        $adding_data = [
+        $productInfo = [
             'name' => htmlspecialchars_decode($name),
             'description' => htmlspecialchars_decode($description),
             'price' => htmlspecialchars_decode($price),
         ];
-        $_SESSION['adding_input'] = $adding_data;
-        $_SESSION['imgErrors'] = $imgErrors;
-        $_SESSION['addProductErrors'] = $addProductErrors;
+        $_SESSION['product_info'] = $productInfo;
+        $_SESSION['img_errors'] = $imgErrors;
+        $_SESSION['product_creation_errors'] = $productCreationErrors;
     }
 }
 header('Location: product.php');

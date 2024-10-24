@@ -4,7 +4,7 @@ session_start();
 require_once 'config.php';
 require_once 'common.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['productsInCart']) && !empty($_SESSION['productsInCart'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['products_in_cart']) && !empty($_SESSION['products_in_cart'])) {
 
     //using strip_tags to sanitize user input(all the html and php tags are removed)
     $name = htmlspecialchars(strip_tags($_POST['name'] ?? ''));
@@ -51,13 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['productsInCart'
         if ($cartContents) {
             $mail = require_once __DIR__ . '/mailer.php';
             $total = 0;
-            foreach ($_SESSION['productsInCart'] as $id => $product) {
+            foreach ($_SESSION['products_in_cart'] as $id => $product) {
                 if (isset($product['price'])) {
                     $total += $product['price'];
                 }
 
                 if (isset($product['image'])) {
-                    $mail->addEmbeddedImage(htmlspecialchars('img/' . $product['image']), 'img_embedded_$id');
+                    $mail->addEmbeddedImage(htmlspecialchars('img/' . $product['image']), "img_embedded_$id");
                 }
             }
 
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['productsInCart'
             $stmt->execute();
             $orderId = $pdo->lastInsertId();
 
-            foreach ($_SESSION['productsInCart'] as $product) {
+            foreach ($_SESSION['products_in_cart'] as $product) {
                 $query = "INSERT INTO ordersproducts(order_id, product_id) VALUES (:orderId, :productId)";
                 $stmt = $pdo->prepare($query);
                 $stmt->bindParam(':orderId', $orderId);
@@ -91,8 +91,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['productsInCart'
             $pdo = null;
 
             $_SESSION['checkout_success'] = true;
-            unset($_SESSION['cartIds']);
-            unset($_SESSION['productsInCart']);
+            unset($_SESSION['cart_ids']);
+            unset($_SESSION['products_in_cart']);
         } else {
             $_SESSION['checkout_failed'] = true;
         }
