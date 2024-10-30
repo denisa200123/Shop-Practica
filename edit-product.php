@@ -1,6 +1,12 @@
 <?php
 
 session_start();
+
+if (!isset($_SESSION['admin_logged_in'])) {
+    header('Location: index.php');
+    die();    
+}
+
 require_once 'common.php';
 
 if (isset($_POST['productId']) && filter_var($_POST['productId'], FILTER_VALIDATE_INT)) {
@@ -42,7 +48,7 @@ unset($_SESSION['image_errors'], $_SESSION['product_editing_errors']);
 </head>
 
 <body>
-    <?php if ($selectedProduct && isset($_SESSION['admin_logged_in'])): ?>
+    <?php if ($selectedProduct): ?>
         <?php include_once 'language-switcher.php'; ?>
 
         <form action="edit-product-processing.php" method="POST" enctype="multipart/form-data">
@@ -86,11 +92,8 @@ unset($_SESSION['image_errors'], $_SESSION['product_editing_errors']);
         <?php endif; ?>
 
         <br>
-        <a href='products.php'><?= translateLabels('Products page') ?></a>
-    <?php else: ?>
-        <?php header('Location: products.php');
-        die(); ?>
     <?php endif; ?>
+    <a href='products.php'><?= translateLabels('Products page') ?></a>
 </body>
 
 </html>

@@ -1,6 +1,12 @@
 <?php
 
 session_start();
+
+if (!isset($_SESSION['admin_logged_in'])) {
+    header('Location: index.php');
+    die();    
+}
+
 require_once 'common.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['productToSearch'])) {

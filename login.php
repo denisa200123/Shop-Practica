@@ -1,6 +1,12 @@
 <?php
 
 session_start();
+
+if (isset($_SESSION['admin_logged_in'])) {
+    header('Location: products.php');
+    die();    
+}
+
 require_once 'common.php';
 
 $username = $_SESSION['login_username'] ?? '';
@@ -29,41 +35,33 @@ if (!empty($_SESSION['login_failed'])) {
     <title><?= translateLabels('Login') ?></title>
 </head>
 <body>
+    <?php include_once 'language-switcher.php'; ?>
 
-    <!-- if admin is logged in, he should be redirected to products -->
-    <?php if (!isset($_SESSION['admin_logged_in'])): ?>
-        <?php include_once 'language-switcher.php'; ?>
-        <form action="login-processing.php" method="POST">
-            <label for="username"><?= translateLabels('Username') ?></label>
-            <input type="text" name="username" id="username" required value="<?= $username ?>">
-            <br>
-            <label for="password"><?= translateLabels('Password') ?></label>
-            <input type="password" name="password" id="password" required>
-            <br>
-            <input type="submit" value="<?= translateLabels('Login') ?>">
-        </form>
-
-        <?php if ($loginFailed): ?>
-            <?= translateLabels('Login failed!') ?>
-        <?php endif; ?>
-
+    <form action="login-processing.php" method="POST">
+        <label for="username"><?= translateLabels('Username') ?></label>
+        <input type="text" name="username" id="username" required value="<?= $username ?>">
         <br>
+        <label for="password"><?= translateLabels('Password') ?></label>
+        <input type="password" name="password" id="password" required>
+        <br>
+        <input type="submit" value="<?= translateLabels('Login') ?>">
+    </form>
 
-        <!-- display the login errors, if there are any -->
-        <?php if (!empty($errors)): ?>
-            <?php foreach ($errors as $error): ?>
-                <?= $error ?>
-                <br>
-            <?php endforeach; ?>
-        <?php endif; ?>
-
-        <br><br>
-        <a href='index.php'><?= translateLabels('Go to main page') ?></a>
-
-    <?php else: ?>
-        <?php header('Location: products.php');
-        die(); ?>
+    <?php if ($loginFailed): ?>
+        <?= translateLabels('Login failed!') ?>
     <?php endif; ?>
 
+    <br>
+
+    <!-- display the login errors, if there are any -->
+    <?php if (!empty($errors)): ?>
+        <?php foreach ($errors as $error): ?>
+            <?= $error ?>
+            <br>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <br><br>
+    <a href='index.php'><?= translateLabels('Go to main page') ?></a>
 </body>
 </html>

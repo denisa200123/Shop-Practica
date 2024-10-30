@@ -1,6 +1,12 @@
 <?php
 
 session_start();
+
+if (!isset($_SESSION['admin_logged_in'])) {
+    header('Location: index.php');
+    die();    
+}
+
 require_once 'common.php';
 
 $orderId = $_GET['orderId'] ?? '';
@@ -38,38 +44,32 @@ if (filter_var($orderId, FILTER_VALIDATE_INT)) {
     </style>
 </head>
 <body>
-    <?php if (isset($_SESSION['admin_logged_in'])): ?>
-        <?php include_once 'language-switcher.php'; ?>
-        
-        <?php if ($products): ?>
-            <h1><?= translateLabels('Order id') . ': ' . htmlspecialchars($orderId) ?></h1>
+    <?php include_once 'language-switcher.php'; ?>
 
-            <table border="1" cellpadding="10">
-                <tr>
+    <?php if ($products): ?>
+        <h1><?= translateLabels('Order id') . ': ' . htmlspecialchars($orderId) ?></h1>
+
+        <table border="1" cellpadding="10">
+            <tr>
                 <th><?= translateLabels('Product name') ?></th>
                 <th><?= translateLabels('Description') ?></th>
                 <th><?= translateLabels('Price') ?></th>
                 <th><?= translateLabels('Image') ?></th>
+            </tr>
+            <?php foreach ($products as $product): ?>
+                <tr>
+                    <td><?= htmlspecialchars($product['title']) ?></td>
+                    <td><?= htmlspecialchars($product['description']) ?></td>
+                    <td><?= htmlspecialchars($product['price']) ?></td>
+                    <td><img src="img/<?= htmlspecialchars($product['image']) ?>"></td>
                 </tr>
-                <?php foreach ($products as $product): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($product['title']) ?></td>
-                        <td><?= htmlspecialchars($product['description']) ?></td>
-                        <td><?= htmlspecialchars($product['price']) ?></td>
-                        <td><img src="img/<?= htmlspecialchars($product['image']) ?>"></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-
-        <?php else: ?>
-            <h1><?= translateLabels('We did not find an order with this id') ?></h1>
-        <?php endif; ?>
-
-        <a href="orders.php"><?= translateLabels('Go to orders page') ?></a>
+            <?php endforeach; ?>
+        </table>
 
     <?php else: ?>
-        <?php header('Location: index.php');
-        die(); ?>
+        <h1><?= translateLabels('We did not find an order with this id') ?></h1>
     <?php endif; ?>
+
+    <a href="orders.php"><?= translateLabels('Go to orders page') ?></a>
 </body>
 </html>

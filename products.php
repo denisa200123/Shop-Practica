@@ -1,6 +1,12 @@
 <?php
 
 session_start();
+
+if (!isset($_SESSION['admin_logged_in'])) {
+    header('Location: index.php');
+    die();    
+}
+
 require_once 'common.php';
 
 if (!isset($_SESSION['sort'])) {
@@ -60,70 +66,65 @@ $pdo = null;
     </style>
 </head>
 <body>
-    <?php if (isset($_SESSION['admin_logged_in'])): ?>
-        <?php include_once 'language-switcher.php'; ?>
-        
-        <span><?= translateLabels('Admin logged') ?></span>
-        <br>
-        <span><?= translateLabels('Want to logout?') ?></span>
-        <a href="logout.php"><?= translateLabels('Logout') ?></a>
-        <br><br>
+    <?php include_once 'language-switcher.php'; ?>
 
-        <!-- add product -->
-        <a href="product.php"><?= translateLabels('Add a product') ?></a>
+    <span><?= translateLabels('Admin logged in') ?></span>
+    <br>
+    <span><?= translateLabels('Want to logout?') ?></span>
+    <a href="logout.php"><?= translateLabels('Logout') ?></a>
+    <br><br>
 
-        <!-- search product -->
-        <br><br>
-        <span><?= translateLabels('Looking for a product?') ?></span>
-        <form action="search-product.php" method="get">
-            <input type="text" name="productToSearch" id="productToSearch">
-            <input type="submit" value="<?= translateLabels('Search') ?>">
-        </form>
-        <br><br>
+    <!-- add product -->
+    <a href="product.php"><?= translateLabels('Add a product') ?></a>
 
-        <!-- sort by property -->
-        <?php include_once 'sort-products.php'; ?>
+    <!-- search product -->
+    <br><br>
+    <span><?= translateLabels('Looking for a product?') ?></span>
+    <form action="search-product.php" method="get">
+        <input type="text" name="productToSearch" id="productToSearch">
+        <input type="submit" value="<?= translateLabels('Search') ?>">
+    </form>
+    <br><br>
 
-        <!-- display the products -->
-        <table border="1" cellpadding="10">
+    <!-- sort by property -->
+    <?php include_once 'sort-products.php'; ?>
+
+    <!-- display the products -->
+    <table border="1" cellpadding="10">
+        <tr>
+            <th><?= translateLabels('Name') ?></th>
+            <th><?= translateLabels('Price') ?></th>
+            <th><?= translateLabels('Description') ?></th>
+            <th><?= translateLabels('Image') ?></th>
+            <th><?= translateLabels('Edit') ?></th>
+            <th><?= translateLabels('Remove') ?></th>
+        </tr>
+        <?php foreach ($products as $product): ?>
             <tr>
-                <th><?= translateLabels('Name') ?></th>
-                <th><?= translateLabels('Price') ?></th>
-                <th><?= translateLabels('Description') ?></th>
-                <th><?= translateLabels('Image') ?></th>
-                <th><?= translateLabels('Edit') ?></th>
-                <th><?= translateLabels('Remove') ?></th>
+                <td><?= htmlspecialchars($product['title']) ?></td>
+                <td><?= htmlspecialchars($product['price']) ?></td>
+                <td><?= htmlspecialchars($product['description']) ?></td>
+                <td><img src="img/<?= htmlspecialchars($product['image']) ?>"></td>
+                <td>
+                    <form method="post" action="edit-product.php">
+                        <input type="hidden" name="productId" value="<?= htmlspecialchars($product['id']) ?>">
+                        <input type="submit" value="<?= translateLabels('Edit') ?>">
+                    </form>
+                </td>
+                <td>
+                    <form method="post" action="delete-product.php">
+                        <input type="hidden" name="productId" value="<?= htmlspecialchars($product['id']) ?>">
+                        <input type="submit" value="<?= translateLabels('Remove') ?>">
+                    </form>
+                </td>
             </tr>
-            <?php foreach ($products as $product): ?>
-                <tr>
-                    <td><?= htmlspecialchars($product['title']) ?></td>
-                    <td><?= htmlspecialchars($product['price']) ?></td>
-                    <td><?= htmlspecialchars($product['description']) ?></td>
-                    <td><img src="img/<?= htmlspecialchars($product['image']) ?>"></td>
-                    <td>
-                        <form method="post" action="edit-product.php">
-                            <input type="hidden" name="productId" value="<?= htmlspecialchars($product['id']) ?>">
-                            <input type="submit" value="<?= translateLabels('Edit') ?>">
-                        </form>
-                    </td>
-                    <td>
-                        <form method="post" action="delete-product.php">
-                            <input type="hidden" name="productId" value="<?= htmlspecialchars($product['id']) ?>">
-                            <input type="submit" value="<?= translateLabels('Remove') ?>">
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
-        <!-- pagination -->
-        <?php include 'pagination.php'; ?>
+        <?php endforeach; ?>
+    </table>
+    <!-- pagination -->
+    <?php include 'pagination.php'; ?>
 
-        <br><br>
-        <br>
-        <a href="index.php"><?= translateLabels('Go to main page') ?></a>
-    <?php else: ?>
-        <?php header('Location: index.php');
-        die(); ?>
-    <?php endif; ?>
+    <br><br>
+    <br>
+    <a href="index.php"><?= translateLabels('Go to main page') ?></a>
 </body>
 </html>

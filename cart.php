@@ -10,7 +10,7 @@ if (isset($_POST['id']) && ($key = array_search($_POST['id'], $_SESSION['cart_id
 }
 
 //when there are products in the cart, select all the products that are in it
-if (isset($_SESSION['cart_ids']) && is_array($_SESSION['cart_ids'])) {
+if (!empty($_SESSION['cart_ids']) && is_array($_SESSION['cart_ids'])) {
     $cartProducts = implode(',', array_fill(0, count($_SESSION['cart_ids']), '?'));
     $query = "SELECT * FROM products WHERE id IN ($cartProducts)";
     $stmt = $pdo->prepare($query);
@@ -135,4 +135,5 @@ unset($_SESSION['checkout_success'], $_SESSION['checkout_failed']);
     <a href="index.php"><?= translateLabels('Go to main page') ?></a>
 
 </body>
+
 </html>

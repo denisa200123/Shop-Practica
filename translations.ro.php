@@ -32,7 +32,7 @@ define('RO_TRANSLATIONS', [
     'Password' => 'Parola',
     'Login failed!' => 'Logare nereusita!',
     'Incorrect login information!' => 'Informatiile de logare sunt gresite!',
-    'Admin logged' => 'Admin logat',
+    'Admin logged in' => 'Admin logat',
     'Want to logout?' => 'Vrei sa iesi din cont?',
     'Logout' => 'Delogare',
     'Edit' => 'Editeaza',

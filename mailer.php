@@ -1,5 +1,9 @@
 <?php
 
+if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
+    die('Direct access not permitted');
+}
+
 require_once  __DIR__ . '/vendor/autoload.php';
 require_once 'config.php';
 

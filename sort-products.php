@@ -4,6 +4,11 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
     die('Direct access not permitted');
 }
 
+if (!isset($_SESSION['admin_logged_in'])) {
+    header('Location: index.php');
+    die();    
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sort']) && in_array($_POST['sort'], $sortOptions)) {
     switch ($_POST['sort']) {
         case 'title':

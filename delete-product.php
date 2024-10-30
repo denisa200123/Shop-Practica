@@ -1,6 +1,12 @@
 <?php
 
 session_start();
+
+if (!isset($_SESSION['admin_logged_in'])) {
+    header('Location: index.php');
+    die();    
+}
+
 require_once 'common.php';
 
 $productId = isset($_POST['productId']) ? strip_tags($_POST['productId']) : '';
@@ -57,11 +63,7 @@ if (filter_var($productId, FILTER_VALIDATE_INT) && $_SERVER['REQUEST_METHOD'] ==
         </table>
 
         <br>
-
-        <a href='products.php'><?= translateLabels('Products page') ?></a>
-    <?php else: ?>
-        <?php header('Location: products.php');
-        die(); ?>
     <?php endif; ?>
+    <a href='products.php'><?= translateLabels('Products page') ?></a>
 </body>
 </html>
