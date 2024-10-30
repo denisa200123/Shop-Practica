@@ -95,7 +95,7 @@ unset($_SESSION['checkout_success'], $_SESSION['checkout_failed']);
         <br><br>
         <!-- form for sending checkout info-->
         <p><?= translateLabels('Please fill out this form in order to complete your order') ?></p>
-        <form method="POST" action="send-mail.php">
+        <form method="POST" action="cart-checkout.php">
             <label for="name"><?= translateLabels('Name') ?></label>
             <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>" required>
             <br>
