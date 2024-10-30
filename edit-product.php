@@ -49,7 +49,7 @@ unset($_SESSION['image_errors'], $_SESSION['product_editing_errors']);
 
 <body>
     <?php if ($selectedProduct): ?>
-        <?php include_once 'language-switcher.php'; ?>
+        <?php require_once 'language-switcher.php'; ?>
 
         <form action="edit-product-processing.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="productId" id="id" value="<?= htmlspecialchars($productId) ?>">

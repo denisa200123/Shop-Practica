@@ -60,7 +60,7 @@ unset($_SESSION['checkout_success'], $_SESSION['checkout_failed']);
 </head>
 
 <body>
-    <?php include_once 'language-switcher.php'; ?>
+    <?php require_once 'language-switcher.php'; ?>
 
     <h1><?= translateLabels('Your cart') ?></h1>
 

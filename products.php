@@ -66,7 +66,7 @@ $pdo = null;
     </style>
 </head>
 <body>
-    <?php include_once 'language-switcher.php'; ?>
+    <?php require_once 'language-switcher.php'; ?>
 
     <span><?= translateLabels('Admin logged in') ?></span>
     <br>
@@ -87,7 +87,7 @@ $pdo = null;
     <br><br>
 
     <!-- sort by property -->
-    <?php include_once 'sort-products.php'; ?>
+    <?php require_once 'sort-products.php'; ?>
 
     <!-- display the products -->
     <table border="1" cellpadding="10">
@@ -121,7 +121,7 @@ $pdo = null;
         <?php endforeach; ?>
     </table>
     <!-- pagination -->
-    <?php include 'pagination.php'; ?>
+    <?php require_once 'pagination.php'; ?>
 
     <br><br>
     <br>

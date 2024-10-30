@@ -1,7 +1,7 @@
 <?php
 
 //used to translate labels
-define('RO_TRANSLATIONS', [
+define('TRANSLATIONS', [
     'Name' => 'Nume',
     'Price' => 'Pret',
     'Description' => 'Descriere',

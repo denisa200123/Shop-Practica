@@ -28,12 +28,12 @@ function translateLabels($label)
 {
     if (isset($_SESSION['language']) && $_SESSION['language'] === 'ro') {
         require_once 'translations.ro.php';
-        return RO_TRANSLATIONS[$label] ?? $label;
+        return TRANSLATIONS[$label] ?? $label;
     }
 
     if (isset($_SESSION['language']) && $_SESSION['language'] === 'en') {
         require_once 'translations.en.php';
-        return EN_TRANSLATIONS[$label] ?? $label;
+        return TRANSLATIONS[$label] ?? $label;
     }
 
     return $label;

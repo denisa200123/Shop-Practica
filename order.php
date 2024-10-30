@@ -44,7 +44,7 @@ if (filter_var($orderId, FILTER_VALIDATE_INT)) {
     </style>
 </head>
 <body>
-    <?php include_once 'language-switcher.php'; ?>
+    <?php require_once 'language-switcher.php'; ?>
 
     <?php if ($products): ?>
         <h1><?= translateLabels('Order id') . ': ' . htmlspecialchars($orderId) ?></h1>

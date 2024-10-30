@@ -48,7 +48,7 @@ $stmt = null;
 </head>
 
 <body>
-    <?php include_once 'language-switcher.php'; ?>
+    <?php require_once 'language-switcher.php'; ?>
 
     <?php if (isset($_SESSION['admin_logged_in'])): ?>
         <p><?= translateLabels('Admin logged') ?></p>

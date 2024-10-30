@@ -30,7 +30,7 @@ unset($_SESSION['product_info']);
     <title><?= translateLabels('Add product') ?></title>
 </head>
 <body>
-    <?php include_once 'language-switcher.php'; ?>
+    <?php require_once 'language-switcher.php'; ?>
 
     <form action="create-product-processing.php" enctype="multipart/form-data" method="POST">
         <label for="name"><?= translateLabels('Name') ?></label>

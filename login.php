@@ -35,7 +35,7 @@ if (!empty($_SESSION['login_failed'])) {
     <title><?= translateLabels('Login') ?></title>
 </head>
 <body>
-    <?php include_once 'language-switcher.php'; ?>
+    <?php require_once 'language-switcher.php'; ?>
 
     <form action="login-processing.php" method="POST">
         <label for="username"><?= translateLabels('Username') ?></label>

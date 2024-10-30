@@ -26,7 +26,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title><?= translateLabels('Orders') ?></title>
 </head>
 <body>
-    <?php include_once 'language-switcher.php'; ?>
+    <?php require_once 'language-switcher.php'; ?>
 
     <?php if ($orders): ?>
         <table border="1" cellpadding="10">

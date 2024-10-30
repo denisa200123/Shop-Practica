@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['products_in_car
         $_SESSION['checkout_errors'] = $errors;
     } else {
         ob_start();
-        include 'mail-template.php';
+        require_once 'mail-template.php';
         $cartContents = ob_get_clean();
 
         //if the file that contains info from the cart page was found, try to send email
