@@ -1,7 +1,7 @@
 <?php
 
 //used to translate labels
-define('TRANSLATIONS', [
+return [
     'Name' => 'Nume',
     'Price' => 'Pret',
     'Description' => 'Descriere',
@@ -82,4 +82,4 @@ define('TRANSLATIONS', [
     'Orders' => 'Comenzi',
     'Add product' => 'Adaugare produs',
     'Search product' => 'Cautare produs'
-]);
+];

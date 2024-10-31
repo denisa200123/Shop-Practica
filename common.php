@@ -26,17 +26,16 @@ $locales = [
 
 function translateLabels($label)
 {
-    if (isset($_SESSION['language']) && $_SESSION['language'] === 'ro') {
-        require_once 'translations.ro.php';
-        return TRANSLATIONS[$label] ?? $label;
+    $language = $_SESSION['language'] ?? '';
+    $translations = [];
+
+    if ($language === 'ro') {
+        $translations = require 'translations.ro.php';
+    } elseif ($language === 'en') {
+        $translations = require 'translations.en.php';
     }
 
-    if (isset($_SESSION['language']) && $_SESSION['language'] === 'en') {
-        require_once 'translations.en.php';
-        return TRANSLATIONS[$label] ?? $label;
-    }
-
-    return $label;
+    return $translations[$label] ?? $label;
 }
 
 //used to check if any user input is empty
