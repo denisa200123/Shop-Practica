@@ -6,7 +6,9 @@ if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
 
 require_once 'common.php';
 
-if ($maxPages > 0): ?>
+?>
+
+<?php if ($maxPages > 0): ?>
     <?php if ($page > 1): ?>
         <?= createPageLink($page - 1, translateLabels('Previous')) ?>
     <?php endif; ?>
