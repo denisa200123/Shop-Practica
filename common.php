@@ -24,18 +24,18 @@ $locales = [
     'ro' => translateLabels('Romanian'),
 ];
 
+$translations = [
+    'en' => require_once 'translations.en.php',
+    'ro' => require_once 'translations.ro.php',
+];
+
 function translateLabels($label)
 {
+    global $translations;
+
     $language = $_SESSION['language'] ?? '';
-    $translations = [];
 
-    if ($language === 'ro') {
-        $translations = require 'translations.ro.php';
-    } elseif ($language === 'en') {
-        $translations = require 'translations.en.php';
-    }
-
-    return $translations[$label] ?? $label;
+    return $translations[$language][$label] ?? $label;
 }
 
 //used to check if any user input is empty
