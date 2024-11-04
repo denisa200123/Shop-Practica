@@ -9,7 +9,13 @@ if (!isset($_SESSION['admin_logged_in'])) {
 
 require_once 'common.php';
 
-$query = "SELECT * FROM orders;";
+$query = "SELECT orders.id, orders.creation_date, orders.customer_name, orders.contact_details, orders.comments, SUM(products.price)
+    FROM orders
+    INNER JOIN order_product
+    ON orders.id = order_product.order_id
+    INNER JOIN products
+    ON products.id = order_product.product_id
+    GROUP BY orders.id;";
 
 $stmt = $pdo->prepare($query);
 $stmt->execute();
@@ -46,7 +52,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?= htmlspecialchars($order['customer_name']) ?></td>
                     <td><?= htmlspecialchars($order['contact_details']) ?></td>
                     <td><?= htmlspecialchars($order['comments']) ?></td>
-                    <td><?= htmlspecialchars($order['total_price']) ?></td>
+                    <td><?= htmlspecialchars($order['SUM(products.price)']) ?></td>
                     <td>
                         <form method="get" action="order.php">
                             <input type="hidden" name="orderId" value="<?= htmlspecialchars($order['id']) ?>">
