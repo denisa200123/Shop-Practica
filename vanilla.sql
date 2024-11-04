@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 15, 2024 at 02:02 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Gazdă: 127.0.0.1
+-- Timp de generare: nov. 04, 2024 la 03:06 PM
+-- Versiune server: 10.4.32-MariaDB
+-- Versiune PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `vanilla`
+-- Bază de date: `vanilla`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `orders`
+-- Structură tabel pentru tabel `orders`
 --
 
 CREATE TABLE `orders` (
@@ -39,10 +39,10 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ordersproducts`
+-- Structură tabel pentru tabel `order_product`
 --
 
-CREATE TABLE `ordersproducts` (
+CREATE TABLE `order_product` (
   `id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL
@@ -51,7 +51,7 @@ CREATE TABLE `ordersproducts` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `products`
+-- Structură tabel pentru tabel `products`
 --
 
 CREATE TABLE `products` (
@@ -63,61 +63,61 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Indexes for dumped tables
+-- Indexuri pentru tabele eliminate
 --
 
 --
--- Indexes for table `orders`
+-- Indexuri pentru tabele `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ordersproducts`
+-- Indexuri pentru tabele `order_product`
 --
-ALTER TABLE `ordersproducts`
+ALTER TABLE `order_product`
   ADD PRIMARY KEY (`id`),
   ADD KEY `order_id` (`order_id`),
   ADD KEY `product_id` (`product_id`);
 
 --
--- Indexes for table `products`
+-- Indexuri pentru tabele `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pentru tabele eliminate
 --
 
 --
--- AUTO_INCREMENT for table `orders`
+-- AUTO_INCREMENT pentru tabele `orders`
 --
 ALTER TABLE `orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `ordersproducts`
+-- AUTO_INCREMENT pentru tabele `order_product`
 --
-ALTER TABLE `ordersproducts`
+ALTER TABLE `order_product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `products`
+-- AUTO_INCREMENT pentru tabele `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Constrângeri pentru tabele eliminate
 --
 
 --
--- Constraints for table `ordersproducts`
+-- Constrângeri pentru tabele `order_product`
 --
-ALTER TABLE `ordersproducts`
-  ADD CONSTRAINT `ordersproducts_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
-  ADD CONSTRAINT `ordersproducts_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+ALTER TABLE `order_product`
+  ADD CONSTRAINT `order_product_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  ADD CONSTRAINT `order_product_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
