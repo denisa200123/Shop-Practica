@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && is_array($_SESSION['products_in_car
             $orderId = $pdo->lastInsertId();
 
             foreach ($_SESSION['products_in_cart'] as $product) {
-                $query = "INSERT INTO ordersproducts(order_id, product_id) VALUES (:orderId, :productId)";
+                $query = "INSERT INTO order_product(order_id, product_id) VALUES (:orderId, :productId)";
                 $stmt = $pdo->prepare($query);
                 $stmt->bindParam(':orderId', $orderId);
                 $stmt->bindParam(':productId', $product['id']);

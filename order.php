@@ -14,8 +14,8 @@ $orderId = $_GET['orderId'] ?? '';
 if (filter_var($orderId, FILTER_VALIDATE_INT)) {
     $query = "SELECT products.title, products.description, products.price, products.image
     FROM products
-    INNER JOIN ordersproducts
-    ON products.id = ordersproducts.product_id
+    INNER JOIN order_product
+    ON products.id = order_product.product_id
     WHERE order_id = :orderId;";
 
     $stmt = $pdo->prepare($query);
