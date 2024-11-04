@@ -9,8 +9,8 @@ if (!isset($_SESSION['admin_logged_in'])) {
 
 require_once 'common.php';
 
-if (isset($_POST['productId']) && filter_var($_POST['productId'], FILTER_VALIDATE_INT)) {
-    $productId = $_POST['productId'];
+if (isset($_GET['productId']) && filter_var($_GET['productId'], FILTER_VALIDATE_INT)) {
+    $productId = $_GET['productId'];
     $_SESSION['product_id'] = $productId; // in case the validation fails, we won't lose the id
 } elseif (isset($_SESSION['product_id']) && filter_var($_SESSION['product_id'], FILTER_VALIDATE_INT)) {
     $productId = $_SESSION['product_id'];
@@ -26,10 +26,15 @@ $stmt->execute();
 
 $selectedProduct = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$name = $selectedProduct['title'];
-$description = $selectedProduct['description'];
-$price = $selectedProduct['price'];
-$image = $selectedProduct['image'];
+if($selectedProduct) {
+    $name = $selectedProduct['title'];
+    $description = $selectedProduct['description'];
+    $price = $selectedProduct['price'];
+    $image = $selectedProduct['image'];
+} else {
+    header('Location: products.php');
+    die();
+}
 
 $productEditingErrors = $_SESSION['product_editing_errors'] ?? [];
 $imageErrors = $_SESSION['image_errors'] ?? [];

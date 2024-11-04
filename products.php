@@ -10,15 +10,15 @@ if (!isset($_SESSION['admin_logged_in'])) {
 require_once 'common.php';
 
 if (!isset($_SESSION['sort'])) {
-    $_SESSION['sort'] = 'none';
+    $_SESSION['sort'] = '';
 }
 
 //get number of products from table
-$query = "SELECT * FROM products";
+$query = 'SELECT COUNT(*) FROM products';
 $stmt = $pdo->prepare($query);
 $stmt->execute();
 
-$nrOfProducts = $stmt->rowCount();
+$nrOfProducts = $stmt->fetchColumn();
 
 $productsPerPage = 2; //how many products to display per page
 $maxPages = ceil($nrOfProducts/$productsPerPage); // maximum number of pages
@@ -106,7 +106,7 @@ $pdo = null;
                 <td><?= htmlspecialchars($product['description']) ?></td>
                 <td><img src="img/<?= htmlspecialchars($product['image']) ?>"></td>
                 <td>
-                    <form method="post" action="edit-product.php">
+                    <form method="get" action="edit-product.php">
                         <input type="hidden" name="productId" value="<?= htmlspecialchars($product['id']) ?>">
                         <input type="submit" value="<?= translateLabels('Edit') ?>">
                     </form>
