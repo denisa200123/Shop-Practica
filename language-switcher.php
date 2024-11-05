@@ -11,6 +11,8 @@ if (!isset($_SESSION['language'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['language'])
     && in_array($_POST['language'], array_keys($locales))) {
     $_SESSION['language'] = $_POST['language'];
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    die();
 }
 ?>
 
