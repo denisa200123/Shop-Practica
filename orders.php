@@ -9,13 +9,13 @@ if (!isset($_SESSION['admin_logged_in'])) {
 
 require_once 'common.php';
 
-$query = "SELECT orders.id, orders.creation_date, orders.customer_name, orders.contact_details, orders.comments, SUM(products.price)
+$query = 'SELECT orders.id, orders.creation_date, orders.customer_name, orders.contact_details, orders.comments, SUM(products.price)
     FROM orders
-    INNER JOIN order_product
+    LEFT JOIN order_product
     ON orders.id = order_product.order_id
     INNER JOIN products
     ON products.id = order_product.product_id
-    GROUP BY orders.id;";
+    GROUP BY orders.id;';
 
 $stmt = $pdo->prepare($query);
 $stmt->execute();

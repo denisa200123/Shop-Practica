@@ -14,12 +14,12 @@ $id = isset($_POST['productId']) ? strip_tags($_POST['productId']) : '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && filter_var($id, FILTER_VALIDATE_INT)) {
 
     $query = "DELETE FROM order_product WHERE product_id = :id;";
-    $stmt = $pdo->prepare(query: $query);
+    $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $id);
     $stmt->execute();
 
     $query = "DELETE FROM products WHERE id = :id;";
-    $stmt = $pdo->prepare(query: $query);
+    $stmt = $pdo->prepare($query);
     $stmt->bindParam(':id', $id);
     $stmt->execute();
 

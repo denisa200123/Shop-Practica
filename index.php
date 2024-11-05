@@ -51,7 +51,7 @@ $stmt = null;
     <?php require_once 'language-switcher.php'; ?>
 
     <?php if (isset($_SESSION['admin_logged_in'])): ?>
-        <p><?= translateLabels('Admin logged') ?></p>
+        <p><?= translateLabels('Admin logged in') ?></p>
         <a href="products.php"><?= translateLabels('Products page') ?></a>
         <br>
         <a href="orders.php"><?= translateLabels('Orders page') ?></a>
