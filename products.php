@@ -13,41 +13,46 @@ if (!isset($_SESSION['sort'])) {
     $_SESSION['sort'] = '';
 }
 
-//get number of products from table
-$query = 'SELECT COUNT(*) FROM products';
-$stmt = $pdo->prepare($query);
-$stmt->execute();
+if (empty($_GET['productToSearch'])) {
+    $query = 'SELECT COUNT(*) FROM products';
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    //get number of products from db
+    $nrOfProducts = $stmt->fetchColumn();
+    echo "nr products: " . $nrOfProducts;
+    $query = 'SELECT * FROM products';
+    $productsPerPage = 1; //how many products to display per page
+    $maxPages = ceil($nrOfProducts/$productsPerPage); // maximum number of pages
 
-$nrOfProducts = $stmt->fetchColumn();
+    //get page from url, default 1
+    $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page']>0 && $_GET['page']<=$maxPages ? $_GET['page'] : 1;
+    echo "<br>page: " . $page;
+    $currentPage = ($page - 1) * $productsPerPage;
 
-$productsPerPage = 2; //how many products to display per page
-$maxPages = ceil($nrOfProducts/$productsPerPage); // maximum number of pages
+    $sort = isset($_SESSION['sort']) && in_array($_SESSION['sort'], $sortOptions) ? $_SESSION['sort'] : 'none';
+    echo '<br>sort: ' . $sort;
+    if ($sort !== 'none') {
+        $query .= " ORDER BY $sort";
+    }
 
-//get page from url, default 1
-$page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page']>0 && $_GET['page']<=$maxPages ? $_GET['page'] : 1;
+    $query .= " LIMIT :start, :stop";
+    echo "<br> query: " . $query;
 
-$currentPage = ($page - 1) * $productsPerPage;
+    $stmt = $pdo->prepare($query);
 
-$sortOptions = ['none', 'title', 'price', 'description'];
-$sort = isset($_SESSION['sort']) && in_array($_SESSION['sort'], $sortOptions) ? $_SESSION['sort'] : 'none';
+    $start = intval(trim($currentPage));
+    $stop =  intval(trim($productsPerPage));
+    $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+    $stmt->bindParam(':stop', $stop, PDO::PARAM_INT);
+    $stmt->execute();
 
-$query = 'SELECT * FROM products';
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if ($sort !== 'none') {
-    $query .= " ORDER BY $sort";
+    $stmt = null;
+    $pdo = null;
+} else if (!empty($_SESSION['foundProducts'])) {
+    $products = $_SESSION['foundProducts'];
 }
-
-$query .= " LIMIT ?, ?";
-
-$stmt = $pdo->prepare($query);
-$stmt->bindParam(1, $currentPage, PDO::PARAM_INT);
-$stmt->bindParam(2, $productsPerPage, PDO::PARAM_INT);
-$stmt->execute();
-
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$stmt = null;
-$pdo = null;
 
 ?>
 
