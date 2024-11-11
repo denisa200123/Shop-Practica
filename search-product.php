@@ -16,60 +16,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['productToSearch'])) {
     $productName = '%' . $productName . '%';
     $productName = strtolower($productName);
 
-    $query = "SELECT * FROM products WHERE lower(title) LIKE :productName";
+    $query = "SELECT * FROM products WHERE lower(title) LIKE :name";
     $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':productName', $productName);
+    $stmt->bindParam(':name', $productName);
+    $stmt->execute();
+    //get number of products from db that match the product name
+    $nrOfProducts = $stmt->fetchColumn();
+
+    $productsPerPage = 1; //how many products to display per page
+    $maxPages = ceil($nrOfProducts/$productsPerPage); // maximum number of pages
+
+    //get page from url, default 1
+    $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page']>0 && $_GET['page']<=$maxPages ? $_GET['page'] : 1;
+
+    $currentPage = ($page - 1) * $productsPerPage;
+
+    $sortOptions = ['none', 'title', 'price', 'description'];
+    $sort = isset($_SESSION['sort']) && in_array($_SESSION['sort'], $sortOptions) ? $_SESSION['sort'] : 'none';
+
+    if ($sort !== 'none') {
+        $query .= " ORDER BY $sort";
+    }
+
+    $query .= " LIMIT :start, :stop";
+
+    $stmt = $pdo->prepare($query);
+
+    $start = intval(trim($currentPage));
+    $stop =  intval(trim($productsPerPage));
+    $stmt->bindParam(':name', $productName);
+    $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+    $stmt->bindParam(':stop', $stop, PDO::PARAM_INT);
     $stmt->execute();
 
-    $productsFound = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    $_SESSION['foundProducts'] = $products;
     $stmt = null;
     $pdo = null;
+
+    header("Location: products.php?productToSearch=$productToSearch");
 } else {
     header('Location: products.php');
-    die();
 }
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= translateLabels('Search product') ?></title>
-    <style>
-        img {
-            width: 150px;
-            height: auto;
-        }
-    </style>
-</head>
-<body>
-    <!-- display the found products -->
-    <?php if ($productsFound): ?>
-        <h1><?= translateLabels('Products found'); ?></h1>
-        <table border="1" cellpadding="10">
-            <tr>
-                <th><?= translateLabels('Name') ?></th>
-                <th><?= translateLabels('Price') ?></th>
-                <th><?= translateLabels('Description') ?></th>
-                <th><?= translateLabels('Image') ?></th>
-            </tr>
-            <?php foreach ($productsFound as $product): ?>
-                <tr>
-                    <td><?= htmlspecialchars($product['title']) ?></td>
-                    <td><?= htmlspecialchars($product['price']) ?></td>
-                    <td><?= htmlspecialchars($product['description']) ?></td>
-                    <td><img src="img/<?= htmlspecialchars($product['image']) ?>"></td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
-    <?php else: ?>
-        <h1><?= translateLabels('Sorry, we did not find the product') ?></h1>
-    <?php endif; ?>
-    <br>
-    <a href="products.php"><?= translateLabels('Products page') ?></a>
-</body>
-</html>
+die();

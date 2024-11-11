@@ -1,5 +1,7 @@
 <?php
 
+require_once 'common.php';
+
 if (basename($_SERVER['PHP_SELF']) == basename(__FILE__)) {
     die('Direct access not permitted');
 }
@@ -24,11 +26,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sort']) && in_array($
             $_SESSION['sort'] = 'none';
             break;
     }
-    header('Location: products.php');
+    if (!empty($_GET['productToSearch'])) {
+        $productToSearch = $_GET['productToSearch'];
+        header("Location: products.php?productToSearch=$productToSearch");
+    } else {
+        header('Location: products.php');
+    }
     die();
 }
 ?>
-
 
 <form method="post">
     <input type="hidden" name="sortProducts" value="sort products">

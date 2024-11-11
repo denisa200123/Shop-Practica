@@ -67,5 +67,12 @@ function createPageLink($pageNum, $text = null)
     if (is_null($text)) {
         $text = $pageNum;
     }
-    return "<a href='products.php?page=$pageNum'>$text</a>";
+    if (empty($_GET['productToSearch'])) {
+        return "<a href='products.php?page=$pageNum'>$text</a>";
+    } else {
+        $productToSearch = $_GET['productToSearch'];
+        return "<a href='products.php?productToSearch=$productToSearch&page=$pageNum'>$text</a>";
+    }
 }
+
+$sortOptions = ['none', 'title', 'price', 'description'];
