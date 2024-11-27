@@ -4,47 +4,51 @@ session_start();
 
 if (!isset($_SESSION['admin_logged_in'])) {
     header('Location: index.php');
-    die();    
+    die();
 }
 
 require_once 'common.php';
 
-if (!isset($_SESSION['sort'])) {
-    $_SESSION['sort'] = '';
-}
+$sortOptions = ['none', 'title', 'price', 'description'];
 
-$sort = isset($_SESSION['sort']) && in_array($_SESSION['sort'], $sortOptions) ? $_SESSION['sort'] : 'none';
+$sort = isset($_GET['sort']) && in_array($_GET['sort'], $sortOptions) ? $_GET['sort'] : '';
+$search = isset($_GET['search']) ? '%' . strtolower(strip_tags($_GET['search'])) . '%' : '%';
 
-$productsPerPage = 1; //how many products to display per page
+$page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int) $_GET['page'] : 1; //get page from url, default 1
 
-$searchProduct = isset($_GET['productToSearch']) ? '%' . strtolower(strip_tags($_GET['productToSearch'])) . '%' : '%';
-
-//get page from url, default 1
-$page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int) $_GET['page'] : 1;
+$productsPerPage = 2; //how many products to display per page
 $currentPage = ($page - 1) * $productsPerPage;
+$productsPerPage =  intval(trim($productsPerPage));
+$currentPage = intval(trim($currentPage));
 
-$query = "SELECT * FROM products WHERE lower(title) LIKE :searchProduct";
+$orderBy = in_array($sort, ['title', 'price', 'description']) ? $sort : null;
 
-if ($sort !== 'none') {
-    $query .= " ORDER BY $sort";
+$query = "SELECT * FROM products";
+
+if ($search !== '%') {
+    $query .= " WHERE lower(title) LIKE :search";
 }
 
-$currentPage = intval(trim($currentPage));
-$productsPerPage =  intval(trim($productsPerPage));
+if ($orderBy) {
+    $query .= " ORDER BY $orderBy";
+}
 
 $query .= " LIMIT :currentPage, :productsPerPage";
 
 $stmt = $pdo->prepare($query);
-$stmt->bindParam(':searchProduct', $searchProduct, PDO::PARAM_STR);
 $stmt->bindParam(':currentPage', $currentPage, PDO::PARAM_INT);
 $stmt->bindParam(':productsPerPage', $productsPerPage, PDO::PARAM_INT);
+if ($search !== '%') {
+    $stmt->bindParam(':search', $search, PDO::PARAM_STR);
+}
+
 $stmt->execute();
 
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$getNumberQuery = "SELECT COUNT(*) FROM products WHERE lower(title) LIKE :searchProduct";
+$getNumberQuery = "SELECT COUNT(*) FROM products WHERE lower(title) LIKE :search";
 $getNumberStmt = $pdo->prepare($getNumberQuery);
-$getNumberStmt->bindParam(':searchProduct', $searchProduct, PDO::PARAM_STR);
+$getNumberStmt->bindParam(':search', $search, PDO::PARAM_STR);
 $getNumberStmt->execute();
 $nrOfProducts = $getNumberStmt->fetchColumn();
 
@@ -52,6 +56,15 @@ $maxPages = ceil($nrOfProducts / $productsPerPage);
 
 $stmt = null;
 $pdo = null;
+
+function createPageLink($pageNum, $text = null)
+{
+    $text = $text ?? $pageNum;
+    $search = $_GET['search'] ?? '';
+    $sort = $_GET['sort'] ?? 'none';
+
+    return "<a href='products.php?page=$pageNum&search=$search&sort=$sort'>$text</a>";
+}
 
 ?>
 
@@ -85,13 +98,38 @@ $pdo = null;
     <br><br>
     <span><?= translateLabels('Looking for a product?') ?></span>
     <form method="get">
-        <input type="text" name="productToSearch" id="productToSearch">
+        <input type="hidden" name="sort" value="<?= htmlspecialchars($sort) ?>">
+        <input type="text" name="search" id="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
         <input type="submit" value="<?= translateLabels('Search') ?>">
     </form>
+
     <br><br>
 
     <!-- sort by property -->
-    <?php require_once 'sort-products.php'; ?>
+    <form method="get">
+        <input type="hidden" name="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+        <label for="sort"><?= translateLabels('Sort by:') ?></label>
+
+        <select name="sort" id="sort">
+            <option value="none" <?= ($sort === 'none') ? "selected" : '' ?>>
+                <?= translateLabels('Nothing') ?>
+            </option>
+
+            <option value="title"<?= ($sort === 'title') ? "selected" : '' ?>>
+                <?= translateLabels("Name") ?>
+            </option>
+
+            <option value="price"<?= ($sort === 'price') ? "selected" : '' ?>>
+                <?= translateLabels("Price") ?>
+            </option>
+
+            <option value="description"<?= ($sort === 'description') ? "selected" : '' ?>>
+                <?= translateLabels("Description") ?>
+            </option>
+        </select>
+
+        <input type="submit" value="<?= translateLabels('Sort') ?>">
+    </form>
 
     <!-- display the products -->
     <table border="1" cellpadding="10">
@@ -124,6 +162,7 @@ $pdo = null;
             </tr>
         <?php endforeach; ?>
     </table>
+
     <!-- pagination -->
     <?php require_once 'pagination.php'; ?>
 

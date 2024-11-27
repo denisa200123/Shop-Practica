@@ -60,19 +60,3 @@ function isPriceInvalid(float $price)
     }
     return false;
 }
-
-//used in pagination
-function createPageLink($pageNum, $text = null)
-{
-    if (is_null($text)) {
-        $text = $pageNum;
-    }
-    if (empty($_GET['productToSearch'])) {
-        return "<a href='products.php?page=$pageNum'>$text</a>";
-    } else {
-        $productToSearch = $_GET['productToSearch'];
-        return "<a href='products.php?productToSearch=$productToSearch&page=$pageNum'>$text</a>";
-    }
-}
-
-$sortOptions = ['none', 'title', 'price', 'description'];
