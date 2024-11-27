@@ -4,30 +4,41 @@ session_start();
 
 if (!isset($_SESSION['admin_logged_in'])) {
     header('Location: index.php');
-    die();    
+    die();
 }
 
 require_once 'common.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['fileToUpload']['tmp_name'])) {
-    $targetDir = 'img/';
-    // ALL THIS SECTION IS FOR VALIDATING THE UPLOADED IMAGE
-    $check = getimagesize($_FILES['fileToUpload']['tmp_name']);
-    $targetFile = $targetDir . basename($_FILES['fileToUpload']['name']);
-    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $isEdit = isset($_POST['productId']) && filter_var($_POST['productId'], FILTER_VALIDATE_INT);
+    $id = $isEdit ? $_POST['productId'] : null;
 
+    $uploadedImage = false;
     $imgErrors = [];
-    if (!$check) {
-        $imgErrors['notImage'] = translateLabels('File is not an image');
+    $productErrors = [];
+    $targetDir = 'img/';
+
+    // ALL THIS SECTION IS FOR VALIDATING THE UPLOADED IMAGE
+    if (!empty($_FILES['fileToUpload']['tmp_name'])) {
+        $check = getimagesize($_FILES['fileToUpload']['tmp_name']);
+        $targetFile = $targetDir . basename($_FILES['fileToUpload']['name']);
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+        if (!$check) {
+            $imgErrors['notImage'] = translateLabels('File is not an image');
+        }
+
+        if (!in_array($imageFileType, $imgExtensions)) {
+            $imgErrors['invalidExtension'] = translateLabels('Extension is not supported');
+        }
+
+        $image = basename($_FILES['fileToUpload']['name']);
+        $uploadedImage = true;
+    } else {
+        $image = $isEdit ? ($_POST['image'] ?? '') : '';
     }
 
-    if (!in_array($imageFileType, $imgExtensions)) {
-        $imgErrors['invalidExtension'] = translateLabels('Extension is not supported');
-    }
-
-    $image = basename($_FILES['fileToUpload']['name']);
-
-
+    //THIS SECTION IS FOR VALIDATING ALL DATA
     $name = isset($_POST['name']) ? strip_tags($_POST['name']) : '';
     $description = isset($_POST['description']) ? strip_tags($_POST['description']) : '';
     $price = isset($_POST['price']) ? strip_tags($_POST['price']) : '';
@@ -40,24 +51,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['fileToUpload']['tmp
 
     $productInfo = [$name, $description, $price, $image];
 
-    $productCreationErrors = [];
-
     if (isInputEmpty($productInfo)) {
-        $productCreationErrors['emptyInput'] = translateLabels('Not all fields were filled!');
+        $productErrors['emptyInput'] = translateLabels('Not all fields were filled!');
     }
 
     if (isPriceInvalid($price)) {
-        $productCreationErrors['invalidPrice'] = translateLabels('Price does not have a valid value!');
+        $productErrors['invalidPrice'] = translateLabels('Price does not have a valid value!');
     }
 
-    if (empty($productCreationErrors) && empty($imgErrors)) {
+    if (empty($productErrors) && empty($imgErrors)) {
         $name = htmlspecialchars_decode($name);
         $description = htmlspecialchars_decode($description);
         $price = htmlspecialchars_decode($price);
         $image = htmlspecialchars_decode($image);
 
         //rename file if it already exists
-        if (file_exists($targetFile)) {
+        if (file_exists($targetFile) && $uploadedImage) {
             $imgNoExtension = pathinfo(basename($_FILES['fileToUpload']['name']), PATHINFO_FILENAME);
             $extension = strtolower(pathinfo(basename($_FILES['fileToUpload']['name']), PATHINFO_EXTENSION));
 
@@ -71,13 +80,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['fileToUpload']['tmp
 
             $image = $imgNoExtension . $index . '.' . $extension;
             $targetFile = $targetDir . $image;
+
+            move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $targetFile);
         }
 
         $image = str_replace($targetDir, '', $image);
 
-        $query = "INSERT INTO products(title, description, price, image) VALUES (:name, :description, :price, :image);";
-        $stmt = $pdo->prepare($query);
+        $query = $isEdit
+            ? "UPDATE products SET title = :name, description = :description, price = :price, image = :image WHERE id = :id;"
+            : "INSERT INTO products (title, description, price, image) VALUES (:name, :description, :price, :image);";
 
+        $stmt = $pdo->prepare($query);
+        if ($isEdit) {
+            $stmt->bindParam(':id', $id);
+        }
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':price', $price);
@@ -87,19 +103,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_FILES['fileToUpload']['tmp
         $stmt = null;
         $pdo = null;
 
-        move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $targetFile);
-        header('Location: products.php');
-        die();
+        if ($isEdit) {
+            unset($_SESSION['product_id']);
+        }
     } else {
-        $productInfo = [
+        $_SESSION['product_errors'] = $productErrors;
+        $_SESSION['img_errors'] = $imgErrors;
+        $_SESSION['product_info'] = [
             'name' => htmlspecialchars_decode($name),
             'description' => htmlspecialchars_decode($description),
             'price' => htmlspecialchars_decode($price),
+            'image' => $image,
         ];
-        $_SESSION['product_info'] = $productInfo;
-        $_SESSION['img_errors'] = $imgErrors;
-        $_SESSION['product_creation_errors'] = $productCreationErrors;
+
+        $page = $isEdit ? 'edit-product.php' : 'product.php';
+        header("Location: $page");
+        die();
     }
 }
-header('Location: product.php');
+
+header('Location: products.php');
 die();

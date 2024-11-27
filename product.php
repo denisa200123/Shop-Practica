@@ -9,9 +9,9 @@ if (!isset($_SESSION['admin_logged_in'])) {
 
 require_once 'common.php';
 
-$productCreationErrors = $_SESSION['product_creation_errors'] ?? [];
+$productCreationErrors = $_SESSION['product_errors'] ?? [];
 $imageErrors = $_SESSION['img_errors'] ?? [];
-unset($_SESSION['product_creation_errors'], $_SESSION['img_errors']);
+unset($_SESSION['product_errors'], $_SESSION['img_errors']);
 
 //if validation fails, remember the form fields
 $name = $_SESSION['product_info']['name'] ?? '';
@@ -32,7 +32,7 @@ unset($_SESSION['product_info']);
 <body>
     <?php require_once 'language-switcher.php'; ?>
 
-    <form action="create-product-processing.php" enctype="multipart/form-data" method="POST">
+    <form action="product-processing.php" enctype="multipart/form-data" method="POST">
         <label for="name"><?= translateLabels('Name') ?></label>
         <input type="text" name="name" id="name" value="<?= htmlspecialchars($name) ?>" required>
 

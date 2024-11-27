@@ -36,9 +36,9 @@ if($selectedProduct) {
     die();
 }
 
-$productEditingErrors = $_SESSION['product_editing_errors'] ?? [];
-$imageErrors = $_SESSION['image_errors'] ?? [];
-unset($_SESSION['image_errors'], $_SESSION['product_editing_errors']);
+$productEditingErrors = $_SESSION['product_errors'] ?? [];
+$imageErrors = $_SESSION['img_errors'] ?? [];
+unset($_SESSION['img_errors'], $_SESSION['product_errors']);
 
 ?>
 
@@ -56,7 +56,7 @@ unset($_SESSION['image_errors'], $_SESSION['product_editing_errors']);
     <?php if ($selectedProduct): ?>
         <?php require_once 'language-switcher.php'; ?>
 
-        <form action="edit-product-processing.php" method="POST" enctype="multipart/form-data">
+        <form action="product-processing.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="productId" id="id" value="<?= htmlspecialchars($productId) ?>">
             <input type="hidden" name="image" id="image" value="img/<?= htmlspecialchars($image) ?>">
 
