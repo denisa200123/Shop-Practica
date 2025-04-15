@@ -13,45 +13,46 @@ if (!isset($_SESSION['sort'])) {
     $_SESSION['sort'] = '';
 }
 
-$sort = isset($_SESSION['sort']) && in_array($_SESSION['sort'], $sortOptions) ? $_SESSION['sort'] : 'none';
+if (empty($_GET['productToSearch'])) {
+    $query = 'SELECT COUNT(*) FROM products';
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    //get number of products from db
+    $nrOfProducts = $stmt->fetchColumn();
+    echo "nr products: " . $nrOfProducts;
+    $query = 'SELECT * FROM products';
+    $productsPerPage = 1; //how many products to display per page
+    $maxPages = ceil($nrOfProducts/$productsPerPage); // maximum number of pages
 
-$productsPerPage = 1; //how many products to display per page
+    //get page from url, default 1
+    $page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page']>0 && $_GET['page']<=$maxPages ? $_GET['page'] : 1;
+    echo "<br>page: " . $page;
+    $currentPage = ($page - 1) * $productsPerPage;
 
-$searchProduct = isset($_GET['productToSearch']) ? '%' . strtolower(strip_tags($_GET['productToSearch'])) . '%' : '%';
+    $sort = isset($_SESSION['sort']) && in_array($_SESSION['sort'], $sortOptions) ? $_SESSION['sort'] : 'none';
+    echo '<br>sort: ' . $sort;
+    if ($sort !== 'none') {
+        $query .= " ORDER BY $sort";
+    }
 
-//get page from url, default 1
-$page = isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0 ? (int) $_GET['page'] : 1;
-$currentPage = ($page - 1) * $productsPerPage;
+    $query .= " LIMIT :start, :stop";
+    echo "<br> query: " . $query;
 
-$query = "SELECT * FROM products WHERE lower(title) LIKE :searchProduct";
+    $stmt = $pdo->prepare($query);
 
-if ($sort !== 'none') {
-    $query .= " ORDER BY $sort";
+    $start = intval(trim($currentPage));
+    $stop =  intval(trim($productsPerPage));
+    $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+    $stmt->bindParam(':stop', $stop, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $stmt = null;
+    $pdo = null;
+} else if (!empty($_SESSION['foundProducts'])) {
+    $products = $_SESSION['foundProducts'];
 }
-
-$currentPage = intval(trim($currentPage));
-$productsPerPage =  intval(trim($productsPerPage));
-
-$query .= " LIMIT :currentPage, :productsPerPage";
-
-$stmt = $pdo->prepare($query);
-$stmt->bindParam(':searchProduct', $searchProduct, PDO::PARAM_STR);
-$stmt->bindParam(':currentPage', $currentPage, PDO::PARAM_INT);
-$stmt->bindParam(':productsPerPage', $productsPerPage, PDO::PARAM_INT);
-$stmt->execute();
-
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$getNumberQuery = "SELECT COUNT(*) FROM products WHERE lower(title) LIKE :searchProduct";
-$getNumberStmt = $pdo->prepare($getNumberQuery);
-$getNumberStmt->bindParam(':searchProduct', $searchProduct, PDO::PARAM_STR);
-$getNumberStmt->execute();
-$nrOfProducts = $getNumberStmt->fetchColumn();
-
-$maxPages = ceil($nrOfProducts / $productsPerPage);
-
-$stmt = null;
-$pdo = null;
 
 ?>
 
@@ -84,7 +85,7 @@ $pdo = null;
     <!-- search product -->
     <br><br>
     <span><?= translateLabels('Looking for a product?') ?></span>
-    <form method="get">
+    <form action="search-product.php" method="get">
         <input type="text" name="productToSearch" id="productToSearch">
         <input type="submit" value="<?= translateLabels('Search') ?>">
     </form>
